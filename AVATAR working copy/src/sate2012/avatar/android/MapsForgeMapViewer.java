@@ -28,6 +28,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -169,10 +170,15 @@ public class MapsForgeMapViewer extends MapActivity implements
 		break;
 	    case (R.id.Get_Points_Button):
 		drawGeoDataRepositoryPoints();
-		mapView.getOverlays().add(GeoDataRepositoryOverlay);
-
-		System.out.println("Created plotter");
-		System.out.println("Translated data");
+	    try  
+	    {
+			mapView.getOverlays().add(GeoDataRepositoryOverlay);
+	
+			System.out.println("Created plotter");
+			System.out.println("Translated data");
+	    } catch (NullPointerException e) {
+	    	Log.i("Null Error", "Server not found.");
+	    }
 		break;
 	    case (R.id.Augmented_Reality_Button):
 		AugmentedRealityView();
