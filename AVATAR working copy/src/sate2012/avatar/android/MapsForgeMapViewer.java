@@ -28,7 +28,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -50,6 +49,9 @@ public class MapsForgeMapViewer extends MapActivity implements
     private Button exit;
     private Button ClearPointsButton;
     private Button AugmentedRealityViewerButton;
+    
+    private Frag frag = new Frag();
+    
     MVItemizedOverlay itemizedOverlay;
     MVItemizedOverlay userPointOverlay;
     MVItemizedOverlay GeoDataRepositoryOverlay;
@@ -170,15 +172,10 @@ public class MapsForgeMapViewer extends MapActivity implements
 		break;
 	    case (R.id.Get_Points_Button):
 		drawGeoDataRepositoryPoints();
-	    try  
-	    {
-			mapView.getOverlays().add(GeoDataRepositoryOverlay);
-	
-			System.out.println("Created plotter");
-			System.out.println("Translated data");
-	    } catch (NullPointerException e) {
-	    	Log.i("Null Error", "Server not found.");
-	    }
+		mapView.getOverlays().add(GeoDataRepositoryOverlay);
+
+		System.out.println("Created plotter");
+		System.out.println("Translated data");
 		break;
 	    case (R.id.Augmented_Reality_Button):
 		AugmentedRealityView();
@@ -424,6 +421,22 @@ public class MapsForgeMapViewer extends MapActivity implements
 	}
     }
 
+    public void myClickMethod(View v){
+		  Intent i;
+		  switch(v.getId()){
+			  case R.id.augmentedReality:
+				  i = new Intent(getApplicationContext(), CameraView.class);
+				  startActivity(i);
+				  break;
+			  case R.id.emergencyCall:
+				  System.out.println("BOO");
+				  break;
+			  case R.id.exit:
+				  System.out.println("BOO");
+				  break;
+		  }
+	  }
+    
     public void onLocationChanged(Location arg0)
     {
     }

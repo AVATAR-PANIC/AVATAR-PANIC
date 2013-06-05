@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <Button 
+        android:onClick="myClickMethod"
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.25"
+        android:text="MAP"
+        />
+    <Button 
+        android:onClick="myClickMethod"
+        android:id="@+id/augmentedReality"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.25"
+        android:text="Augmented Reality"
+        />
+    <Button 
+        android:onClick="myClickMethod"
+        android:id="@+id/emergencyCall"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.25"
+        android:text="Emercengy Call"
+        />
+    <Button 
+        android:onClick="myClickMethod"
+        android:id="@+id/exit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.25"
+        android:text="Exit App"
+        />
+    
+
+</LinearLayout>
+
+<View
+    android:id="@+id/view1"
+    android:layout_width="3dp"
+    android:layout_height="wrap_content" 
+    android:background="#000000"/>
+
+</LinearLayout>

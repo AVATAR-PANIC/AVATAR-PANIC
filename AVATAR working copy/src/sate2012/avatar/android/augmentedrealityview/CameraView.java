@@ -12,6 +12,7 @@ import sate2012.avatar.android.DataObject;
 import sate2012.avatar.android.GeoDataRepository;
 import sate2012.avatar.android.LocationDataReceiverAVATAR;
 import sate2012.avatar.android.MapsForgeMapViewer;
+import sate2012.avatar.android.Frag;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.Context;
@@ -44,6 +45,8 @@ import android.widget.Button;
 
 public class CameraView extends Activity implements Callback {
 
+	Frag frag = new Frag();
+	
 	// Camera dependent variables
 	private GeoDataRepository repo;
 	private Camera mCamera;
@@ -309,6 +312,22 @@ public class CameraView extends Activity implements Callback {
 		canvas.drawBitmap(null, overLayPoint.getLongitudeE6(),
 				overLayPoint.getLongitudeE6(), null);
 	}
+	
+	public void myClickMethod(View v){
+		  Intent i;
+		  switch(v.getId()){
+			  case R.id.map:
+				  i = new Intent(getApplicationContext(), MapsForgeMapViewer.class);
+				  startActivity(i);
+				  break;
+			  case R.id.emergencyCall:
+				  System.out.println("BOO");
+				  break;
+			  case R.id.exit:
+				  System.out.println("BOO");
+				  break;
+		  }
+	  }
 	
 	public Canvas getMyCanvas() {
 		return myCanvas;
