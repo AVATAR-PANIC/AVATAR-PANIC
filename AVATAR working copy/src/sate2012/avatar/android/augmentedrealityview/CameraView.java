@@ -282,20 +282,20 @@ public class CameraView extends Activity implements Callback {
 			//This checks where the point is in relation to the tablets location and only draws it in the correct place.
 			if (myLocation.getLatitude() < gpLocation.getLatitude()) {
 				if (myBearing >= 0) {
-					canvas.drawBitmap(pointIcon, (float) (Math.tan(gpBearing - myBearing) * 640	/ Math.tan(Math.PI / 6.0) + 640), 
-						(float) (Math.tan(myPitchA - myPitch + Math.PI / 2.0) * 400	/ Math.tan(Math.PI / 6.0) + 400), null);
+					canvas.drawBitmap(pointIcon, (float) (Math.tan(gpBearing - myBearing) * (mSurfaceView.getWidth() / 2) / Math.tan(Math.PI / 6.0) + (mSurfaceView.getWidth() / 2)), 
+						(float) (Math.tan(myPitchA - myPitch + Math.PI / 2.0) * (mSurfaceView.getHeight() / 2)	/ Math.tan(Math.PI / 6.0) + (mSurfaceView.getHeight() / 2)), null);
 				}
 			} else if (myLocation.getLatitude() > gpLocation.getLatitude()) {
 				System.out.println(myPitch);
 				if (myBearing <= 0) {
-					canvas.drawBitmap(pointIcon, (float) (Math.tan(gpBearing - myBearing) * 640	/ Math.tan(Math.PI / 6.0) + 640), 
-						(float) (Math.tan(myPitchA - myPitch) * 400	/ Math.tan(Math.PI / 6.0) + 400), null);
+					canvas.drawBitmap(pointIcon, (float) (Math.tan(gpBearing - myBearing) * (mSurfaceView.getWidth() / 2)	/ Math.tan(Math.PI / 6.0) + (mSurfaceView.getWidth() / 2)), 
+						(float) (Math.tan(myPitchA - myPitch) * (mSurfaceView.getHeight() / 2)	/ Math.tan(Math.PI / 6.0) + (mSurfaceView.getHeight() / 2)), null);
 				}
 			} else {
 				if (myLocation.getLongitude() < gpLocation.getLongitude()) {
 					if (Math.abs(myBearing) > Math.PI / 2) {
-						canvas.drawBitmap(pointIcon, (float) (Math.tan(gpBearing - myBearing) * 640	/ Math.tan(Math.PI / 6.0) + 640), 
-								(float) (Math.tan(myPitchA - myPitch) * 400	/ Math.tan(Math.PI / 6.0) + 400), null);
+						canvas.drawBitmap(pointIcon, (float) (Math.tan(gpBearing - myBearing) * (mSurfaceView.getWidth() / 2)	/ Math.tan(Math.PI / 6.0) + (mSurfaceView.getWidth() / 2)), 
+								(float) (Math.tan(myPitchA - myPitch) * (mSurfaceView.getHeight() / 2)	/ Math.tan(Math.PI / 6.0) + (mSurfaceView.getHeight() / 2)), null);
 					}
 				}
 			}
