@@ -125,7 +125,7 @@ public class ClusterMaker {
 		double x2 = lonToX(lon2);
 		double y2 = lonToY(lat2);
 		// this will calculate the pixel distance of the points on the screen
-		return Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2)) / Math.pow(2, (21 - zoom));
+		return Math.sqrt((x1 - x2)*(x1 - x2)) + ((y1 - y2)*(y1 - y2)) / Math.pow(2, (21 - zoom));
 		// the php script references a bitshift operator >>. THe equivalent
 		// statement is implemented above.
 	}
