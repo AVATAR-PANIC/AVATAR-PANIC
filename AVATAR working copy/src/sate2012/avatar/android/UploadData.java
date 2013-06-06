@@ -6,7 +6,11 @@ import android.app.Activity;
 import java.util.List;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+
 import sate2012.avatar.android.UploadMedia;
+
+import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -30,19 +34,28 @@ public class UploadData extends Activity {
 	public static void post(String url, List<NameValuePair> nameValuePairs) {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
-		HttpPost httpPost = new HttpPost(url);
+		HttpPost httpPost = null;
+		httpPost = new HttpPost(url);
 		try {
-			MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+			MultipartEntity entity = new MultipartEntity(
+					HttpMultipartMode.BROWSER_COMPATIBLE);
 
 			for (int index = 0; index < nameValuePairs.size(); index++) {
-				if (nameValuePairs.get(index).getName().equalsIgnoreCase("image"))
-					entity.addPart(nameValuePairs.get(index).getName(), new FileBody(new File(nameValuePairs.get(index).getValue()), "image/jpeg"));
+				if (nameValuePairs.get(index).getName()
+						.equalsIgnoreCase("image"))
+					entity.addPart(nameValuePairs.get(index).getName(),
+							new FileBody(new File(nameValuePairs.get(index)
+									.getValue()), "image/jpeg"));
 				else
-					entity.addPart(nameValuePairs.get(index).getName(), new StringBody(nameValuePairs.get(index).getValue()));
+					entity.addPart(
+							nameValuePairs.get(index).getName(),
+							new StringBody(nameValuePairs.get(index).getValue()));
 			}
 			httpPost.setEntity(entity);
-			HttpResponse response = httpClient.execute(httpPost, localContext);
-			Toast.makeText(UploadMedia.thisContext, "Response: '" + response + "'", Toast.LENGTH_LONG).show();
+			HttpResponse response = null;
+			response = httpClient.execute(httpPost, localContext);
+			Toast.makeText(UploadMedia.thisContext,
+					"Response: '" + response + "'", Toast.LENGTH_LONG).show();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

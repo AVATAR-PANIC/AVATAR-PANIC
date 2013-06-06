@@ -28,7 +28,8 @@ public class VoiceNotes extends Activity implements OnClickListener {
 	private ImageButton startRecording;
 	private ImageButton playRecording;
 	private ImageButton returnToSubmission;
-	private String OUTPUT_FILE = "recording_" + System.currentTimeMillis() + ".mp4";
+	private String OUTPUT_FILE = "recording_" + System.currentTimeMillis()
+			+ ".mp4";
 	public static final String VOICE = "VOICE";
 	private static File voiceRecording;
 	private boolean media;
@@ -67,9 +68,13 @@ public class VoiceNotes extends Activity implements OnClickListener {
 				} catch (IOException e) {
 					Log.e("ERROR", "error playing recording", e);
 				}
-				Toast.makeText(VoiceNotes.this, "Playing back.  Press Upload when done.", Toast.LENGTH_LONG).show();
+				Toast.makeText(VoiceNotes.this,
+						"Playing back.  Press Upload when done.",
+						Toast.LENGTH_LONG).show();
 			} else
-				Toast.makeText(VoiceNotes.this, "You haven't recorded any audio to play yet.", Toast.LENGTH_LONG).show();
+				Toast.makeText(VoiceNotes.this,
+						"You haven't recorded any audio to play yet.",
+						Toast.LENGTH_LONG).show();
 			break;
 		case (R.id.returnToForm):
 			Intent data = new Intent();
@@ -101,7 +106,9 @@ public class VoiceNotes extends Activity implements OnClickListener {
 	}
 
 	protected void startRecording() {
-		voiceRecording = new File(Environment.getExternalStorageDirectory(), Constants.STORAGE_DIRECTORY + Constants.MEDIA_DIRECTORY + OUTPUT_FILE);
+		voiceRecording = new File(Environment.getExternalStorageDirectory(),
+				Constants.STORAGE_DIRECTORY + Constants.MEDIA_DIRECTORY
+						+ OUTPUT_FILE);
 		if (!recording && !playing) {
 			recording = true;
 			startRecording.setImageResource(R.drawable.stop_recording_video);

@@ -18,7 +18,8 @@ public class UploadFTP extends Activity {
 		super.onCreate(savedInstanceState);
 	}
 
-	public static String FTPUpload(String filepath, String extension, Context thisContext) {
+	public static String FTPUpload(String filepath, String extension,
+			Context thisContext) {
 		FTPClient ftpClient = new FTPClient();
 		long time = (System.currentTimeMillis());
 		String filename = "T" + time;
@@ -28,11 +29,13 @@ public class UploadFTP extends Activity {
 			ftpClient.changeWorkingDirectory("../../var/www/avatar/Uploaded");
 			if (ftpClient.getReplyString().contains("250")) {
 				Handler progressHandler = new Handler();
-				ftpClient.setFileType(org.apache.commons.net.ftp.FTP.BINARY_FILE_TYPE);
+				ftpClient
+						.setFileType(org.apache.commons.net.ftp.FTP.BINARY_FILE_TYPE);
 				BufferedInputStream buffIn = null;
 				buffIn = new BufferedInputStream(new FileInputStream(filepath));
 				ftpClient.enterLocalPassiveMode();
-				ProgressInputStream progressInput = new ProgressInputStream(buffIn, progressHandler);
+				ProgressInputStream progressInput = new ProgressInputStream(
+						buffIn, progressHandler);
 				ftpClient.storeFile(filename + extension, progressInput);
 				buffIn.close();
 				ftpClient.logout();

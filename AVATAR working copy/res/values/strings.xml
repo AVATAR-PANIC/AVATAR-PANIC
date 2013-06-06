@@ -50,5 +50,6 @@
     <string name="cancel_button_description">Cancel the upload process.</string>
     <string name="Augmented_Reality_View_Button">Augmented Reality View</string>
     <string name="Augmented_Reality_View_Point">Augmented Reality Point</string>
+    <string name="type_emergency">Emergency Call</string>
 
 </resources>

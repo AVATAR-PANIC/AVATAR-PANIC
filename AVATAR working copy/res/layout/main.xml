@@ -4,25 +4,43 @@
     android:layout_height="fill_parent"
     android:background="@drawable/background"
     android:orientation="vertical" >
+    
+    <View 
+        android:layout_width = "match_parent"
+        android:layout_height = "0px"
+        android:layout_weight = ".1"
+        />
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0px"
+        android:layout_weight = ".5"
         android:layout_gravity="center"
-        android:layout_marginTop="100dp"
         android:background="@drawable/logo" />
 
+    <View 
+        android:layout_width = "match_parent"
+        android:layout_height = "0px"
+        android:layout_weight = ".1"
+        />
+    
     <Button
         android:id="@+id/uploadB"
         android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_height="0px"
+        android:layout_weight = ".5"
         android:layout_gravity="center"
-        android:layout_marginTop="100dp"
         android:background="@drawable/buttonbackground"
         android:text="@string/start"
         android:textColor="@android:color/white"
         android:textSize="40dp" />
+    
+    <View 
+        android:layout_width = "match_parent"
+        android:layout_height = "0px"
+        android:layout_weight = ".1"
+        />
 
     <!-- These features have not been implemented yet
     <Button

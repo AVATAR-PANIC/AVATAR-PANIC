@@ -12,50 +12,43 @@ import org.mapsforge.android.maps.GeoPoint;
 import android.content.Context;
 import android.widget.Toast;
 
-public class LocationDataReceiverAVATAR
-{
+public class LocationDataReceiverAVATAR {
 
-    private LocationDataReceiverAVATAR()
-    {
-    }
-
-    public static String loadDataStringFromURL()
-    {
-	String input = null;
-	try
-	{
-	    URL url = new URL(
-		    "http://virtualdiscoverycenter.net/avatar/php_files/email_rec_VW.php");
-
-	    URLConnection connection = url.openConnection();
-
-	    BufferedReader in = new BufferedReader(new InputStreamReader(
-		    connection.getInputStream()));
-	    if (connection.getInputStream() != null)
-	    {
-		System.out.println("inputStream is not null");
-	    } else
-	    {
-		System.out.println("inputStream is null");
-	    }
-
-	    input = in.readLine();
-
-	    in.close();
-
-	    return input;
-	} catch (MalformedURLException e)
-	{
-	    e.printStackTrace();
-	} catch (IOException e)
-	{
-	    e.printStackTrace();
+	private LocationDataReceiverAVATAR() {
 	}
-	final char star = (char) 42;
-        final char bslash = (char) 92;
-        final String splitter = "_" + bslash + star + bslash + star + bslash + star + "_";
-	return "39.7_***_-84.2_***_Photo_***_virtualdiscoverycenter.net/../../var/www/avatar/uploadedT1342804869789_P.png";
-    }
+
+	public static String loadDataStringFromURL() {
+		String input = null;
+		try {
+			URL url = new URL(
+					"http://virtualdiscoverycenter.net/avatar/php_files/email_rec_VW.php");
+
+			URLConnection connection = url.openConnection();
+
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					connection.getInputStream()));
+			if (connection.getInputStream() != null) {
+				System.out.println("inputStream is not null");
+			} else {
+				System.out.println("inputStream is null");
+			}
+
+			input = in.readLine();
+
+			in.close();
+
+			return input;
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		final char star = (char) 42;
+		final char bslash = (char) 92;
+		final String splitter = "_" + bslash + star + bslash + star + bslash
+				+ star + "_";
+		return "39.7_***_-84.2_***_Photo_***_virtualdiscoverycenter.net/../../var/www/avatar/uploadedT1342804869789_P.png";
+	}
 }
 // ***_39.7_
 // ***_-84.2_

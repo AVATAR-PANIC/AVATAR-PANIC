@@ -9,70 +9,92 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
         android:text="@string/uploadMenu"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@android:color/white"
-        android:textSize="50dp" />
-
+        android:textSize="20sp" />
+    
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
         android:orientation="horizontal" >
 
         <ImageButton
             android:id="@+id/videoButton"
-            android:layout_width="250dp"
-            android:layout_height="200dp"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/videocambuttonbackground"
-            android:background="@drawable/buttonbackground"/>
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/buttonbackground"
+            android:src="@drawable/videocambuttonbackground" />
 
         <ImageButton
             android:id="@+id/cameraButton"
-            android:layout_width="250dp"
-            android:layout_height="200dp"
-            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" 
+            android:layout_weight="1"
+            android:layout_gravity="center"         
             android:src="@drawable/camerabackground"
             android:background="@drawable/buttonbackground"/>
     </LinearLayout>
-
+    
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
         android:orientation="horizontal" >
 
         <ImageButton
             android:id="@+id/audioButton"
-            android:layout_width="250dp"
-            android:layout_height="200dp"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/audiobuttonbackground"
-            android:background="@drawable/buttonbackground"/>
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:background="@drawable/buttonbackground"
+            android:src="@drawable/audiobuttonbackground" />
 
         <ImageButton
             android:id="@+id/commentButton"
-            android:layout_width="250dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center"
             android:src="@drawable/textnotebuttonbackground"
             android:background="@drawable/buttonbackground" />
     </LinearLayout>
+    
+   <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:orientation="horizontal" >
 
-    <Button
+       <Button
         android:id="@+id/gpsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
         android:background="@drawable/buttonbackground"
         android:text="@string/gps"
         android:textColor="@android:color/white"
-        android:textSize="50dp" />
+        android:textSize="20sp" />
+       
+       <Button
+        android:id="@+id/emergency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:background="@drawable/buttonbackground"
+        android:text="@string/type_emergency"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
+
+    </LinearLayout>
 
 </LinearLayout>

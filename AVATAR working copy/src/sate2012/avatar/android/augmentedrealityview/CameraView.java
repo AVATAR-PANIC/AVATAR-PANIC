@@ -46,7 +46,7 @@ import android.widget.Button;
 public class CameraView extends Activity implements Callback {
 
 	Frag frag = new Frag();
-	
+
 	// Camera dependent variables
 	private GeoDataRepository repo;
 	private Camera mCamera;
@@ -63,17 +63,22 @@ public class CameraView extends Activity implements Callback {
 	// testLocation.getLongitude() - 1);
 	// GeoPoint[] pointArray = {testPoint, testPoint2};
 	float[] currentValues = new float[3];
-	
+
 	/**
-	 * This is a lowpass filter. It is used to smooth out the tablets movements. It takes a 25% of the difference between the two 
-	 * arrays, and then adds that number to the old array. 
-	 * @param input - The new Array.
-	 * @param output - The old Array.
-	 * @return - The edited array. It will be 25% between the old array and the new array.
+	 * This is a lowpass filter. It is used to smooth out the tablets movements.
+	 * It takes a 25% of the difference between the two arrays, and then adds
+	 * that number to the old array.
 	 * 
-	 * EXAMPLE: float[] Orientation (The orientation of the tablet);
-	 * 			float[] values (The values from the rotation vector sensor);
-	 * 			Orientation = lowpass(values, Orientation);
+	 * @param input
+	 *            - The new Array.
+	 * @param output
+	 *            - The old Array.
+	 * @return - The edited array. It will be 25% between the old array and the
+	 *         new array.
+	 * 
+	 *         EXAMPLE: float[] Orientation (The orientation of the tablet);
+	 *         float[] values (The values from the rotation vector sensor);
+	 *         Orientation = lowpass(values, Orientation);
 	 */
 	public float[] lowPass(float[] input, float[] output) {
 		final float ALPHA = .25f;
@@ -84,25 +89,27 @@ public class CameraView extends Activity implements Callback {
 		}
 		return output;
 	}
+
 	/**
-	 * This is the onCreate method. It is called by the OS to create the application.
+	 * This is the onCreate method. It is called by the OS to create the
+	 * application.
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.camera_view);
-		
+
 		// Initializes the button
 		backButton = (Button) findViewById(R.id.to_main_activity);
 		makeGeoDataRepository();
-		
+
 		// Initialize the surface for the camera
 		mSurfaceView = (SurfaceView) findViewById(R.id.surface_camera);
 		mSurfaceHolder = mSurfaceView.getHolder();
 		mSurfaceHolder.addCallback(this);
 		mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 		// makeGeoDataRepository();
-		
+
 		// Initialize the view surface for the points
 		pointerView = new PointerView(this);
 
@@ -111,42 +118,48 @@ public class CameraView extends Activity implements Callback {
 				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		// add the pointer view
 		this.addContentView(pointerView, layoutParamsDrawing);
-		
-		//Set up the sensors
+
+		// Set up the sensors
 		final SensorManager SENSORMANAGER = (SensorManager) getSystemService(SENSOR_SERVICE);
 		final Sensor ROTATION = SENSORMANAGER
 				.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 		SensorEventListener listener = new SensorEventListener() {
 
 			float[] R = new float[9];
-			
+
 			public void onAccuracyChanged(Sensor sensor, int accuracy) {
 			}
-			
+
 			public void onSensorChanged(SensorEvent event) {
-				//Initialize the values needed to store sensor data
+				// Initialize the values needed to store sensor data
 				float[] values = new float[3];
 				float[] angleChange = new float[3];
-				//Do the calculations to determine orientation
+				// Do the calculations to determine orientation
 				// currentValues = lowPass(event.values.clone(), currentValues);
 				SensorManager.getRotationMatrixFromVector(R, event.values);
 				SensorManager.getOrientation(R, values);
-				
-				/*System.out.println(" ");
-				System.out.println(Math.atan2(R[7], R[8]));
-				System.out.println(Math.atan2(R[6], Math.sqrt(R[7] * R[7] + R[8] * R[8])));
-				System.out.println(Math.atan2(R[3], R[0]));
-				System.out.println(" ");*/
-				//This is an output to check the data.
-				//System.out.println(event.values[0] + " " + event.values[1] + " " + event.values[2]);
-				//TODO: For whoever works with this app next, Use the above print statements to see exactly how the values of the 
-				//Rotation vector change and see if you can figure out how to better use them to solve the problem.
-				
-				//Update the bearing and pitch of the pointer view to keep the points in the right place.
-				pointerView.updateBearing((float)-(Math.atan2(R[3], R[0])));
-				pointerView.updatePitch((float)-(Math.atan2(R[7], R[8]) - (Math.PI / 2)));
-				
-				//Redraw the screen
+
+				/*
+				 * System.out.println(" "); System.out.println(Math.atan2(R[7],
+				 * R[8])); System.out.println(Math.atan2(R[6], Math.sqrt(R[7] *
+				 * R[7] + R[8] * R[8]))); System.out.println(Math.atan2(R[3],
+				 * R[0])); System.out.println(" ");
+				 */
+				// This is an output to check the data.
+				// System.out.println(event.values[0] + " " + event.values[1] +
+				// " " + event.values[2]);
+				// TODO: For whoever works with this app next, Use the above
+				// print statements to see exactly how the values of the
+				// Rotation vector change and see if you can figure out how to
+				// better use them to solve the problem.
+
+				// Update the bearing and pitch of the pointer view to keep the
+				// points in the right place.
+				pointerView.updateBearing((float) -(Math.atan2(R[3], R[0])));
+				pointerView
+						.updatePitch((float) -(Math.atan2(R[7], R[8]) - (Math.PI / 2)));
+
+				// Redraw the screen
 				pointerView.postInvalidate();
 			}
 		};
@@ -169,16 +182,20 @@ public class CameraView extends Activity implements Callback {
 		getMenuInflater().inflate(R.menu.activity_camera_view, menu);
 		return true;
 	}
+
 	/**
-	 * This gets all of the points from the database and puts them in entriesColl.
+	 * This gets all of the points from the database and puts them in
+	 * entriesColl.
 	 */
 	private void makeGeoDataRepository() {
 		repo = geoPointDataRetriever();
 		final Map<GeoPoint, DataObject> entriesColl = repo
 				.getCollectionOfDataEntries();
 	}
+
 	/**
 	 * This is what actually goes to the database and grabs the information.
+	 * 
 	 * @return
 	 */
 	protected GeoDataRepository geoPointDataRetriever() {
@@ -222,10 +239,13 @@ public class CameraView extends Activity implements Callback {
 		mCamera.release();
 
 	}
+
 	/**
-	 * This is the Pointer view. It is what the points are drawn on. It lives in front of the Camera view, which allows it to e seen.
+	 * This is the Pointer view. It is what the points are drawn on. It lives in
+	 * front of the Camera view, which allows it to e seen.
+	 * 
 	 * @author Josh Crank, Matthew Weber, William Giffin
-	 *
+	 * 
 	 */
 	private class PointerView extends View {
 		float myBearing;
@@ -234,10 +254,12 @@ public class CameraView extends Activity implements Callback {
 		public PointerView(Context context) {
 			super(context);
 		}
-		
+
 		/**
 		 * This updates the angle the tablet is facing. (Think Compass)
-		 * @param f - The new Bearing of the Tablet.
+		 * 
+		 * @param f
+		 *            - The new Bearing of the Tablet.
 		 */
 		private void updateBearing(float f) {
 			myBearing = f;
@@ -245,16 +267,20 @@ public class CameraView extends Activity implements Callback {
 
 		/**
 		 * This updates the Pitch/Angle of Inclination of the tablet.
-		 * @param f - The new Pitch of the Tablet.
+		 * 
+		 * @param f
+		 *            - The new Pitch of the Tablet.
 		 */
 		private void updatePitch(float f) {
-			if(f > Math.PI){
+			if (f > Math.PI) {
 				f -= 2 * Math.PI;
-			} if(f < -Math.PI){
+			}
+			if (f < -Math.PI) {
 				f += 2 * Math.PI;
 			}
 			myPitch = f;
 		}
+
 		/**
 		 * This is where the tablet draws all of the points it needs.
 		 */
@@ -270,35 +296,65 @@ public class CameraView extends Activity implements Callback {
 			Location gpLocation = MapsForgeMapViewer
 					.convertGeoPointToLocation(testPoint);
 			gpLocation.setAltitude(0);
-			
+
 			// All of these angles are in Radians.
-			double gpBearing = myLocation.bearingTo(gpLocation) * Math.PI	/ 180.0;
+			double gpBearing = myLocation.bearingTo(gpLocation) * Math.PI
+					/ 180.0;
 			double gpAlt = gpLocation.getAltitude();
-			double myPitchA = Math.atan((myAlt - gpAlt)	/ myLocation.distanceTo(gpLocation));
-			
-			//System.out.println((Math.tan(gpBearing - myBearing) * 640 / Math.tan(Math.PI / 6.0) + 640) + " "
-			//		+ (Math.tan(myPitchA - myPitch) * 400 / Math.tan(Math.PI / 6.0) + 400));
+			double myPitchA = Math.atan((myAlt - gpAlt)
+					/ myLocation.distanceTo(gpLocation));
+
+			// System.out.println((Math.tan(gpBearing - myBearing) * 640 /
+			// Math.tan(Math.PI / 6.0) + 640) + " "
+			// + (Math.tan(myPitchA - myPitch) * 400 / Math.tan(Math.PI / 6.0) +
+			// 400));
 			// System.out.println(gpBearing + " " + myBearing);
 			// if(gpBearing <= myBearing + 26 || gpBearing >= myBearing - 26)
 			// if(myPitchA <= 20 + myPitch && myPitchA >= -20 + myPitch)
-			
-			//This checks where the point is in relation to the tablets location and only draws it in the correct place.
+
+			// This checks where the point is in relation to the tablets
+			// location and only draws it in the correct place.
 			if (myLocation.getLatitude() < gpLocation.getLatitude()) {
 				if (myBearing >= 0) {
-					canvas.drawBitmap(pointIcon, (float) (Math.tan(gpBearing - myBearing) * (mSurfaceView.getWidth() / 2) / Math.tan(Math.PI / 6.0) + (mSurfaceView.getWidth() / 2)), 
-						(float) (Math.tan(myPitchA - myPitch + Math.PI / 2.0) * (mSurfaceView.getHeight() / 2)	/ Math.tan(Math.PI / 6.0) + (mSurfaceView.getHeight() / 2)), null);
+					canvas.drawBitmap(
+							pointIcon,
+							(float) (Math.tan(gpBearing - myBearing)
+									* (mSurfaceView.getWidth() / 2)
+									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+									.getWidth() / 2)),
+							(float) (Math.tan(myPitchA - myPitch + Math.PI
+									/ 2.0)
+									* (mSurfaceView.getHeight() / 2)
+									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+									.getHeight() / 2)), null);
 				}
 			} else if (myLocation.getLatitude() > gpLocation.getLatitude()) {
 				System.out.println(myPitch);
 				if (myBearing <= 0) {
-					canvas.drawBitmap(pointIcon, (float) (Math.tan(gpBearing - myBearing) * (mSurfaceView.getWidth() / 2)	/ Math.tan(Math.PI / 6.0) + (mSurfaceView.getWidth() / 2)), 
-						(float) (Math.tan(myPitchA - myPitch) * (mSurfaceView.getHeight() / 2)	/ Math.tan(Math.PI / 6.0) + (mSurfaceView.getHeight() / 2)), null);
+					canvas.drawBitmap(
+							pointIcon,
+							(float) (Math.tan(gpBearing - myBearing)
+									* (mSurfaceView.getWidth() / 2)
+									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+									.getWidth() / 2)),
+							(float) (Math.tan(myPitchA - myPitch)
+									* (mSurfaceView.getHeight() / 2)
+									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+									.getHeight() / 2)), null);
 				}
 			} else {
 				if (myLocation.getLongitude() < gpLocation.getLongitude()) {
 					if (Math.abs(myBearing) > Math.PI / 2) {
-						canvas.drawBitmap(pointIcon, (float) (Math.tan(gpBearing - myBearing) * (mSurfaceView.getWidth() / 2)	/ Math.tan(Math.PI / 6.0) + (mSurfaceView.getWidth() / 2)), 
-								(float) (Math.tan(myPitchA - myPitch) * (mSurfaceView.getHeight() / 2)	/ Math.tan(Math.PI / 6.0) + (mSurfaceView.getHeight() / 2)), null);
+						canvas.drawBitmap(
+								pointIcon,
+								(float) (Math.tan(gpBearing - myBearing)
+										* (mSurfaceView.getWidth() / 2)
+										/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+										.getWidth() / 2)),
+								(float) (Math.tan(myPitchA - myPitch)
+										* (mSurfaceView.getHeight() / 2)
+										/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+										.getHeight() / 2)), null);
 					}
 				}
 			}
@@ -307,61 +363,72 @@ public class CameraView extends Activity implements Callback {
 			// }
 		}
 	}
-	
+
 	public void drawGeoPoint(Canvas canvas, GeoPoint overLayPoint) {
 		canvas.drawBitmap(null, overLayPoint.getLongitudeE6(),
 				overLayPoint.getLongitudeE6(), null);
 	}
-	
-	public void myClickMethod(View v){
-		  Intent i;
-		  switch(v.getId()){
-			  case R.id.map:
-				  i = new Intent(getApplicationContext(), MapsForgeMapViewer.class);
-				  startActivity(i);
-				  break;
-			  case R.id.emergencyCall:
-				  System.out.println("BOO");
-				  break;
-			  case R.id.exit:
-				  System.out.println("BOO");
-				  break;
-		  }
-	  }
-	
+
+	public void myClickMethod(View v) {
+		Intent i;
+		switch (v.getId()) {
+		case R.id.map:
+			i = new Intent(getApplicationContext(), MapsForgeMapViewer.class);
+			startActivity(i);
+			break;
+		case R.id.emergencyCall:
+			System.out.println("BOO");
+			break;
+		case R.id.exit:
+			System.out.println("BOO");
+			break;
+		}
+	}
+
 	public Canvas getMyCanvas() {
 		return myCanvas;
 	}
+
 	public void setMyCanvas(Canvas myCanvas) {
 		this.myCanvas = myCanvas;
 	}
+
 	public Camera getmCamera() {
 		return mCamera;
 	}
+
 	public void setmCamera(Camera mCamera) {
 		this.mCamera = mCamera;
 	}
+
 	public SurfaceView getmSurfaceView() {
 		return mSurfaceView;
 	}
+
 	public void setmSurfaceView(SurfaceView mSurfaceView) {
 		this.mSurfaceView = mSurfaceView;
 	}
+
 	public SurfaceHolder getmSurfaceHolder() {
 		return mSurfaceHolder;
 	}
+
 	public void setmSurfaceHolder(SurfaceHolder mSurfaceHolder) {
 		this.mSurfaceHolder = mSurfaceHolder;
 	}
+
 	public boolean ismPreviewRunning() {
 		return mPreviewRunning;
 	}
+
 	public void setmPreviewRunning(boolean mPreviewRunning) {
 		this.mPreviewRunning = mPreviewRunning;
 	}
+
 	public Button getBackButton() {
 		return backButton;
 	}
+
 	public void setBackButton(Button backButton) {
 		this.backButton = backButton;
 	}

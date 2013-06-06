@@ -10,8 +10,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 /**
  * The Upload Menu Allows the user to select different media types to upload to
@@ -25,6 +27,7 @@ public class UploadMedia extends Activity implements OnClickListener {
 	private ImageButton videoB;
 	private ImageButton audioB;
 	private ImageButton commentB;
+	private Button emergency;
 	private Button gpsB;
 	private String dataType;
 	private String media_filepath;
@@ -41,10 +44,12 @@ public class UploadMedia extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		thisContext = getApplicationContext();
 		setContentView(R.layout.upload_menu);
+
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		createStorageDirectory();
 		pictureB = (ImageButton) findViewById(R.id.cameraButton);
 		pictureB.setOnClickListener(this);
+
 		videoB = (ImageButton) findViewById(R.id.videoButton);
 		videoB.setOnClickListener(this);
 		audioB = (ImageButton) findViewById(R.id.audioButton);
@@ -53,6 +58,8 @@ public class UploadMedia extends Activity implements OnClickListener {
 		commentB.setOnClickListener(this);
 		gpsB = (Button) findViewById(R.id.gpsButton);
 		gpsB.setOnClickListener(this);
+		emergency = (Button) findViewById(R.id.emergency);
+		emergency.setOnClickListener(this);
 	}
 
 	/**
@@ -93,6 +100,13 @@ public class UploadMedia extends Activity implements OnClickListener {
 			startActivity(i);
 			finish();
 			break;
+		case (R.id.emergency):
+			dataType = getResources().getString(R.string.type_emergency);
+			i = new Intent(getApplicationContext(), PhoneCall.class);
+			i.putExtra("Type", dataType);
+			startActivity(i);
+			finish();
+			break;
 		}
 	}
 
@@ -115,13 +129,16 @@ public class UploadMedia extends Activity implements OnClickListener {
 				media_filepath = getImage_filepath();
 				media_extension = "_P.png";
 			}
+
+			media_filename = UploadFTP.FTPUpload(media_filepath,
+					media_extension, thisContext);
+			Intent MailIntent = new Intent(getApplicationContext(),
+					MailSenderActivity.class);
+			MailIntent.putExtra("Type", dataType);
+			MailIntent.putExtra("Filename", media_filename);
+			startActivity(MailIntent);
+			finish();
 		}
-		media_filename = UploadFTP.FTPUpload(media_filepath, media_extension, thisContext);
-		Intent MailIntent = new Intent(getApplicationContext(), MailSenderActivity.class);
-		MailIntent.putExtra("Type", dataType);
-		MailIntent.putExtra("Filename", media_filename);
-		startActivity(MailIntent);
-		finish();
 	}
 
 	public static void setImage_filepath(String fp) {
@@ -144,9 +161,11 @@ public class UploadMedia extends Activity implements OnClickListener {
 		if (sd.canWrite()) {
 			if (!storageFolder.exists())
 				storageFolder.mkdir();
-			mediaFolder = new File(sd, Constants.STORAGE_DIRECTORY + Constants.MEDIA_DIRECTORY);
+			mediaFolder = new File(sd, Constants.STORAGE_DIRECTORY
+					+ Constants.MEDIA_DIRECTORY);
 			if (!mediaFolder.exists())
 				mediaFolder.mkdir();
 		}
 	}
+
 }
