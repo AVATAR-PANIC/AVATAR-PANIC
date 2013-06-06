@@ -432,7 +432,7 @@ public class MapsForgeMapViewer extends MapActivity implements
 				  System.out.println("BOO");
 				  break;
 			  case R.id.exit:
-				  System.out.println("BOO");
+				  System.exit(0);
 				  break;
 		  }
 	  }

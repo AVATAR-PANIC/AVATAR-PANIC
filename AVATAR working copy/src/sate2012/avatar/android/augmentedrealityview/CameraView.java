@@ -105,12 +105,14 @@ public class CameraView extends Activity implements Callback {
 		
 		// Initialize the view surface for the points
 		pointerView = new PointerView(mSurfaceView.getContext());
-
+		
 		// Define layout parameters for the pointer view
 		LayoutParams layoutParamsDrawing = new LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		// add the pointer view
 		this.addContentView(pointerView, layoutParamsDrawing);
+		pointerView.setPadding(300, pointerView.getPaddingTop(), pointerView.getPaddingRight(), pointerView.getPaddingBottom());
+
 		//Set up the sensors
 		final SensorManager SENSORMANAGER = (SensorManager) getSystemService(SENSOR_SERVICE);
 		final Sensor ROTATION = SENSORMANAGER
@@ -322,7 +324,7 @@ public class CameraView extends Activity implements Callback {
 				  System.out.println("BOO");
 				  break;
 			  case R.id.exit:
-				  System.out.println("BOO");
+				  System.exit(0);
 				  break;
 		  }
 	  }
