@@ -7,48 +7,84 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="#000000">
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight=".2" />
     
     <Button 
         android:onClick="myClickMethod"
         android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.25"
+        android:layout_height="0px"
+        android:layout_weight=".1"
+        android:background="@drawable/buttonbackground"
+            android:textColor="@android:color/white"
         android:text="MAP"
         />
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight=".05" />
+    
     <Button 
         android:onClick="myClickMethod"
         android:id="@+id/augmentedReality"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.25"
+        android:layout_height="0px"
+        android:layout_weight=".1"
         android:text="Augmented Reality"
+            android:textColor="@android:color/white"
+        android:background="@drawable/buttonbackground"
         />
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight=".05" />
+    
     <Button 
         android:onClick="myClickMethod"
         android:id="@+id/emergencyCall"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.25"
+        android:layout_height="0px"
+        android:layout_weight=".1"
         android:text="Emercengy Call"
+            android:textColor="@android:color/white"
+        android:background="@drawable/buttonbackground"
         />
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight=".05" />
+    
     <Button 
         android:onClick="myClickMethod"
         android:id="@+id/exit"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.25"
+        android:layout_height="0px"
+        android:layout_weight=".1"
         android:text="Exit App"
+            android:textColor="@android:color/white"
+        android:background="@drawable/buttonbackground"
         />
     
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight=".2" />
 
 </LinearLayout>
 
 <View
     android:id="@+id/view1"
     android:layout_width="3dp"
-    android:layout_height="wrap_content" 
+    android:layout_height="match_parent" 
     android:background="#000000"/>
 
 </LinearLayout>

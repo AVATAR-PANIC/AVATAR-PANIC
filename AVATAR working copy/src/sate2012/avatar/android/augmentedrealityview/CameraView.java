@@ -104,14 +104,13 @@ public class CameraView extends Activity implements Callback {
 		// makeGeoDataRepository();
 		
 		// Initialize the view surface for the points
-		pointerView = new PointerView(this);
+		pointerView = new PointerView(mSurfaceView.getContext());
 
 		// Define layout parameters for the pointer view
 		LayoutParams layoutParamsDrawing = new LayoutParams(
-				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		// add the pointer view
 		this.addContentView(pointerView, layoutParamsDrawing);
-		
 		//Set up the sensors
 		final SensorManager SENSORMANAGER = (SensorManager) getSystemService(SENSOR_SERVICE);
 		final Sensor ROTATION = SENSORMANAGER
@@ -289,7 +288,6 @@ public class CameraView extends Activity implements Callback {
 						(float) (Math.tan(myPitchA - myPitch + Math.PI / 2.0) * (mSurfaceView.getHeight() / 2)	/ Math.tan(Math.PI / 6.0) + (mSurfaceView.getHeight() / 2)), null);
 				}
 			} else if (myLocation.getLatitude() > gpLocation.getLatitude()) {
-				System.out.println(myPitch);
 				if (myBearing <= 0) {
 					canvas.drawBitmap(pointIcon, (float) (Math.tan(gpBearing - myBearing) * (mSurfaceView.getWidth() / 2)	/ Math.tan(Math.PI / 6.0) + (mSurfaceView.getWidth() / 2)), 
 						(float) (Math.tan(myPitchA - myPitch) * (mSurfaceView.getHeight() / 2)	/ Math.tan(Math.PI / 6.0) + (mSurfaceView.getHeight() / 2)), null);
