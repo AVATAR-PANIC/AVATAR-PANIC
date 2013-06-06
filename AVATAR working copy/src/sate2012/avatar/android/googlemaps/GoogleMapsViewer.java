@@ -1,7 +1,13 @@
 package sate2012.avatar.android.googlemaps;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import sate2012.avatar.android.MapsForgeMapViewer;
 import sate2012.avatar.android.augmentedrealityview.CameraView;
@@ -23,6 +29,7 @@ public class GoogleMapsViewer extends Activity {
 		setContentView(R.layout.googlemap_viewer);
 		MapFragment mapfrag = ((MapFragment) getFragmentManager().findFragmentById(R.id.googlemap));
 		map = mapfrag.getMap();
+		map.addMarker(new MarkerOptions().position(new LatLng(0, 0)));
 		
 	}
 
