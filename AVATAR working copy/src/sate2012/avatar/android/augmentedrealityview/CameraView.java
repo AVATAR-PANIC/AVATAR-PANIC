@@ -44,8 +44,10 @@ import android.view.Window;
 import android.widget.Button;
 
 public class CameraView extends Activity implements Callback {
-
-	Frag frag = new Frag();
+	
+	//Use these variables to determine size of side fragment to offset in the PointerView class
+	private int fragWidth;
+	
 
 	// Camera dependent variables
 	private GeoDataRepository repo;
@@ -99,6 +101,7 @@ public class CameraView extends Activity implements Callback {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.camera_view);
 
+		
 		// Initializes the button
 		backButton = (Button) findViewById(R.id.to_main_activity);
 		makeGeoDataRepository();
@@ -126,7 +129,7 @@ public class CameraView extends Activity implements Callback {
 				.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 		SensorEventListener listener = new SensorEventListener() {
 
-			float[] R = new float[9];
+			float[] rot = new float[9];
 
 			public void onAccuracyChanged(Sensor sensor, int accuracy) {
 			}
@@ -137,8 +140,8 @@ public class CameraView extends Activity implements Callback {
 				float[] angleChange = new float[3];
 				// Do the calculations to determine orientation
 				// currentValues = lowPass(event.values.clone(), currentValues);
-				SensorManager.getRotationMatrixFromVector(R, event.values);
-				SensorManager.getOrientation(R, values);
+				SensorManager.getRotationMatrixFromVector(rot, event.values);
+				SensorManager.getOrientation(rot, values);
 
 				/*
 				 * System.out.println(" "); System.out.println(Math.atan2(R[7],
@@ -156,12 +159,13 @@ public class CameraView extends Activity implements Callback {
 
 				// Update the bearing and pitch of the pointer view to keep the
 				// points in the right place.
-				pointerView.updateBearing((float) -(Math.atan2(R[3], R[0])));
+				pointerView.updateBearing((float) -(Math.atan2(rot[3], rot[0])));
 				pointerView
-						.updatePitch((float) -(Math.atan2(R[7], R[8]) - (Math.PI / 2)));
+						.updatePitch((float) -(Math.atan2(rot[7], rot[8]) - (Math.PI / 2)));
 
 				// Redraw the screen
 				pointerView.postInvalidate();
+				fragWidth = getFragmentManager().findFragmentById(R.id.frag1).getView().getWidth();
 			}
 		};
 		SENSORMANAGER.registerListener(listener, ROTATION,
@@ -225,7 +229,6 @@ public class CameraView extends Activity implements Callback {
 		mCamera.startPreview();
 		mPreviewRunning = true;
 		pointerView.invalidate();
-
 	}
 
 	// Initial creation of the camera when the view is started
@@ -317,6 +320,12 @@ public class CameraView extends Activity implements Callback {
 			// location and only draws it in the correct place.
 			if (myLocation.getLatitude() < gpLocation.getLatitude()) {
 				if (myBearing >= 0) {
+					
+					if((float) (Math.tan(gpBearing - myBearing)
+							* (mSurfaceView.getWidth() / 2)
+							/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+							.getWidth() / 2)) > fragWidth){
+						
 					canvas.drawBitmap(
 							pointIcon,
 							(float) (Math.tan(gpBearing - myBearing)
@@ -327,10 +336,16 @@ public class CameraView extends Activity implements Callback {
 									/ 2.0)
 									* (mSurfaceView.getHeight() / 2)
 									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-									.getHeight() / 2)), null);
+									.getHeight() / 2)), null);}
 				}
 			} else if (myLocation.getLatitude() > gpLocation.getLatitude()) {
 				if (myBearing <= 0) {
+					
+					if((float) (Math.tan(gpBearing - myBearing)
+									* (mSurfaceView.getWidth() / 2)
+									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+									.getWidth() / 2)) > fragWidth){
+					
 					canvas.drawBitmap(
 							pointIcon,
 							(float) (Math.tan(gpBearing - myBearing)
@@ -340,7 +355,7 @@ public class CameraView extends Activity implements Callback {
 							(float) (Math.tan(myPitchA - myPitch)
 									* (mSurfaceView.getHeight() / 2)
 									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-									.getHeight() / 2)), null);
+									.getHeight() / 2)), null);}
 				}
 			} else {
 				if (myLocation.getLongitude() < gpLocation.getLongitude()) {
