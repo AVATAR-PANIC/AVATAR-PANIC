@@ -11,7 +11,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import sate2012.avatar.android.MapsForgeMapViewer;
 import sate2012.avatar.android.augmentedrealityview.CameraView;
-import gupta.ashutosh.avatar.*;
+import gupta.ashutosh.avatar.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.FragmentManager;
