@@ -37,7 +37,8 @@ public class Photographer extends Activity implements View.OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case (R.id.ibTakePic):
-			Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+			Intent i = new Intent(
+					android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 			startActivityForResult(i, cameraData);
 			break;
 		case (R.id.upload_button):
@@ -56,7 +57,9 @@ public class Photographer extends Activity implements View.OnClickListener {
 			Bundle extras = data.getExtras();
 			bmp = (Bitmap) extras.get("data");
 			iv.setImageBitmap(bmp);
-			pic = new File(Environment.getExternalStorageDirectory(), Constants.STORAGE_DIRECTORY + Constants.MEDIA_DIRECTORY + System.currentTimeMillis() + OUTPUT_FILE);
+			pic = new File(Environment.getExternalStorageDirectory(),
+					Constants.STORAGE_DIRECTORY + Constants.MEDIA_DIRECTORY
+							+ System.currentTimeMillis() + OUTPUT_FILE);
 			FileOutputStream stream = null;
 			try {
 				stream = new FileOutputStream(pic);

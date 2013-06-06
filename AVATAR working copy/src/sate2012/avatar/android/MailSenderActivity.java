@@ -45,16 +45,19 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 		ptLng = Constants.lng;
 		final LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		final LocationListener mlocListener = new MyLocationListener();
-		mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, (long) 2000, (float) 1.0, mlocListener); // (provider,
-																													// time
-																													// (ms),
-																													// distance
-																													// (m),
-																													// listener)
+		mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+				(long) 2000, (float) 1.0, mlocListener); // (provider,
+															// time
+															// (ms),
+															// distance
+															// (m),
+															// listener)
 		Intent thisIntent = getIntent();
 		ptType = thisIntent.getStringExtra("Type");
-		ptURL = "ftp://opensim:widdlyscuds@virtualdiscoverycenter.net/../../var/www/avatar/Uploaded/" + thisIntent.getStringExtra("Filename");
-		ptURL_noFTP = "virtualdiscoverycenter.net/avatar/Uploaded/" + thisIntent.getStringExtra("Filename");
+		ptURL = "ftp://opensim:widdlyscuds@virtualdiscoverycenter.net/../../var/www/avatar/Uploaded/"
+				+ thisIntent.getStringExtra("Filename");
+		ptURL_noFTP = "virtualdiscoverycenter.net/avatar/Uploaded/"
+				+ thisIntent.getStringExtra("Filename");
 		ptName = thisIntent.getStringExtra("Filename");
 		setContentView(R.layout.mail_prep_apv);
 		setLayout(ptType);
@@ -65,10 +68,14 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case (R.id.Send):
-			Toast.makeText(getApplicationContext(), "Sending, it may take a little while", Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(),
+					"Sending, it may take a little while", Toast.LENGTH_LONG)
+					.show();
 			try {
-				InputMethodManager inputManager = (InputMethodManager) c.getSystemService(Context.INPUT_METHOD_SERVICE);
-				inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+				InputMethodManager inputManager = (InputMethodManager) c
+						.getSystemService(Context.INPUT_METHOD_SERVICE);
+				inputManager.hideSoftInputFromWindow(this.getCurrentFocus()
+						.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 				from = "sate2012.avatar@gmail.com";
 				toList = "sate2012.avatar@gmail.com";
 				EditText etName = (EditText) findViewById(R.id.pointName);
@@ -76,8 +83,10 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 				EditText etDesc = (EditText) findViewById(R.id.pointDesc);
 				ptDesc = etDesc.getText().toString();
 				item_sep = getResources().getString(R.string.item_separator);
-				subj = "POINT: " + ptName + item_sep + ptLat + item_sep + ptLng + item_sep + ptType + item_sep + ptDesc;
-				GMailSender sender = new GMailSender("sate2012.avatar@gmail.com", "EmbraceChaos");
+				subj = "POINT: " + ptName + item_sep + ptLat + item_sep + ptLng
+						+ item_sep + ptType + item_sep + ptDesc;
+				GMailSender sender = new GMailSender(
+						"sate2012.avatar@gmail.com", "EmbraceChaos");
 				sender.sendMail(subj, body, from, toList);
 				setContentView(R.layout.sent);
 				button_return = (Button) findViewById(R.id.Return);
@@ -102,7 +111,9 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 			EditText pointName = (EditText) findViewById(R.id.pointName);
 			TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 			pointName.setText(telephonyManager.getDeviceId());
-		} else if (type.equals(getResources().getString(R.string.type_audio)) || type.equals(getResources().getString(R.string.type_picture)) || type.equals(getResources().getString(R.string.type_video))) {
+		} else if (type.equals(getResources().getString(R.string.type_audio))
+				|| type.equals(getResources().getString(R.string.type_picture))
+				|| type.equals(getResources().getString(R.string.type_video))) {
 			setContentView(R.layout.mail_prep_apv);
 			EditText pointDesc = (EditText) findViewById(R.id.pointDesc);
 			pointDesc.setText(ptURL_noFTP);

@@ -52,11 +52,12 @@ public class ClusterMaker {
 	 *            to cluster a point.
 	 * @param entriesColl
 	 *            The collection of GeoPoint entries that is in the map
-	 *            
-	 * @return - returns a MegaPoint that contains the Geopoints that are within a given distance.
-	 */ 
-	public static <E extends GeoPoint> Map<MegaPoint, DataObject> pointClusterMaker(Map<GeoPoint, DataObject> entriesColl,
-			int distance, MapView mapView) {
+	 * 
+	 * @return - returns a MegaPoint that contains the Geopoints that are within
+	 *         a given distance.
+	 */
+	public static <E extends GeoPoint> Map<MegaPoint, DataObject> pointClusterMaker(
+			Map<GeoPoint, DataObject> entriesColl, int distance, MapView mapView) {
 		// this is the distance that i will calculate later in the program.
 		double pixelDistance;
 		// iterate through the map and convert the key/value pairs into
@@ -70,12 +71,14 @@ public class ClusterMaker {
 		}
 		Map<MegaPoint, DataObject> megaPointMap = new HashMap<MegaPoint, DataObject>();
 		for (GeoPoint entry : entriesColl.keySet()) {
-			
+
 			GeoPoint tempGeoPoint = entry;
-			
+
 			for (int j = tempGeoPointArray.size() - 1; j >= 0; j--) {
 				GeoPoint targetGeoPoint = tempGeoPointArray.get(j);
-				pixelDistance = pixelDistance(tempGeoPoint.getLatitude(), tempGeoPoint.getLongitude(), targetGeoPoint.getLatitude(),
+				pixelDistance = pixelDistance(tempGeoPoint.getLatitude(),
+						tempGeoPoint.getLongitude(),
+						targetGeoPoint.getLatitude(),
 						targetGeoPoint.getLongitude(), mapView);
 				// This gets the distance between the entry GeoPoint (see
 				// outside of for) and the target GeoPoint (inside of for)
@@ -92,15 +95,20 @@ public class ClusterMaker {
 			GeoPoint MegaPointLocation = getAverage(geoPointArray);
 			// I called this GeoPoint MegaPointLocation because it contains the
 			// lat/lon coordinates that the MegaPoint needs.
-			// Create a new MegaPoint and add the GeoPoint array to that MegaPoint
-			MegaPoint clusterPoint = new MegaPoint(MegaPointLocation.getLatitude(), MegaPointLocation.getLatitude(), geoPointArray);
+			// Create a new MegaPoint and add the GeoPoint array to that
+			// MegaPoint
+			MegaPoint clusterPoint = new MegaPoint(
+					MegaPointLocation.getLatitude(),
+					MegaPointLocation.getLatitude(), geoPointArray);
 			megaPointMap.put(clusterPoint, entriesColl.get(tempGeoPoint));
 		}
 		return megaPointMap;
 
 	}// end of method
+
 	protected static GeoDataRepository geoPointDataRetriever() {
-		final String dataString = LocationDataReceiverAVATAR.loadDataStringFromURL();
+		final String dataString = LocationDataReceiverAVATAR
+				.loadDataStringFromURL();
 		final GeoDataRepository repo = new GeoDataRepository();
 		repo.addEntriesFromURLString(dataString);
 		return repo;
@@ -111,10 +119,14 @@ public class ClusterMaker {
 	}
 
 	private static double lonToY(double lat) {
-		return Math.round(OFFSET - RADIUS * Math.log((1 + Math.sin(lat * Math.PI / 180)) / (1 - Math.sin(lat * Math.PI / 180))) / 2);
+		return Math.round(OFFSET
+				- RADIUS
+				* Math.log((1 + Math.sin(lat * Math.PI / 180))
+						/ (1 - Math.sin(lat * Math.PI / 180))) / 2);
 	}
 
-	private static double pixelDistance(double lat1, double lon1, double lat2, double lon2, MapView mapView) {
+	private static double pixelDistance(double lat1, double lon1, double lat2,
+			double lon2, MapView mapView) {
 		int zoom = mapView.getZoomLevel();
 
 		// this might not work... i don't know if a byte can be converted into
@@ -125,7 +137,8 @@ public class ClusterMaker {
 		double x2 = lonToX(lon2);
 		double y2 = lonToY(lat2);
 		// this will calculate the pixel distance of the points on the screen
-		return Math.sqrt((x1 - x2)*(x1 - x2)) + ((y1 - y2)*(y1 - y2)) / Math.pow(2, (21 - zoom));
+		return Math.sqrt((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2))
+				/ Math.pow(2, (21 - zoom));
 		// the php script references a bitshift operator >>. THe equivalent
 		// statement is implemented above.
 	}

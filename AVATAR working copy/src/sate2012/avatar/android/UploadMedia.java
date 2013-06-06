@@ -35,9 +35,7 @@ public class UploadMedia extends Activity implements OnClickListener {
 	private String media_extension;
 	private static String image_filepath;
 	public static Context thisContext;
-	
-	
-	
+
 	/**
 	 * Called when the activity is first created.
 	 */
@@ -46,14 +44,12 @@ public class UploadMedia extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		thisContext = getApplicationContext();
 		setContentView(R.layout.upload_menu);
-		
 
-		
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		createStorageDirectory();
 		pictureB = (ImageButton) findViewById(R.id.cameraButton);
 		pictureB.setOnClickListener(this);
-		
+
 		videoB = (ImageButton) findViewById(R.id.videoButton);
 		videoB.setOnClickListener(this);
 		audioB = (ImageButton) findViewById(R.id.audioButton);
@@ -104,7 +100,7 @@ public class UploadMedia extends Activity implements OnClickListener {
 			startActivity(i);
 			finish();
 			break;
-		case (R.id.emergency):	
+		case (R.id.emergency):
 			dataType = getResources().getString(R.string.type_emergency);
 			i = new Intent(getApplicationContext(), PhoneCall.class);
 			i.putExtra("Type", dataType);
@@ -133,9 +129,11 @@ public class UploadMedia extends Activity implements OnClickListener {
 				media_filepath = getImage_filepath();
 				media_extension = "_P.png";
 			}
-			
-			media_filename = UploadFTP.FTPUpload(media_filepath, media_extension, thisContext);
-			Intent MailIntent = new Intent(getApplicationContext(), MailSenderActivity.class);
+
+			media_filename = UploadFTP.FTPUpload(media_filepath,
+					media_extension, thisContext);
+			Intent MailIntent = new Intent(getApplicationContext(),
+					MailSenderActivity.class);
 			MailIntent.putExtra("Type", dataType);
 			MailIntent.putExtra("Filename", media_filename);
 			startActivity(MailIntent);
@@ -163,11 +161,11 @@ public class UploadMedia extends Activity implements OnClickListener {
 		if (sd.canWrite()) {
 			if (!storageFolder.exists())
 				storageFolder.mkdir();
-			mediaFolder = new File(sd, Constants.STORAGE_DIRECTORY + Constants.MEDIA_DIRECTORY);
+			mediaFolder = new File(sd, Constants.STORAGE_DIRECTORY
+					+ Constants.MEDIA_DIRECTORY);
 			if (!mediaFolder.exists())
 				mediaFolder.mkdir();
 		}
 	}
-	
-	
+
 }
