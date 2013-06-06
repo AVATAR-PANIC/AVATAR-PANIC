@@ -17,6 +17,7 @@ local.properties
 .settings/
 .loadpath
 AndroidMAnifest.xml
+project.properties
 
 # External tool builders
 .externalToolBuilders/
