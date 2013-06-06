@@ -37,6 +37,12 @@
             android:layout_height="match_parent"
             android:layout_above="@id/findPositionButton"
             android:text="@string/hello" />
+        
+        <!-- <fragment
+          android:id="@+id/map"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:name="com.google.android.gms.maps.MapFragment"/> -->
 
         <LinearLayout
             android:id="@+id/logoBar"
