@@ -14,6 +14,7 @@ import org.mapsforge.android.maps.MapView;
 import org.mapsforge.android.maps.MapViewMode;
 
 import sate2012.avatar.android.augmentedrealityview.CameraView;
+import sate2012.avatar.android.googlemaps.GoogleMapsViewer;
 import sate2012.avatar.android.pointclustering.*;
 
 import android.content.Context;
@@ -201,6 +202,10 @@ public class MapsForgeMapViewer extends MapActivity implements
     public void myClickMethod(View v){
 		  Intent i;
 		  switch(v.getId()){
+			  case R.id.map:
+				  i = new Intent(getApplicationContext(), GoogleMapsViewer.class);
+				  startActivity(i);
+				  break;
 			  case R.id.augmentedReality:
 				  i = new Intent(getApplicationContext(), CameraView.class);
 				  startActivity(i);

@@ -54,5 +54,6 @@
     <string name="do_more">Do more with these points?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-
-</resources>
+    <string name="title_activity_google_maps_viewer">GoogleMapsViewer</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
