@@ -372,7 +372,7 @@ public class CameraView extends Activity implements Callback {
 		  Intent i;
 		  switch(v.getId()){
 			  case R.id.map:
-				  i = new Intent(getApplicationContext(), MapsForgeMapViewer.class);
+				  i = new Intent(getApplicationContext(), sate2012.avatar.android.googlemaps.GoogleMapsViewer.class);
 				  startActivity(i);
 				  break;
 			  case R.id.emergencyCall:

@@ -51,5 +51,8 @@
     <string name="Augmented_Reality_View_Button">Augmented Reality View</string>
     <string name="Augmented_Reality_View_Point">Augmented Reality Point</string>
     <string name="type_emergency">Emergency Call</string>
+    <string name="title_activity_google_maps_viewer">GoogleMapsViewer</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
