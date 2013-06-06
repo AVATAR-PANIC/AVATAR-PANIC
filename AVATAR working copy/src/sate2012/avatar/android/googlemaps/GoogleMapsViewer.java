@@ -1,20 +1,29 @@
 package sate2012.avatar.android.googlemaps;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+
 import sate2012.avatar.android.MapsForgeMapViewer;
 import sate2012.avatar.android.augmentedrealityview.CameraView;
 import gupta.ashutosh.avatar.*;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 
 public class GoogleMapsViewer extends Activity {
 
+	GoogleMap map;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.googlemap_viewer);
+		MapFragment mapfrag = ((MapFragment) getFragmentManager().findFragmentById(R.id.googlemap));
+		map = mapfrag.getMap();
+		
 	}
 
 	@Override
