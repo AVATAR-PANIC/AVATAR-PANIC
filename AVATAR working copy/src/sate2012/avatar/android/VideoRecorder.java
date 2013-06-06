@@ -23,7 +23,8 @@ import android.widget.VideoView;
  * Allows the user to record a video file, play it back, and then upload it to
  * the Virtual Command Center
  */
-public class VideoRecorder extends Activity implements SurfaceHolder.Callback, OnClickListener {
+public class VideoRecorder extends Activity implements SurfaceHolder.Callback,
+		OnClickListener {
 	private MediaRecorder recorder;
 	private Camera mCameraDevice;
 	private VideoView videoView;
@@ -54,7 +55,8 @@ public class VideoRecorder extends Activity implements SurfaceHolder.Callback, O
 				mVideoClockTime++;
 				int minutes = mVideoClockTime / 60;
 				mVideoClockTime = mVideoClockTime % 60;
-				mVideoClockUI.setText(String.format("%02d:%02d", minutes, mVideoClockTime));
+				mVideoClockUI.setText(String.format("%02d:%02d", minutes,
+						mVideoClockTime));
 				mHandler.postDelayed(this, 1000); // Every second.
 			}
 		};
@@ -92,7 +94,8 @@ public class VideoRecorder extends Activity implements SurfaceHolder.Callback, O
 					playing = false;
 					recording = false;
 					playRecordingBtn.setEnabled(true);
-					playRecordingBtn.setImageResource(R.drawable.start_play_button);
+					playRecordingBtn
+							.setImageResource(R.drawable.start_play_button);
 					startBtn.setEnabled(false);
 					startBtn.setImageResource(R.drawable.stop_recording_video);
 					mHandler.removeCallbacks(mClockTask);
@@ -108,7 +111,8 @@ public class VideoRecorder extends Activity implements SurfaceHolder.Callback, O
 					playRecording();
 					playing = true;
 					playRecordingBtn.setEnabled(false);
-					playRecordingBtn.setImageResource(R.drawable.start_play_button);
+					playRecordingBtn
+							.setImageResource(R.drawable.start_play_button);
 				} catch (Exception e) {
 					Log.e("ERROR", "Exception caught playing video.", e);
 				}
@@ -156,7 +160,8 @@ public class VideoRecorder extends Activity implements SurfaceHolder.Callback, O
 	public void surfaceDestroyed(SurfaceHolder holder) {
 	}
 
-	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+	public void surfaceChanged(SurfaceHolder holder, int format, int width,
+			int height) {
 		try {
 			Log.i("INFO", "Width x Height = " + width + "x" + height);
 		} catch (Exception e) {
@@ -197,7 +202,9 @@ public class VideoRecorder extends Activity implements SurfaceHolder.Callback, O
 			recorder.stop();
 			recorder.release();
 		}
-		videoRecording = new File(Environment.getExternalStorageDirectory(), Constants.STORAGE_DIRECTORY + Constants.MEDIA_DIRECTORY + OUTPUT_FILE);
+		videoRecording = new File(Environment.getExternalStorageDirectory(),
+				Constants.STORAGE_DIRECTORY + Constants.MEDIA_DIRECTORY
+						+ OUTPUT_FILE);
 		if (videoRecording.exists())
 			videoRecording.delete();
 		try {
@@ -220,7 +227,9 @@ public class VideoRecorder extends Activity implements SurfaceHolder.Callback, O
 			recorder.prepare();
 			recorder.start();
 		} catch (Exception e) {
-			Log.e("ERROR", "Exception caught creating media recorder." + e.getStackTrace(), e);
+			Log.e("ERROR",
+					"Exception caught creating media recorder."
+							+ e.getStackTrace(), e);
 		}
 	}
 

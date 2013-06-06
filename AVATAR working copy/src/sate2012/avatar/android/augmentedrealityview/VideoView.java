@@ -1,4 +1,5 @@
 package sate2012.avatar.android.augmentedrealityview;
+
 //package sate2012.avatar.android;
 //
 //
@@ -254,4 +255,4 @@ package sate2012.avatar.android.augmentedrealityview;
 //        this.videoRecording = videoRecording;
 //    }
 //
-//}
+// }

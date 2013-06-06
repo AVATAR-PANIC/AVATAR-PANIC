@@ -17,26 +17,30 @@ public class MediaFileManager {
 		if (sd.canWrite()) {
 			if (!camFolder.exists())
 				camFolder.mkdir();
-			mediaFolder = new File(sd, Constants.STORAGE_DIRECTORY + Constants.MEDIA_DIRECTORY);
+			mediaFolder = new File(sd, Constants.STORAGE_DIRECTORY
+					+ Constants.MEDIA_DIRECTORY);
 			if (!mediaFolder.exists())
 				mediaFolder.mkdir();
 		}
 	}
 
 	public File createImageFile() {
-		image = new File(mediaFolder, "image_" + System.currentTimeMillis() + ".jpg");
+		image = new File(mediaFolder, "image_" + System.currentTimeMillis()
+				+ ".jpg");
 		this.setImage(image);
 		return image;
 	}
 
 	public File createVideoFile() {
-		video = new File(mediaFolder, "video_" + System.currentTimeMillis() + ".mp4");
+		video = new File(mediaFolder, "video_" + System.currentTimeMillis()
+				+ ".mp4");
 		this.setVideo(video);
 		return video;
 	}
 
 	public File createRecordingFile() {
-		recording = new File(mediaFolder, "recording_" + System.currentTimeMillis() + ".mp4");
+		recording = new File(mediaFolder, "recording_"
+				+ System.currentTimeMillis() + ".mp4");
 		this.setRecording(recording);
 		return recording;
 	}
