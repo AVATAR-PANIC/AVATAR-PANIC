@@ -3,21 +3,15 @@ package sate2012.avatar.android.googlemaps;
 import gupta.ashutosh.avatar.R;
 import sate2012.avatar.android.MapsForgeMapViewer;
 import sate2012.avatar.android.UploadMedia;
-import sate2012.avatar.android.MapsForgeMapViewer.MyLocationListener;
 import sate2012.avatar.android.augmentedrealityview.CameraView;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.view.Menu;
 import android.view.View;
 
-import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
-import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
@@ -29,7 +23,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class GoogleMapsViewer extends Activity {
 
 	GoogleMap map;
-	Location myLocation;
+	Location myLocation = new Location(LocationManager.NETWORK_PROVIDER);
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
