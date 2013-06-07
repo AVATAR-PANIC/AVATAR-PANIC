@@ -358,6 +358,7 @@ public class CameraView extends Activity implements Callback {
 					}
 				}
 			}
+			
 			// }
 			// }
 			// }

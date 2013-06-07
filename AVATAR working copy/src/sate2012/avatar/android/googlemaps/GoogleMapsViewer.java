@@ -1,27 +1,35 @@
 package sate2012.avatar.android.googlemaps;
 
-import com.google.android.gms.maps.CameraUpdate;
+import gupta.ashutosh.avatar.R;
+import sate2012.avatar.android.MapsForgeMapViewer;
+import sate2012.avatar.android.UploadMedia;
+import sate2012.avatar.android.MapsForgeMapViewer.MyLocationListener;
+import sate2012.avatar.android.augmentedrealityview.CameraView;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.os.Parcel;
+import android.view.Menu;
+import android.view.View;
+
+import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
+import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import sate2012.avatar.android.MapsForgeMapViewer;
-import sate2012.avatar.android.augmentedrealityview.CameraView;
-import gupta.ashutosh.avatar.*;
-import android.os.Bundle;
-import android.app.Activity;
-import android.app.FragmentManager;
-import android.content.Intent;
-import android.view.Menu;
-import android.view.View;
 
 public class GoogleMapsViewer extends Activity {
 
 	GoogleMap map;
+	Location myLocation;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +37,10 @@ public class GoogleMapsViewer extends Activity {
 		setContentView(R.layout.googlemap_viewer);
 		MapFragment mapfrag = ((MapFragment) getFragmentManager().findFragmentById(R.id.googlemap));
 		map = mapfrag.getMap();
-		map.addMarker(new MarkerOptions().position(new LatLng(0, 0)));
-		
+		map.setOnMapLongClickListener(new Listener());
+		LatLng location = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+		map.addMarker(new MarkerOptions().position(location));
+		map.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(map.getCameraPosition().target, map.getCameraPosition().zoom, 30, map.getCameraPosition().bearing)));
 	}
 
 	@Override
@@ -59,4 +69,15 @@ public class GoogleMapsViewer extends Activity {
 				  break;
 		  }
 	  }
+	class Listener implements OnMapLongClickListener{
+
+		@Override
+		public void onMapLongClick(LatLng arg0) {
+			map.addMarker(new MarkerOptions().position(arg0));
+			Intent senderIntent = new Intent(getApplicationContext(),
+					UploadMedia.class);
+			startActivity(senderIntent);
+		}
+	}
+
 }
