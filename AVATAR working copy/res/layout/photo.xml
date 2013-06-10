@@ -8,7 +8,8 @@
     <ImageButton
         android:id="@+id/ibTakePic"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight=".3"
         android:layout_gravity="center"
         android:background="@drawable/buttonbackground"
         android:src="@drawable/camerabackground"
@@ -16,15 +17,17 @@
 
     <ImageView
         android:id="@+id/ivReturnedPicture"
-        android:layout_width="450dp"
-        android:layout_height="450dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight=".3"
         android:layout_gravity="center"
         android:contentDescription="@string/app_name" />
 
     <ImageButton
         android:id="@+id/upload_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_weight=".3"
         android:layout_gravity="center"
         android:background="@drawable/buttonbackground"
 		android:src="@drawable/upload_arrow"
