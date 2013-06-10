@@ -106,6 +106,7 @@ public class CameraView extends Activity implements Callback {
 		backButton = (Button) findViewById(R.id.to_main_activity);
 		makeGeoDataRepository();
 
+
 		// Initialize the surface for the camera
 		mSurfaceView = (SurfaceView) findViewById(R.id.surface_camera);
 		mSurfaceHolder = mSurfaceView.getHolder();
@@ -193,9 +194,14 @@ public class CameraView extends Activity implements Callback {
 	 * entriesColl.
 	 */
 	private void makeGeoDataRepository() {
+		
+		try{
 		repo = geoPointDataRetriever();
 		final Map<GeoPoint, DataObject> entriesColl = repo
 				.getCollectionOfDataEntries();
+		}catch(Exception ex){
+			System.err.println("Possible Error connecting to the DataBase");
+		}
 	}
 
 	/**

@@ -50,8 +50,6 @@ public class MapsForgeMapViewer extends MapActivity implements
 	private Button ClearPointsButton;
 	private Button AugmentedRealityViewerButton;
 
-	private Frag frag = new Frag();
-
 	MVItemizedOverlay itemizedOverlay;
 	MVItemizedOverlay userPointOverlay;
 	MVItemizedOverlay GeoDataRepositoryOverlay;
