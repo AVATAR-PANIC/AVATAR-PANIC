@@ -1,5 +1,6 @@
 package sate2012.avatar.android.googlemaps;
 
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.JsonReader;
 
@@ -72,6 +74,7 @@ public class MarkerMaker {
 							String link = reader.nextString();
 							data += "Data link: " + link;
 							System.out.println("LINK: " + link);
+							//marker.setImage(Drawable.createFromStream(((InputStream)new java.net.URL(link).getContent()), "BLAH"));
 						}
 						}catch(IllegalStateException e){
 							System.out.println(reader.nextString());

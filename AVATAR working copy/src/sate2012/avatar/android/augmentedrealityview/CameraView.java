@@ -55,6 +55,7 @@ public class CameraView extends Activity implements Callback {
 	
 
 	// Camera dependent variables
+	private Frag frag = new Frag();
 	private GeoDataRepository repo;
 	private Camera mCamera;
 	private SurfaceView mSurfaceView;
@@ -486,19 +487,8 @@ public class CameraView extends Activity implements Callback {
 	}
 
 	public void myClickMethod(View v) {
-		Intent i;
-		switch (v.getId()) {
-		case R.id.map:
-			i = new Intent(getApplicationContext(),
-					sate2012.avatar.android.googlemaps.GoogleMapsViewer.class);
-			startActivity(i);
-			break;
-		case R.id.emergencyCall:
-			System.out.println("BOO");
-			break;
-		case R.id.exit:
-			System.exit(0);
-			break;
+		if(v.getId() != R.id.augmentedReality){
+			frag.myClickMethod(v, getApplicationContext());
 		}
 	}
 
