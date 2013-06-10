@@ -44,9 +44,8 @@ import android.view.Window;
 import android.widget.Button;
 
 public class CameraView extends Activity implements Callback {
-
-	// Use these variables to determine size of side fragment to offset in the
-	// PointerView class
+	
+	//Use these variables to determine size of side fragment to offset in the PointerView class
 	private int fragWidth;
 
 	// Camera dependent variables
@@ -104,6 +103,7 @@ public class CameraView extends Activity implements Callback {
 		// Initializes the button
 		backButton = (Button) findViewById(R.id.to_main_activity);
 		makeGeoDataRepository();
+
 
 		// Initialize the surface for the camera
 		mSurfaceView = (SurfaceView) findViewById(R.id.surface_camera);
@@ -195,9 +195,14 @@ public class CameraView extends Activity implements Callback {
 	 * entriesColl.
 	 */
 	private void makeGeoDataRepository() {
+		
+		try{
 		repo = geoPointDataRetriever();
 		final Map<GeoPoint, DataObject> entriesColl = repo
 				.getCollectionOfDataEntries();
+		}catch(Exception ex){
+			System.err.println("Possible Error connecting to the DataBase");
+		}
 	}
 
 	/**

@@ -50,8 +50,6 @@ public class MapsForgeMapViewer extends MapActivity implements
 	private Button ClearPointsButton;
 	private Button AugmentedRealityViewerButton;
 
-	private Frag frag = new Frag();
-
 	MVItemizedOverlay itemizedOverlay;
 	MVItemizedOverlay userPointOverlay;
 	MVItemizedOverlay GeoDataRepositoryOverlay;
@@ -199,29 +197,29 @@ public class MapsForgeMapViewer extends MapActivity implements
 			mySensorManager.unregisterListener(mySensorEventListener);
 	}
 
-	public void myClickMethod(View v) {
-		Intent i;
-		switch (v.getId()) {
-		case R.id.map:
-			i = new Intent(getApplicationContext(), GoogleMapsViewer.class);
-			startActivity(i);
-			break;
-		case R.id.augmentedReality:
-			i = new Intent(getApplicationContext(), CameraView.class);
-			startActivity(i);
-			break;
-		case R.id.emergencyCall:
-			System.out.println("BOO");
-			break;
-		case R.id.exit:
-			System.exit(0);
-			break;
-		}
-	}
-
-	public void onLocationChanged(Location arg0) {
-	}
-
+    public void myClickMethod(View v){
+		  Intent i;
+		  switch(v.getId()){
+			  case R.id.map:
+				  i = new Intent(getApplicationContext(), GoogleMapsViewer.class);
+				  startActivity(i);
+				  break;
+			  case R.id.augmentedReality:
+				  i = new Intent(getApplicationContext(), CameraView.class);
+				  startActivity(i);
+				  break;
+			  case R.id.emergencyCall:
+				  System.out.println("BOO");
+				  break;
+			  case R.id.exit:
+				  System.exit(0);
+				  break;
+		  }
+	  }
+    
+    public void onLocationChanged(Location arg0)
+    {
+    }
 	@Override
 	/**
 	 * onPause pauses the application and saves the data in the savedInstances Bundle. 

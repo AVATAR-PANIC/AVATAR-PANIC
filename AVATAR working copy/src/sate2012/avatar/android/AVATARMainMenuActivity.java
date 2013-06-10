@@ -1,5 +1,6 @@
 package sate2012.avatar.android;
 
+import sate2012.avatar.android.googlemaps.GoogleMapsViewer;
 import gupta.ashutosh.avatar.R;
 import android.app.Activity;
 import android.content.Intent;
@@ -53,7 +54,7 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 		// case (R.id.uploadB):
 		default:
 			Intent intent = new Intent(getApplicationContext(),
-					MapsForgeMapViewer.class);
+					GoogleMapsViewer.class);
 			startActivity(intent);
 			// break;
 			/*
