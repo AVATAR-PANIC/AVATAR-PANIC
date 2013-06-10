@@ -14,7 +14,7 @@
           android:layout_width="fill_parent"
           android:layout_height="wrap_content"
           android:text="@string/do_more"
-          android:textSize= "35dp" />
+          android:textSize= "35sp" />
       <Button
           android:id="@+id/yes_button"
           android:layout_width="fill_parent"
@@ -22,7 +22,7 @@
           android:layout_weight=".5"
           android:layout_gravity="center"
           android:text="@string/yes"
-          android:textSize="35dp" />
+          android:textSize="35sp" />
       <Button
           android:id="@+id/no_button"
           android:layout_width="fill_parent"
@@ -30,7 +30,7 @@
           android:layout_weight=".5"          
           android:layout_gravity="center"
           android:text="@string/no"
-          android:textSize="35dp" />
+          android:textSize="35sp" />
       <ImageView
           android:layout_width="fill_parent"
           android:layout_height="0px"

@@ -1,10 +1,13 @@
 package sate2012.avatar.android.googlemaps;
 
+<<<<<<< HEAD
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+=======
+>>>>>>> branch 'master' of https://github.com/AVATAR-PANIC/AVATAR-PANIC.git
 import java.util.ArrayList;
 
 import org.mapsforge.android.maps.GeoPoint;
@@ -272,6 +275,7 @@ public class GoogleMapsViewer extends Activity implements LocationListener,
 		}
         // Returning the view containing InfoWindow contents
         return v;
+
 	}
 
 	@Override
@@ -302,5 +306,4 @@ public class GoogleMapsViewer extends Activity implements LocationListener,
 		}
 		
 	}
-	
 }
