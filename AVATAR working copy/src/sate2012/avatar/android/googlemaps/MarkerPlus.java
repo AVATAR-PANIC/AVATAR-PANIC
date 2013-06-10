@@ -88,5 +88,10 @@ public class MarkerPlus{
 	public void setData(String data) {
 		this.data = data;
 	}
+	
+	@Override
+	public String toString(){
+		return "";
+	}
 
 }
