@@ -229,8 +229,7 @@ public class GoogleMapsViewer extends Activity implements LocationListener, Info
 
         title.setText(marker.getTitle() );
         info.setText(marker.getSnippet() );
-        image.setImageDrawable(getResources().getDrawable(
-				R.drawable.ic_launcher));
+        //image.setImageDrawable();
 
         // Returning the view containing InfoWindow contents
         return v;
