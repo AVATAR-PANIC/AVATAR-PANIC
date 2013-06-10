@@ -1,5 +1,6 @@
 package sate2012.avatar.android.googlemaps;
 
+import android.graphics.drawable.Drawable;
 import android.view.View;
 
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
@@ -13,6 +14,7 @@ public class MarkerPlus{
 	private String name;
 	private String data;
 	private double altitude;
+	private Drawable image;
 	
 	public MarkerPlus(){
 		this.markerOptions = new MarkerOptions();
@@ -72,6 +74,16 @@ public class MarkerPlus{
 	public void setLongitude(double longitude){
 		markerOptions.position(new LatLng(markerOptions.getPosition().latitude, longitude));
 	}
+	
+	public double getLatitude()
+	{
+		return markerOptions.getPosition().latitude;
+	}
+	
+	public double getLongitude()
+	{
+		return markerOptions.getPosition().longitude;
+	}
 
 	public String getName() {
 		return name;
@@ -89,9 +101,17 @@ public class MarkerPlus{
 		this.data = data;
 	}
 	
+	public Drawable getImage() {
+		return image;
+	}
+
+	public void setImage(Drawable image) {
+		this.image = image;
+	}
+
 	@Override
 	public String toString(){
-		return "";
+		return " Title: " + this.name + " Description: " + this.data + " Altitude: " + this.altitude;
 	}
 
 }
