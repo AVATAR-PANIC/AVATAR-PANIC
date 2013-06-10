@@ -111,7 +111,7 @@ public class MarkerPlus{
 
 	@Override
 	public String toString(){
-		return "";
+		return " Title: " + this.name + " Description: " + this.data + " Altitude: " + this.altitude;
 	}
 
 }

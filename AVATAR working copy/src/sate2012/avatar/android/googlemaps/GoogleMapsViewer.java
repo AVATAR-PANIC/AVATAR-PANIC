@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutionException;
 import sate2012.avatar.android.Frag;
 import sate2012.avatar.android.MapsForgeMapViewer;
 import sate2012.avatar.android.UploadMedia;
+import sate2012.avatar.android.augmentedrealityview.CameraView;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -36,6 +37,7 @@ import android.widget.TextView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
+import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -44,10 +46,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class GoogleMapsViewer extends Activity implements LocationListener,
-		InfoWindowAdapter {
+InfoWindowAdapter, OnCameraChangeListener {
 
 	public GoogleMap map;
-	private Frag frag = new Frag();
+	public GoogleMapsClusterMaker clusters = new GoogleMapsClusterMaker();
 	public Location myLocation = new Location(LocationManager.NETWORK_PROVIDER);
 	public Location myCurrentLocation;
 	private double myAltitude;
@@ -61,6 +63,7 @@ public class GoogleMapsViewer extends Activity implements LocationListener,
 			GoogleMap.MAP_TYPE_TERRAIN };
 	private int currentMapType = mapTypes[0];
 	private ArrayList<MarkerPlus> markerArray = MarkerMaker.makeMarkers();
+	//private ArrayList<MarkerPlus> offlineMarkerArray = new ArrayList<MarkerPlus>();
 
 	sate2012.avatar.android.augmentedrealityview.CameraView myCameraView = new sate2012.avatar.android.augmentedrealityview.CameraView();
 	sate2012.avatar.android.pointclustering.ClusterMaker geoPointClusterMaker = new sate2012.avatar.android.pointclustering.ClusterMaker();
@@ -73,27 +76,61 @@ public class GoogleMapsViewer extends Activity implements LocationListener,
 				.findFragmentById(R.id.googlemap));
 		map = mapfrag.getMap();
 		map.setOnMapLongClickListener(new Listener());
-
+		
 		map.setInfoWindowAdapter(this);
 
-		for (MarkerPlus marker : markerArray) {
-			map.addMarker(marker.getMarkerOptions().title(marker.getName())
-					.snippet(marker.getData()));
+		map.setInfoWindowAdapter(this);
+		map.setOnCameraChangeListener(this);
+		
+//		offlineMarkerArray.add(new MarkerPlus(10.0,10.0,10.0, "POINT 1"));
+//		offlineMarkerArray.add(new MarkerPlus(9.0,9.0,9.0, "POINT 2"));
+//		offlineMarkerArray.add(new MarkerPlus(8.0, 8.0, 8.0, "POINT 3"));
+//		offlineMarkerArray.add(new MarkerPlus(20.0, 20.0, 8.0, "POINT 4"));
+//		
+//		int name = 1;
+//		for(MarkerPlus tempMark: markerArray){
+//			tempMark.setName("POINT " + name++);
+//			System.out.println("POINT COUNT: " + name);
+//		}
+		
+		int i = 0;
+		for(GoogleMapsClusterMarker marker: clusters.generateClusters(map.getCameraPosition().zoom, markerArray)){
+			if(marker.getPoints().size() > 1){
+				map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames()));
+				System.out.println("Added Marker! Position: " + new LatLng(marker.latlng.latitude, marker.latlng.longitude).toString());
+				System.out.println("Marker Name!: " + marker.getPointNames());
+			}else{
+				if(marker.getPoints().size() == 1){
+				map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()));
+				}
+			}
 		}
-
-		map.setMyLocationEnabled(true);
-
-		// System.out.println(myLocation.getLatitude() + " " +
-		// myLocation.getLongitude());
-		// LatLng location = new LatLng(myLocation.getLatitude(),
-		// myLocation.getLongitude());
-		// map.addMarker(new MarkerOptions().position(location));
-		// map.moveCamera(CameraUpdateFactory.newCameraPosition(new
-		// CameraPosition(map.getCameraPosition().target,
-		// map.getCameraPosition().zoom, 30, map.getCameraPosition().bearing)));
-		// map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(new
-		// LatLng(myLocation.getLatitude(), myLocation.getLongitude()),
-		// map.getMaxZoomLevel()/3)));
+		
+//		int i = 0;
+//		for(GoogleMapsClusterMarker marker: clusters.generateClusters(map.getCameraPosition().zoom, offlineMarkerArray)){
+//			
+//			if(marker.getPoints().size() > 1){
+//				map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames()));
+//				System.out.println("Added Marker! Position: " + new LatLng(marker.latlng.latitude, marker.latlng.longitude).toString());
+//				System.out.println("Marker Name!: " + marker.getPointNames());
+//			}else{
+//				map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()));
+//			}
+//		}
+		
+//        for(MarkerPlus marker: markerArray){
+//        	map.addMarker(marker.getMarkerOptions().title(marker.getName()).snippet(marker.getData()));
+//        }
+        
+        
+        
+        map.setMyLocationEnabled(true);
+        
+        //System.out.println(myLocation.getLatitude() + " " + myLocation.getLongitude());
+		//LatLng location = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+		//map.addMarker(new MarkerOptions().position(location));
+		//map.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(map.getCameraPosition().target, map.getCameraPosition().zoom, 30, map.getCameraPosition().bearing)));
+		//map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), map.getMaxZoomLevel()/3)));
 		map.setMapType(mapTypes[0]);
 		//How to add marker
 		//map.addMarker(new MarkerOptions().title("TITLE").snippet("DESCRIPTION").position(new LatLng(0,0)));
@@ -121,6 +158,10 @@ public class GoogleMapsViewer extends Activity implements LocationListener,
 			i = new Intent(getApplicationContext(), MapsForgeMapViewer.class);
 			startActivity(i);
 			break;
+		case R.id.augmentedReality:
+			i = new Intent(getApplicationContext(), CameraView.class);
+			startActivity(i);
+			break;
 		case R.id.changeType:
 
 			for (int c = 0; c < mapTypes.length; c++) {
@@ -135,12 +176,6 @@ public class GoogleMapsViewer extends Activity implements LocationListener,
 					c = mapTypes.length;
 				}
 			}
-
-			break;
-		default:
-
-			frag.myClickMethod(v, getApplicationContext());
-
 		}
 	}
 
@@ -290,6 +325,27 @@ public class GoogleMapsViewer extends Activity implements LocationListener,
 				e.printStackTrace();
 			}
 			return null;
+		}
+		
+	}
+
+	@Override
+	public void onCameraChange(CameraPosition arg0) {
+		map.clear();
+		
+		int i = 0;
+		for(GoogleMapsClusterMarker marker: clusters.generateClusters(map.getCameraPosition().zoom, markerArray)){
+			
+			if(marker.getPoints().size() > 1){
+				map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames()));
+				//System.out.println("Added Marker! Position: " + new LatLng(marker.latlng.latitude, marker.latlng.longitude).toString());
+				//System.out.println("Marker Name!: " + marker.getPointNames());
+			}else{
+				if(marker.getPoints().size() == 1){
+				map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()));
+			
+				}
+			}
 		}
 		
 	}
