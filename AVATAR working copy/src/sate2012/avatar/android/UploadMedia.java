@@ -147,35 +147,30 @@ public class UploadMedia extends Activity implements OnClickListener {
 		}
 	}
 	
-	/*public void onBackPressed(){
-		LayoutInflater layoutInflater 
-	     = (LayoutInflater)getBaseContext()
-	      .getSystemService(LAYOUT_INFLATER_SERVICE);  
-	    View popupView = layoutInflater.inflate(R.layout.pop_up, null);  
-	             final PopupWindow popupWindow = new PopupWindow(
-	               popupView, 
-	               LayoutParams.WRAP_CONTENT,  
-	                     LayoutParams.WRAP_CONTENT);  
-	             
-	             Button no = (Button)popupView.findViewById(R.id.no_button);
-	             no.setOnClickListener(new Button.OnClickListener(){
-
-	     @Override
-	     public void onClick(View v) {
-	      // TODO Auto-generated method stub
-	      popupWindow.dismiss();
-	      finish();
-	     }});
-	         
-	             Button yes = (Button)popupView.findViewById(R.id.yes_button);
-	             yes.setOnClickListener(new Button.OnClickListener(){
-
-	     @Override
-	     public void onClick(View v) {
-	      // TODO Auto-generated method stub
-	      popupWindow.dismiss();
-	     }});
-	}*/
+//public void onBackPressed(){
+//		LayoutInflater layoutInflater = (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);  
+//	    View popupView = layoutInflater.inflate(R.layout.pop_up, null);  
+//	             final PopupWindow popupWindow = new PopupWindow(popupView, LayoutParams.WRAP_CONTENT,  LayoutParams.WRAP_CONTENT);  
+//	             
+//	             Button no = (Button)popupView.findViewById(R.id.no_button);
+//	             no.setOnClickListener(new Button.OnClickListener(){
+//
+//	     @Override
+//	     public void onClick(View v) {
+//	      // TODO Auto-generated method stub
+//	      popupWindow.dismiss();
+//	      finish();
+//	     }});
+//	         
+//	             Button yes = (Button)popupView.findViewById(R.id.yes_button);
+//	             yes.setOnClickListener(new Button.OnClickListener(){
+//
+//	     @Override
+//	     public void onClick(View v) {
+//	      // TODO Auto-generated method stub
+//	      popupWindow.dismiss();
+//	     }});
+//	}
 
 	public static void setImage_filepath(String fp) {
 		image_filepath = fp;
