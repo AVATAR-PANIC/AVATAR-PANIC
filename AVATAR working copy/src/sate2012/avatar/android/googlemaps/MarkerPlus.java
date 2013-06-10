@@ -72,6 +72,16 @@ public class MarkerPlus{
 	public void setLongitude(double longitude){
 		markerOptions.position(new LatLng(markerOptions.getPosition().latitude, longitude));
 	}
+	
+	public double getLatitude()
+	{
+		return markerOptions.getPosition().latitude;
+	}
+	
+	public double getLongitude()
+	{
+		return markerOptions.getPosition().longitude;
+	}
 
 	public String getName() {
 		return name;

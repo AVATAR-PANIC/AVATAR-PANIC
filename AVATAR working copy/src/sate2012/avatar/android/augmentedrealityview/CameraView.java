@@ -3,16 +3,21 @@ package sate2012.avatar.android.augmentedrealityview;
 import gupta.ashutosh.avatar.R;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
 import org.mapsforge.android.maps.GeoPoint;
+
+import com.google.android.gms.maps.model.Marker;
 
 import sate2012.avatar.android.DataObject;
 import sate2012.avatar.android.GeoDataRepository;
 import sate2012.avatar.android.LocationDataReceiverAVATAR;
 import sate2012.avatar.android.MapsForgeMapViewer;
 import sate2012.avatar.android.Frag;
+import sate2012.avatar.android.googlemaps.MarkerMaker;
+import sate2012.avatar.android.googlemaps.MarkerPlus;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.Context;
@@ -65,6 +70,7 @@ public class CameraView extends Activity implements Callback {
 	// testLocation.getLongitude() - 1);
 	// GeoPoint[] pointArray = {testPoint, testPoint2};
 	float[] currentValues = new float[3];
+	private ArrayList<MarkerPlus> markerArray = MarkerMaker.makeMarkers();
 
 	/**
 	 * This is a lowpass filter. It is used to smooth out the tablets movements.
@@ -305,8 +311,10 @@ public class CameraView extends Activity implements Callback {
 			// repo.getCollectionOfDataEntries()){
 			// for(GeoPoint testPoint: pointArray){
 			
-			drawPoint(testPoint, canvas);
-
+			
+			for(MarkerPlus marker: markerArray){
+	        	drawPoint(marker, canvas);
+	        }
 			// System.out.println((Math.tan(gpBearing - myBearing) * 640 /
 			// Math.tan(Math.PI / 6.0) + 640) + " "
 			// + (Math.tan(myPitchA - myPitch) * 400 / Math.tan(Math.PI / 6.0) +
@@ -380,7 +388,7 @@ public class CameraView extends Activity implements Callback {
 			// }
 	}
 	
-	public void drawPoint(GeoPoint geoPoint, Canvas canvas){
+	public void drawPoint(MarkerPlus marker, Canvas canvas){
 		
 		Bitmap pointIcon = BitmapFactory.decodeResource(getResources(),
 				R.drawable.ic_launcher);
@@ -388,8 +396,9 @@ public class CameraView extends Activity implements Callback {
 		// repo.getCollectionOfDataEntries()){
 		// for(GeoPoint testPoint: pointArray){
 		double myAlt = myLocation.getAltitude();
-		Location gpLocation = MapsForgeMapViewer
-				.convertGeoPointToLocation(testPoint);
+		Location gpLocation = new Location(LocationManager.NETWORK_PROVIDER);
+		gpLocation.setLatitude(marker.getLatitude());
+		gpLocation.setLongitude(marker.getLongitude());
 		gpLocation.setAltitude(0);
 
 		// All of these angles are in Radians.
