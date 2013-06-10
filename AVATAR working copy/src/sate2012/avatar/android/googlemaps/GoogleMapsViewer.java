@@ -1,12 +1,13 @@
 package sate2012.avatar.android.googlemaps;
 
-import org.mapsforge.android.maps.GeoPoint;
 import gupta.ashutosh.avatar.R;
+
+import java.util.ArrayList;
+
 import sate2012.avatar.android.MapsForgeMapViewer;
 import sate2012.avatar.android.UploadMedia;
 import sate2012.avatar.android.augmentedrealityview.CameraView;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -16,17 +17,17 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import com.google.android.gms.location.LocationClient;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -44,6 +45,7 @@ public class GoogleMapsViewer extends Activity implements LocationListener, Info
 	private boolean hasMapCentered = false;
 	private int[] mapTypes = { GoogleMap.MAP_TYPE_NORMAL, GoogleMap.MAP_TYPE_SATELLITE, GoogleMap.MAP_TYPE_HYBRID, GoogleMap.MAP_TYPE_TERRAIN };
 	private int currentMapType = mapTypes[0];
+	public ArrayList<MarkerPlus> markers = new ArrayList<MarkerPlus>();
 	
 
 	
@@ -60,8 +62,6 @@ public class GoogleMapsViewer extends Activity implements LocationListener, Info
 		map.setInfoWindowAdapter(this);
         
         map.setMyLocationEnabled(true);
-        map.setIndoorEnabled(true);
-        map.setTrafficEnabled(false);
         
         //System.out.println(myLocation.getLatitude() + " " + myLocation.getLongitude());
 		//LatLng location = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
@@ -71,7 +71,7 @@ public class GoogleMapsViewer extends Activity implements LocationListener, Info
 		map.setMapType(mapTypes[0]);
 		
 		//How to add marker
-		//map.addMarker(new MarkerOptions().title("TITLE").snippet("DESCRIPTION").position(new LatLng(0,0)));
+		map.addMarker(new MarkerOptions().title("TITLE").snippet("DESCRIPTION").position(new LatLng(0,0)));
 		
 	}
 
@@ -212,7 +212,20 @@ public class GoogleMapsViewer extends Activity implements LocationListener, Info
 
 	@Override
 	public View getInfoContents(Marker marker) {
-		return null;
+        View v = getLayoutInflater().inflate(R.layout.marker_contents, null);
+
+        // Getting reference to the TextView to set title
+        TextView title = (TextView) v.findViewById(R.id.marker_title);
+        TextView info = (TextView) v.findViewById(R.id.marker_info);
+        ImageView image = (ImageView) v.findViewById(R.id.marker_image);
+
+        title.setText(marker.getTitle() );
+        info.setText(marker.getSnippet() );
+        image.setImageDrawable(getResources().getDrawable(
+				R.drawable.ic_launcher));
+
+        // Returning the view containing InfoWindow contents
+        return v;
 	}
 
 	@Override
