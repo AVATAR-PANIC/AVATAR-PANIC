@@ -304,17 +304,8 @@ public class CameraView extends Activity implements Callback {
 			// for (java.util.Map.Entry<GeoPoint, DataObject> entry :
 			// repo.getCollectionOfDataEntries()){
 			// for(GeoPoint testPoint: pointArray){
-			double myAlt = myLocation.getAltitude();
-			Location gpLocation = MapsForgeMapViewer
-					.convertGeoPointToLocation(testPoint);
-			gpLocation.setAltitude(0);
-
-			// All of these angles are in Radians.
-			double gpBearing = myLocation.bearingTo(gpLocation) * Math.PI
-					/ 180.0;
-			double gpAlt = gpLocation.getAltitude();
-			double myPitchA = Math.atan((myAlt - gpAlt)
-					/ myLocation.distanceTo(gpLocation));
+			
+			drawPoint(testPoint, canvas);
 
 			// System.out.println((Math.tan(gpBearing - myBearing) * 640 /
 			// Math.tan(Math.PI / 6.0) + 640) + " "
@@ -326,7 +317,7 @@ public class CameraView extends Activity implements Callback {
 
 			// This checks where the point is in relation to the tablets
 			// location and only draws it in the correct place.
-			if (myLocation.getLatitude() < gpLocation.getLatitude()) {
+			/*if (myLocation.getLatitude() < gpLocation.getLatitude()) {    //DELETE ME
 				if (myBearing >= 0) {
 
 					if ((float) (Math.tan(gpBearing - myBearing)
@@ -382,12 +373,100 @@ public class CameraView extends Activity implements Callback {
 										.getHeight() / 2)), null);
 					}
 				}
-			}
+			}*/
 
 			// }
 			// }
 			// }
+	}
+	
+	public void drawPoint(GeoPoint geoPoint, Canvas canvas){
+		
+		Bitmap pointIcon = BitmapFactory.decodeResource(getResources(),
+				R.drawable.ic_launcher);
+		// for (java.util.Map.Entry<GeoPoint, DataObject> entry :
+		// repo.getCollectionOfDataEntries()){
+		// for(GeoPoint testPoint: pointArray){
+		double myAlt = myLocation.getAltitude();
+		Location gpLocation = MapsForgeMapViewer
+				.convertGeoPointToLocation(testPoint);
+		gpLocation.setAltitude(0);
+
+		// All of these angles are in Radians.
+		double gpBearing = myLocation.bearingTo(gpLocation) * Math.PI
+				/ 180.0;
+		double gpAlt = gpLocation.getAltitude();
+		double myPitchA = Math.atan((myAlt - gpAlt)
+				/ myLocation.distanceTo(gpLocation));
+
+		// System.out.println((Math.tan(gpBearing - myBearing) * 640 /
+		// Math.tan(Math.PI / 6.0) + 640) + " "
+		// + (Math.tan(myPitchA - myPitch) * 400 / Math.tan(Math.PI / 6.0) +
+		// 400));
+		// System.out.println(gpBearing + " " + myBearing);
+		// if(gpBearing <= myBearing + 26 || gpBearing >= myBearing - 26)
+		// if(myPitchA <= 20 + myPitch && myPitchA >= -20 + myPitch)
+
+		// This checks where the point is in relation to the tablets
+		// location and only draws it in the correct place.
+		if (myLocation.getLatitude() < gpLocation.getLatitude()) {
+			if (myBearing >= 0) {
+
+				if ((float) (Math.tan(gpBearing - myBearing)
+						* (mSurfaceView.getWidth() / 2)
+						/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+						.getWidth() / 2)) > fragWidth) {
+
+					canvas.drawBitmap(
+							pointIcon,
+							(float) (Math.tan(gpBearing - myBearing)
+									* (mSurfaceView.getWidth() / 2)
+									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+									.getWidth() / 2)),
+							(float) (Math.tan(myPitchA - myPitch + Math.PI
+									/ 2.0)
+									* (mSurfaceView.getHeight() / 2)
+									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+									.getHeight() / 2)), null);
+				}
+			}
+		} else if (myLocation.getLatitude() > gpLocation.getLatitude()) {
+			if (myBearing <= 0) {
+
+				if ((float) (Math.tan(gpBearing - myBearing)
+						* (mSurfaceView.getWidth() / 2)
+						/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+						.getWidth() / 2)) > fragWidth) {
+
+					canvas.drawBitmap(
+							pointIcon,
+							(float) (Math.tan(gpBearing - myBearing)
+									* (mSurfaceView.getWidth() / 2)
+									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+									.getWidth() / 2)),
+							(float) (Math.tan(myPitchA - myPitch)
+									* (mSurfaceView.getHeight() / 2)
+									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+									.getHeight() / 2)), null);
+				}
+			}
+		} else {
+			if (myLocation.getLongitude() < gpLocation.getLongitude()) {
+				if (Math.abs(myBearing) > Math.PI / 2) {
+					canvas.drawBitmap(
+							pointIcon,
+							(float) (Math.tan(gpBearing - myBearing)
+									* (mSurfaceView.getWidth() / 2)
+									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+									.getWidth() / 2)),
+							(float) (Math.tan(myPitchA - myPitch)
+									* (mSurfaceView.getHeight() / 2)
+									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+									.getHeight() / 2)), null);
+				}
+			}
 		}
+	}
 	}
 
 	public void drawGeoPoint(Canvas canvas, GeoPoint overLayPoint) {
