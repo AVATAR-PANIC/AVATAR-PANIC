@@ -1,11 +1,18 @@
 package sate2012.avatar.android.googlemaps;
+<<<<<<< HEAD
 
+=======
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+>>>>>>> branch 'master' of https://github.com/AVATAR-PANIC/AVATAR-PANIC.git
 import java.util.ArrayList;
 
 import org.mapsforge.android.maps.GeoPoint;
 import gupta.ashutosh.avatar.R;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import sate2012.avatar.android.Frag;
 import sate2012.avatar.android.MapsForgeMapViewer;
@@ -13,6 +20,7 @@ import sate2012.avatar.android.UploadMedia;
 import sate2012.avatar.android.augmentedrealityview.CameraView;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -20,6 +28,7 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -88,11 +97,18 @@ public class GoogleMapsViewer extends Activity implements LocationListener,
 		// LatLng(myLocation.getLatitude(), myLocation.getLongitude()),
 		// map.getMaxZoomLevel()/3)));
 		map.setMapType(mapTypes[0]);
+<<<<<<< HEAD
 
 		// How to add marker
 		map.addMarker(new MarkerOptions().title("TITLE").snippet("DESCRIPTION")
 				.position(new LatLng(0, 0)));
 
+=======
+		
+		//How to add marker
+		//map.addMarker(new MarkerOptions().title("TITLE").snippet("DESCRIPTION").position(new LatLng(0,0)));
+		
+>>>>>>> branch 'master' of https://github.com/AVATAR-PANIC/AVATAR-PANIC.git
 	}
 
 	@Override
@@ -241,12 +257,20 @@ public class GoogleMapsViewer extends Activity implements LocationListener,
 		TextView info = (TextView) v.findViewById(R.id.marker_info);
 		ImageView image = (ImageView) v.findViewById(R.id.marker_image);
 
+<<<<<<< HEAD
 		title.setText(marker.getTitle());
 		info.setText(marker.getSnippet());
 		// image.setImageDrawable();
 
 		// Returning the view containing InfoWindow contents
 		return v;
+=======
+        title.setText(marker.getTitle() );
+        info.setText(marker.getSnippet() );
+        //image.setImageDrawable();
+        // Returning the view containing InfoWindow contents
+        return v;
+>>>>>>> branch 'master' of https://github.com/AVATAR-PANIC/AVATAR-PANIC.git
 	}
 
 	@Override
