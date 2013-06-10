@@ -3,7 +3,9 @@ package sate2012.avatar.android;
 import gupta.ashutosh.avatar.R;
 import java.io.File;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -60,6 +62,8 @@ public class UploadMedia extends Activity implements OnClickListener {
 		gpsB.setOnClickListener(this);
 		emergency = (Button) findViewById(R.id.emergency);
 		emergency.setOnClickListener(this);
+		
+		
 	}
 
 	/**
@@ -91,21 +95,18 @@ public class UploadMedia extends Activity implements OnClickListener {
 			i = new Intent(getApplicationContext(), MailSenderActivity.class);
 			i.putExtra("Type", dataType);
 			startActivity(i);
-			finish();
 			break;
 		case (R.id.gpsButton):
 			dataType = getResources().getString(R.string.type_android);
 			i = new Intent(getApplicationContext(), MailSenderActivity.class);
 			i.putExtra("Type", dataType);
 			startActivity(i);
-			finish();
 			break;
 		case (R.id.emergency):
 			dataType = getResources().getString(R.string.type_emergency);
 			i = new Intent(getApplicationContext(), PhoneCall.class);
 			i.putExtra("Type", dataType);
 			startActivity(i);
-			finish();
 			break;
 		}
 	}
@@ -116,6 +117,7 @@ public class UploadMedia extends Activity implements OnClickListener {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		
 		if (resultCode == Activity.RESULT_OK) {
 			if (requestCode == Constants.VIDEO_REQUEST) {
 				media_filepath = VideoRecorder.getPath();
@@ -129,6 +131,7 @@ public class UploadMedia extends Activity implements OnClickListener {
 				media_filepath = getImage_filepath();
 				media_extension = "_P.png";
 			}
+			
 
 			media_filename = UploadFTP.FTPUpload(media_filepath,
 					media_extension, thisContext);
@@ -140,6 +143,7 @@ public class UploadMedia extends Activity implements OnClickListener {
 			finish();
 		}
 	}
+	
 
 	public static void setImage_filepath(String fp) {
 		image_filepath = fp;
@@ -167,5 +171,8 @@ public class UploadMedia extends Activity implements OnClickListener {
 				mediaFolder.mkdir();
 		}
 	}
+	
+	
+
 
 }
