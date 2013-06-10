@@ -1,5 +1,6 @@
 package sate2012.avatar.android;
 
+import sate2012.avatar.android.googlemaps.GoogleMapsViewer;
 import gupta.ashutosh.avatar.R;
 import android.app.Activity;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.widget.Button;
 public class AVATARMainMenuActivity extends Activity implements OnClickListener {
 	private Button uploadB; // Button that switches to a menu that lets the user
 							// upload different types of media
+
 	/*
 	 * private Button mapB; // Button that switches to map view private Button
 	 * naoB; // Button that switches to NAO Robot Control private Button arB; //
@@ -52,7 +54,7 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 		// case (R.id.uploadB):
 		default:
 			Intent intent = new Intent(getApplicationContext(),
-					MapsForgeMapViewer.class);
+					GoogleMapsViewer.class);
 			startActivity(intent);
 			// break;
 			/*
