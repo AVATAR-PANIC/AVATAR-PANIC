@@ -16,6 +16,8 @@ import sate2012.avatar.android.GeoDataRepository;
 import sate2012.avatar.android.LocationDataReceiverAVATAR;
 import sate2012.avatar.android.MapsForgeMapViewer;
 import sate2012.avatar.android.Frag;
+import sate2012.avatar.android.PhoneCall;
+import sate2012.avatar.android.googlemaps.GoogleMapsViewer;
 import sate2012.avatar.android.googlemaps.MarkerMaker;
 import sate2012.avatar.android.googlemaps.MarkerPlus;
 import android.app.Activity;
@@ -391,6 +393,8 @@ public class CameraView extends Activity implements Callback {
 			// }
 	}
 	
+		//draws a point relative to the tablet's perspective.
+		
 	public void drawPoint(MarkerPlus marker, Canvas canvas){
 		
 		Bitmap pointIcon = BitmapFactory.decodeResource(getResources(),
@@ -402,7 +406,7 @@ public class CameraView extends Activity implements Callback {
 		Location gpLocation = new Location(LocationManager.NETWORK_PROVIDER);
 		gpLocation.setLatitude(marker.getLatitude());
 		gpLocation.setLongitude(marker.getLongitude());
-		gpLocation.setAltitude(0);
+		gpLocation.setAltitude(marker.getAltitude());
 
 		// All of these angles are in Radians.
 		double gpBearing = myLocation.bearingTo(gpLocation) * Math.PI
@@ -487,8 +491,22 @@ public class CameraView extends Activity implements Callback {
 	}
 
 	public void myClickMethod(View v) {
-		if(v.getId() != R.id.augmentedReality){
-			frag.myClickMethod(v, getApplicationContext());
+		Intent i;
+		switch (v.getId()) {
+		case R.id.map:
+			i = new Intent(getApplicationContext(), GoogleMapsViewer.class);
+			startActivity(i);
+			break;
+		case R.id.augmentedReality:
+			i = new Intent(getApplicationContext(), CameraView.class);
+			startActivity(i);
+			break;
+		case R.id.emergencyCall:
+			i = new Intent(getApplicationContext(), PhoneCall.class);
+			break;
+		case R.id.exit:
+			System.exit(0);
+			break;
 		}
 	}
 
