@@ -1,5 +1,7 @@
 package sate2012.avatar.android.googlemaps;
 
+import java.util.ArrayList;
+
 import org.mapsforge.android.maps.GeoPoint;
 import gupta.ashutosh.avatar.R;
 import sate2012.avatar.android.MapsForgeMapViewer;
@@ -49,6 +51,7 @@ public class GoogleMapsViewer extends Activity implements LocationListener {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		ArrayList<MarkerPlus> markerArray = MarkerMaker.makeMarkers();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.googlemap_viewer);
 		MapFragment mapfrag = ((MapFragment) getFragmentManager().findFragmentById(R.id.googlemap));
@@ -59,7 +62,9 @@ public class GoogleMapsViewer extends Activity implements LocationListener {
         LocationManager mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         LocationListener mlocListener = new MyLocationListener();
         mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 2, mlocListener);
-        
+        for(MarkerPlus marker: markerArray){
+        	map.addMarker(marker.getMarkerOptions());
+        }
         map.setMyLocationEnabled(true);
         
         //System.out.println(myLocation.getLatitude() + " " + myLocation.getLongitude());

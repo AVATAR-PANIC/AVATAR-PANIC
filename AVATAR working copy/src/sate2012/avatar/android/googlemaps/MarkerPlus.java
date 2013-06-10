@@ -9,6 +9,11 @@ public class MarkerPlus {
 	private String data;
 	private double altitude;
 	
+	public MarkerPlus(){
+		this.markerOptions = new MarkerOptions();
+		markerOptions.position(new LatLng(0, 0));
+	}
+	
 	public MarkerPlus(MarkerOptions marker, double altitude, String info) {
 		this.markerOptions = marker;
 		this.data = info;
@@ -36,28 +41,29 @@ public class MarkerPlus {
 		this(latitude, longitude, altitude);
 		this.data = info;
 	}
-
+	
 	public MarkerOptions getMarkerOptions() {
 		return markerOptions;
 	}
-
 	public void setMarkerOptions(MarkerOptions markerOptions) {
 		this.markerOptions = markerOptions;
 	}
-
 	public String getInfo() {
 		return data;
 	}
-
 	public void setInfo(String info) {
 		this.data = info;
 	}
-
 	public double getAltitude() {
 		return altitude;
 	}
-
 	public void setAltitude(double altitude) {
 		this.altitude = altitude;
+	}
+	public void setLatitude(double latitude){
+		markerOptions.position(new LatLng(latitude, markerOptions.getPosition().longitude));
+	}
+	public void setLongitude(double longitude){
+		markerOptions.position(new LatLng(markerOptions.getPosition().latitude, longitude));
 	}
 }
