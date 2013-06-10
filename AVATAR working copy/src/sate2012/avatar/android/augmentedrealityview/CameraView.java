@@ -47,6 +47,7 @@ public class CameraView extends Activity implements Callback {
 	
 	//Use these variables to determine size of side fragment to offset in the PointerView class
 	private int fragWidth;
+	
 
 	// Camera dependent variables
 	private GeoDataRepository repo;

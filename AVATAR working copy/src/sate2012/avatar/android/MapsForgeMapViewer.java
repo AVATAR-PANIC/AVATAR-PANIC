@@ -227,7 +227,6 @@ public class MapsForgeMapViewer extends MapActivity implements
 	protected void onPause() {
 		super.onPause();
 	}
-
 	@Override
 	/**
 	 * onResume sets the actions that the application runs through when starting the application from pause.
