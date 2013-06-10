@@ -1,11 +1,5 @@
 package sate2012.avatar.android.googlemaps;
-<<<<<<< HEAD
 
-=======
-
-import java.io.IOException;
-import java.net.MalformedURLException;
->>>>>>> branch 'master' of https://github.com/AVATAR-PANIC/AVATAR-PANIC.git
 import java.util.ArrayList;
 
 import org.mapsforge.android.maps.GeoPoint;
@@ -97,18 +91,10 @@ public class GoogleMapsViewer extends Activity implements LocationListener,
 		// LatLng(myLocation.getLatitude(), myLocation.getLongitude()),
 		// map.getMaxZoomLevel()/3)));
 		map.setMapType(mapTypes[0]);
-<<<<<<< HEAD
-
-		// How to add marker
-		map.addMarker(new MarkerOptions().title("TITLE").snippet("DESCRIPTION")
-				.position(new LatLng(0, 0)));
-
-=======
-		
 		//How to add marker
 		//map.addMarker(new MarkerOptions().title("TITLE").snippet("DESCRIPTION").position(new LatLng(0,0)));
 		
->>>>>>> branch 'master' of https://github.com/AVATAR-PANIC/AVATAR-PANIC.git
+
 	}
 
 	@Override
@@ -257,20 +243,13 @@ public class GoogleMapsViewer extends Activity implements LocationListener,
 		TextView info = (TextView) v.findViewById(R.id.marker_info);
 		ImageView image = (ImageView) v.findViewById(R.id.marker_image);
 
-<<<<<<< HEAD
 		title.setText(marker.getTitle());
 		info.setText(marker.getSnippet());
 		// image.setImageDrawable();
 
 		// Returning the view containing InfoWindow contents
 		return v;
-=======
-        title.setText(marker.getTitle() );
-        info.setText(marker.getSnippet() );
-        //image.setImageDrawable();
-        // Returning the view containing InfoWindow contents
-        return v;
->>>>>>> branch 'master' of https://github.com/AVATAR-PANIC/AVATAR-PANIC.git
+
 	}
 
 	@Override
