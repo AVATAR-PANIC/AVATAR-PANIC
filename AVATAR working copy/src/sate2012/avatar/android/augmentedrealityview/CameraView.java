@@ -310,11 +310,13 @@ public class CameraView extends Activity implements Callback {
 			// for (java.util.Map.Entry<GeoPoint, DataObject> entry :
 			// repo.getCollectionOfDataEntries()){
 			// for(GeoPoint testPoint: pointArray){
-			
+			int x = 0;
 			
 			for(MarkerPlus marker: markerArray){
 	        	drawPoint(marker, canvas);
+	        	x++;
 	        }
+			System.out.println(x + " points created.");
 			// System.out.println((Math.tan(gpBearing - myBearing) * 640 /
 			// Math.tan(Math.PI / 6.0) + 640) + " "
 			// + (Math.tan(myPitchA - myPitch) * 400 / Math.tan(Math.PI / 6.0) +
