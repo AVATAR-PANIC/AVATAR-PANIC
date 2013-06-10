@@ -16,7 +16,6 @@ import android.widget.Button;
 public class AVATARMainMenuActivity extends Activity implements OnClickListener {
 	private Button uploadB; // Button that switches to a menu that lets the user
 							// upload different types of media
-
 	/*
 	 * private Button mapB; // Button that switches to map view private Button
 	 * naoB; // Button that switches to NAO Robot Control private Button arB; //

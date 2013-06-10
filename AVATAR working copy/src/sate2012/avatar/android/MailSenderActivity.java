@@ -103,6 +103,7 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 		}
 	}
 
+	
 	public void setLayout(String type) {
 		if (type.equals(getResources().getString(R.string.type_comment)))
 			setContentView(R.layout.mail_prep_comment);
@@ -120,8 +121,14 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 			EditText pointName = (EditText) findViewById(R.id.pointName);
 			pointName.setText(ptName);
 		}
+		
+		
 	}
-
+	public void onBackPressed() {
+        setResult(Activity.RESULT_CANCELED, null);
+        finish();
+    }
+	
 	private class MyLocationListener implements LocationListener {
 		public void onLocationChanged(Location loc) {
 			Toast.makeText(c, "Getting Location.", Toast.LENGTH_SHORT).show();

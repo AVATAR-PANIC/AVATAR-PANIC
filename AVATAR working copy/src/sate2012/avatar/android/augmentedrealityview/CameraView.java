@@ -112,15 +112,16 @@ public class CameraView extends Activity implements Callback {
 
 		// Initialize the view surface for the points
 		pointerView = new PointerView(mSurfaceView.getContext());
-		
+
 		// Define layout parameters for the pointer view
 		LayoutParams layoutParamsDrawing = new LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		// add the pointer view
 		this.addContentView(pointerView, layoutParamsDrawing);
-		pointerView.setPadding(300, pointerView.getPaddingTop(), pointerView.getPaddingRight(), pointerView.getPaddingBottom());
+		pointerView.setPadding(300, pointerView.getPaddingTop(),
+				pointerView.getPaddingRight(), pointerView.getPaddingBottom());
 
-		//Set up the sensors
+		// Set up the sensors
 		final SensorManager SENSORMANAGER = (SensorManager) getSystemService(SENSOR_SERVICE);
 		final Sensor ROTATION = SENSORMANAGER
 				.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
@@ -368,22 +369,23 @@ public class CameraView extends Activity implements Callback {
 		canvas.drawBitmap(null, overLayPoint.getLongitudeE6(),
 				overLayPoint.getLongitudeE6(), null);
 	}
-	public void myClickMethod(View v){
-		  Intent i;
-		  switch(v.getId()){
-			  case R.id.map:
-				  i = new Intent(getApplicationContext(), MapsForgeMapViewer.class);
-				  startActivity(i);
-				  break;
-			  case R.id.emergencyCall:
-				  System.out.println("BOO");
-				  break;
-			  case R.id.exit:
-				  System.exit(0);
-				  break;
-		  }
-	  }
-	
+
+	public void myClickMethod(View v) {
+		Intent i;
+		switch (v.getId()) {
+		case R.id.map:
+			i = new Intent(getApplicationContext(), MapsForgeMapViewer.class);
+			startActivity(i);
+			break;
+		case R.id.emergencyCall:
+			System.out.println("BOO");
+			break;
+		case R.id.exit:
+			System.exit(0);
+			break;
+		}
+	}
+
 	public Canvas getMyCanvas() {
 		return myCanvas;
 	}
