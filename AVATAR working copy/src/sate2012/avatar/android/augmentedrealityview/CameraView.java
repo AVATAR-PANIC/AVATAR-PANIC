@@ -3,16 +3,23 @@ package sate2012.avatar.android.augmentedrealityview;
 import gupta.ashutosh.avatar.R;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
 import org.mapsforge.android.maps.GeoPoint;
+
+import com.google.android.gms.maps.model.Marker;
 
 import sate2012.avatar.android.DataObject;
 import sate2012.avatar.android.GeoDataRepository;
 import sate2012.avatar.android.LocationDataReceiverAVATAR;
 import sate2012.avatar.android.MapsForgeMapViewer;
 import sate2012.avatar.android.Frag;
+import sate2012.avatar.android.PhoneCall;
+import sate2012.avatar.android.googlemaps.GoogleMapsViewer;
+import sate2012.avatar.android.googlemaps.MarkerMaker;
+import sate2012.avatar.android.googlemaps.MarkerPlus;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.Context;
@@ -50,6 +57,7 @@ public class CameraView extends Activity implements Callback {
 	
 
 	// Camera dependent variables
+	private Frag frag = new Frag();
 	private GeoDataRepository repo;
 	private Camera mCamera;
 	private SurfaceView mSurfaceView;
@@ -65,6 +73,7 @@ public class CameraView extends Activity implements Callback {
 	// testLocation.getLongitude() - 1);
 	// GeoPoint[] pointArray = {testPoint, testPoint2};
 	float[] currentValues = new float[3];
+	private ArrayList<MarkerPlus> markerArray = MarkerMaker.makeMarkers();
 
 	/**
 	 * This is a lowpass filter. It is used to smooth out the tablets movements.
@@ -304,18 +313,13 @@ public class CameraView extends Activity implements Callback {
 			// for (java.util.Map.Entry<GeoPoint, DataObject> entry :
 			// repo.getCollectionOfDataEntries()){
 			// for(GeoPoint testPoint: pointArray){
-			double myAlt = myLocation.getAltitude();
-			Location gpLocation = MapsForgeMapViewer
-					.convertGeoPointToLocation(testPoint);
-			gpLocation.setAltitude(0);
-
-			// All of these angles are in Radians.
-			double gpBearing = myLocation.bearingTo(gpLocation) * Math.PI
-					/ 180.0;
-			double gpAlt = gpLocation.getAltitude();
-			double myPitchA = Math.atan((myAlt - gpAlt)
-					/ myLocation.distanceTo(gpLocation));
-
+			int x = 0;
+			
+			for(MarkerPlus marker: markerArray){
+	        	drawPoint(marker, canvas);
+	        	x++;
+	        }
+			System.out.println(x + " points created.");
 			// System.out.println((Math.tan(gpBearing - myBearing) * 640 /
 			// Math.tan(Math.PI / 6.0) + 640) + " "
 			// + (Math.tan(myPitchA - myPitch) * 400 / Math.tan(Math.PI / 6.0) +
@@ -326,7 +330,7 @@ public class CameraView extends Activity implements Callback {
 
 			// This checks where the point is in relation to the tablets
 			// location and only draws it in the correct place.
-			if (myLocation.getLatitude() < gpLocation.getLatitude()) {
+			/*if (myLocation.getLatitude() < gpLocation.getLatitude()) {    //DELETE ME
 				if (myBearing >= 0) {
 
 					if ((float) (Math.tan(gpBearing - myBearing)
@@ -382,12 +386,103 @@ public class CameraView extends Activity implements Callback {
 										.getHeight() / 2)), null);
 					}
 				}
-			}
+			}*/
 
 			// }
 			// }
 			// }
+	}
+	
+		//draws a point relative to the tablet's perspective.
+		
+	public void drawPoint(MarkerPlus marker, Canvas canvas){
+		
+		Bitmap pointIcon = BitmapFactory.decodeResource(getResources(),
+				R.drawable.ic_launcher);
+		// for (java.util.Map.Entry<GeoPoint, DataObject> entry :
+		// repo.getCollectionOfDataEntries()){
+		// for(GeoPoint testPoint: pointArray){
+		double myAlt = myLocation.getAltitude();
+		Location gpLocation = new Location(LocationManager.NETWORK_PROVIDER);
+		gpLocation.setLatitude(marker.getLatitude());
+		gpLocation.setLongitude(marker.getLongitude());
+		gpLocation.setAltitude(marker.getAltitude());
+
+		// All of these angles are in Radians.
+		double gpBearing = myLocation.bearingTo(gpLocation) * Math.PI
+				/ 180.0;
+		double gpAlt = gpLocation.getAltitude();
+		double myPitchA = Math.atan((myAlt - gpAlt)
+				/ myLocation.distanceTo(gpLocation));
+
+		// System.out.println((Math.tan(gpBearing - myBearing) * 640 /
+		// Math.tan(Math.PI / 6.0) + 640) + " "
+		// + (Math.tan(myPitchA - myPitch) * 400 / Math.tan(Math.PI / 6.0) +
+		// 400));
+		// System.out.println(gpBearing + " " + myBearing);
+		// if(gpBearing <= myBearing + 26 || gpBearing >= myBearing - 26)
+		// if(myPitchA <= 20 + myPitch && myPitchA >= -20 + myPitch)
+
+		// This checks where the point is in relation to the tablets
+		// location and only draws it in the correct place.
+		if (myLocation.getLatitude() < gpLocation.getLatitude()) {
+			if (myBearing >= 0) {
+
+				if ((float) (Math.tan(gpBearing - myBearing)
+						* (mSurfaceView.getWidth() / 2)
+						/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+						.getWidth() / 2)) > fragWidth) {
+
+					canvas.drawBitmap(
+							pointIcon,
+							(float) (Math.tan(gpBearing - myBearing)
+									* (mSurfaceView.getWidth() / 2)
+									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+									.getWidth() / 2)),
+							(float) (Math.tan(myPitchA - myPitch + Math.PI
+									/ 2.0)
+									* (mSurfaceView.getHeight() / 2)
+									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+									.getHeight() / 2)), null);
+				}
+			}
+		} else if (myLocation.getLatitude() > gpLocation.getLatitude()) {
+			if (myBearing <= 0) {
+
+				if ((float) (Math.tan(gpBearing - myBearing)
+						* (mSurfaceView.getWidth() / 2)
+						/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+						.getWidth() / 2)) > fragWidth) {
+
+					canvas.drawBitmap(
+							pointIcon,
+							(float) (Math.tan(gpBearing - myBearing)
+									* (mSurfaceView.getWidth() / 2)
+									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+									.getWidth() / 2)),
+							(float) (Math.tan(myPitchA - myPitch)
+									* (mSurfaceView.getHeight() / 2)
+									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+									.getHeight() / 2)), null);
+				}
+			}
+		} else {
+			if (myLocation.getLongitude() < gpLocation.getLongitude()) {
+				if (Math.abs(myBearing) > Math.PI / 2) {
+					canvas.drawBitmap(
+							pointIcon,
+							(float) (Math.tan(gpBearing - myBearing)
+									* (mSurfaceView.getWidth() / 2)
+									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+									.getWidth() / 2)),
+							(float) (Math.tan(myPitchA - myPitch)
+									* (mSurfaceView.getHeight() / 2)
+									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+									.getHeight() / 2)), null);
+				}
+			}
 		}
+	}
 	}
 
 	public void drawGeoPoint(Canvas canvas, GeoPoint overLayPoint) {
@@ -399,12 +494,15 @@ public class CameraView extends Activity implements Callback {
 		Intent i;
 		switch (v.getId()) {
 		case R.id.map:
-			i = new Intent(getApplicationContext(),
-					sate2012.avatar.android.googlemaps.GoogleMapsViewer.class);
+			i = new Intent(getApplicationContext(), GoogleMapsViewer.class);
+			startActivity(i);
+			break;
+		case R.id.augmentedReality:
+			i = new Intent(getApplicationContext(), CameraView.class);
 			startActivity(i);
 			break;
 		case R.id.emergencyCall:
-			System.out.println("BOO");
+			i = new Intent(getApplicationContext(), PhoneCall.class);
 			break;
 		case R.id.exit:
 			System.exit(0);

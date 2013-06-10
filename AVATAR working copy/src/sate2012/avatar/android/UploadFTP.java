@@ -23,26 +23,26 @@ public class UploadFTP extends Activity {
 		FTPClient ftpClient = new FTPClient();
 		long time = (System.currentTimeMillis());
 		String filename = "T" + time;
-		try {
-			ftpClient.connect(InetAddress.getByName("24.123.68.146"));
-			ftpClient.login("opensim", "widdlyscuds");
-			ftpClient.changeWorkingDirectory("../../var/www/avatar/Uploaded");
-			if (ftpClient.getReplyString().contains("250")) {
-				Handler progressHandler = new Handler();
-				ftpClient
-						.setFileType(org.apache.commons.net.ftp.FTP.BINARY_FILE_TYPE);
-				BufferedInputStream buffIn = null;
-				buffIn = new BufferedInputStream(new FileInputStream(filepath));
-				ftpClient.enterLocalPassiveMode();
-				ProgressInputStream progressInput = new ProgressInputStream(
-						buffIn, progressHandler);
-				ftpClient.storeFile(filename + extension, progressInput);
-				buffIn.close();
-				ftpClient.logout();
-				ftpClient.disconnect();
-			}
-		} catch (IOException e) {
-		}
+//		try {
+//			ftpClient.connect(InetAddress.getByName("24.123.68.146"));
+//			ftpClient.login("opensim", "widdlyscuds");
+//			ftpClient.changeWorkingDirectory("../../var/www/avatar/Uploaded");
+//			if (ftpClient.getReplyString().contains("250")) {
+//				Handler progressHandler = new Handler();
+//				ftpClient
+//						.setFileType(org.apache.commons.net.ftp.FTP.BINARY_FILE_TYPE);
+//				BufferedInputStream buffIn = null;
+//				buffIn = new BufferedInputStream(new FileInputStream(filepath));
+//				ftpClient.enterLocalPassiveMode();
+//				ProgressInputStream progressInput = new ProgressInputStream(
+//						buffIn, progressHandler);
+//				ftpClient.storeFile(filename + extension, progressInput);
+//				buffIn.close();
+//				ftpClient.logout();
+//				ftpClient.disconnect();
+//			}
+//		} catch (IOException e) {
+//		}
 		return filename + extension;
 	}
 }

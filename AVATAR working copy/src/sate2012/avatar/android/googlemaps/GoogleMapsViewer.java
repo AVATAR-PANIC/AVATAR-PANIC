@@ -44,10 +44,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+<<<<<<< HEAD
 public class GoogleMapsViewer extends Activity implements LocationListener, InfoWindowAdapter, OnCameraChangeListener {
+=======
+public class GoogleMapsViewer extends Activity implements LocationListener,
+		InfoWindowAdapter {
+>>>>>>> branch 'master' of https://github.com/AVATAR-PANIC/AVATAR-PANIC.git
 
 	public GoogleMap map;
+<<<<<<< HEAD
 	public GoogleMapsClusterMaker clusters = new GoogleMapsClusterMaker();
+=======
+	private Frag frag = new Frag();
+>>>>>>> branch 'master' of https://github.com/AVATAR-PANIC/AVATAR-PANIC.git
 	public Location myLocation = new Location(LocationManager.NETWORK_PROVIDER);
 	public Location myCurrentLocation;
 	private double myAltitude;
@@ -74,6 +83,8 @@ public class GoogleMapsViewer extends Activity implements LocationListener, Info
 				.findFragmentById(R.id.googlemap));
 		map = mapfrag.getMap();
 		map.setOnMapLongClickListener(new Listener());
+		
+		map.setInfoWindowAdapter(this);
 
 		map.setInfoWindowAdapter(this);
 		map.setOnCameraChangeListener(this);
