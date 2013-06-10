@@ -1,22 +1,18 @@
 package sate2012.avatar.android.googlemaps;
 
+import gupta.ashutosh.avatar.R;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-
-import org.mapsforge.android.maps.GeoPoint;
-import gupta.ashutosh.avatar.R;
-
-import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import sate2012.avatar.android.Frag;
 import sate2012.avatar.android.MapsForgeMapViewer;
 import sate2012.avatar.android.UploadMedia;
-import sate2012.avatar.android.augmentedrealityview.CameraView;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -186,6 +182,8 @@ public class GoogleMapsViewer extends Activity implements LocationListener,
 			map.addMarker(new MarkerOptions().position(arg0));
 			Intent senderIntent = new Intent(getApplicationContext(),
 					UploadMedia.class);
+			Bundle bundle = new Bundle();
+			senderIntent.putExtra("LatLng", arg0);
 			startActivity(senderIntent);
 		}
 	}
@@ -263,11 +261,7 @@ public class GoogleMapsViewer extends Activity implements LocationListener,
          grab = (ImageGrabber) grab.execute(marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ")));
         try {
 			image.setImageDrawable(grab.get());
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e){
 			e.printStackTrace();
 		}
         // Returning the view containing InfoWindow contents
@@ -292,11 +286,7 @@ public class GoogleMapsViewer extends Activity implements LocationListener,
 			    InputStream input = connection.getInputStream();
 			    Bitmap x = BitmapFactory.decodeStream(input);
 				return new BitmapDrawable(null, x);
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+			} catch (Exception e){
 				e.printStackTrace();
 			}
 			return null;

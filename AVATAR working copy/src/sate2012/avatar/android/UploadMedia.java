@@ -2,12 +2,20 @@ package sate2012.avatar.android;
 
 import gupta.ashutosh.avatar.R;
 import java.io.File;
+import java.net.URI;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
@@ -19,6 +27,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.view.ViewGroup.LayoutParams;
+import com.google.android.gms.maps.model.*;
 
 /**
  * The Upload Menu Allows the user to select different media types to upload to
@@ -134,10 +143,14 @@ public class UploadMedia extends Activity implements OnClickListener {
 				media_filepath = getImage_filepath();
 				media_extension = "_P.png";
 			}
+			Intent i = getIntent();
 			
-
 			media_filename = UploadFTP.FTPUpload(media_filepath,
 					media_extension, thisContext);
+			LatLng latlng = (LatLng) i.getParcelableExtra("LatLng");
+			HttpSender connect = new HttpSender();
+			connect.execute(latlng.latitude + "", latlng.longitude + "", "0");
+			
 			Intent MailIntent = new Intent(getApplicationContext(),
 					MailSenderActivity.class);
 			MailIntent.putExtra("Type", dataType);
@@ -204,7 +217,23 @@ public class UploadMedia extends Activity implements OnClickListener {
 		}
 	}
 	
-	
+	class HttpSender extends AsyncTask<String, String, String>{
+
+		@Override
+		protected String doInBackground(String... params) {
+			try {
+				HttpClient client = new DefaultHttpClient();
+				HttpGet get = new HttpGet(new URI("http://10.0.10.147/sqladdrow.php?Name=Test&Lat=" + params[0] + "&Long=" + params[1] + "&Alt=" + params[2] + "&Link=http://www.google.com"));
+				HttpResponse response = client.execute(get);
+				System.out.println("YAY");
+			}catch(Exception e){
+				System.out.println("SOMETHING WENT BOOM!");
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
+	}
 
 
 }
