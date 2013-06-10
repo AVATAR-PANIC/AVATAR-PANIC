@@ -48,8 +48,7 @@ public class GoogleMapsViewer extends Activity implements LocationListener, Info
 	private boolean hasMapCentered = false;
 	private int[] mapTypes = { GoogleMap.MAP_TYPE_NORMAL, GoogleMap.MAP_TYPE_SATELLITE, GoogleMap.MAP_TYPE_HYBRID, GoogleMap.MAP_TYPE_TERRAIN };
 	private int currentMapType = mapTypes[0];
-	public ArrayList<MarkerPlus> markers = new ArrayList<MarkerPlus>();
-	
+	private ArrayList<MarkerPlus> markerArray = MarkerMaker.makeMarkers();
 
 	
 	sate2012.avatar.android.augmentedrealityview.CameraView myCameraView = new sate2012.avatar.android.augmentedrealityview.CameraView();
@@ -57,7 +56,6 @@ public class GoogleMapsViewer extends Activity implements LocationListener, Info
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		ArrayList<MarkerPlus> markerArray = MarkerMaker.makeMarkers();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.googlemap_viewer);
 		MapFragment mapfrag = ((MapFragment) getFragmentManager().findFragmentById(R.id.googlemap));
@@ -69,6 +67,8 @@ public class GoogleMapsViewer extends Activity implements LocationListener, Info
         for(MarkerPlus marker: markerArray){
         	map.addMarker(marker.getMarkerOptions().title(marker.getName()).snippet(marker.getData()));
         }
+        
+        
         map.setMyLocationEnabled(true);
         
         //System.out.println(myLocation.getLatitude() + " " + myLocation.getLongitude());
@@ -238,6 +238,7 @@ public class GoogleMapsViewer extends Activity implements LocationListener, Info
 
 	@Override
 	public View getInfoWindow(Marker marker) {
-		return null;
+		View v = null;//getLayoutInflater().inflate(R.layout.marker_info_window, null);
+		return v;
 	}
 }
