@@ -1,6 +1,7 @@
 package sate2012.avatar.android;
 
 import sate2012.avatar.android.augmentedrealityview.CameraView;
+import sate2012.avatar.android.googlemaps.GoogleMapsViewer;
 import gupta.ashutosh.avatar.R;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -23,7 +24,7 @@ public class Frag extends Fragment {
 		Intent i;
 		switch (v.getId()) {
 		case R.id.map:
-			i = new Intent(c, MapsForgeMapViewer.class);
+			i = new Intent(c, GoogleMapsViewer.class);
 			startActivity(i);
 			break;
 		case R.id.augmentedReality:
@@ -31,10 +32,10 @@ public class Frag extends Fragment {
 			startActivity(i);
 			break;
 		case R.id.emergencyCall:
-			System.out.println("BOO");
+			i = new Intent(c, PhoneCall.class);
 			break;
 		case R.id.exit:
-			System.out.println("BOO");
+			System.exit(0);
 			break;
 		}
 	}
