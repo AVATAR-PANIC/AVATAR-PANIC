@@ -6,6 +6,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MarkerPlus {
 	
 	private MarkerOptions markerOptions = new MarkerOptions();
+	private String name;
 	private String data;
 	private double altitude;
 	
@@ -66,4 +67,21 @@ public class MarkerPlus {
 	public void setLongitude(double longitude){
 		markerOptions.position(new LatLng(markerOptions.getPosition().latitude, longitude));
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
+	
 }

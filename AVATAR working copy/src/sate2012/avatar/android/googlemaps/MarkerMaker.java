@@ -43,12 +43,15 @@ public class MarkerMaker {
 				reader.beginArray();
 				while(reader.hasNext()){
 					reader.beginObject();
+					String data = "";
 					MarkerPlus marker = new MarkerPlus();
 					while(reader.hasNext()){
 						try{
 						String name = reader.nextName();
 						if(name.equals("Name")){
-							System.out.println("NAME: " + reader.nextString());
+							String pointName = reader.nextString();
+							System.out.println("NAME: " + pointName);
+							marker.setName(pointName);
 						}else if(name.equals("Lat")){
 							double latitude = reader.nextDouble();
 							System.out.println("LATITUDE: " + latitude);
@@ -62,14 +65,19 @@ public class MarkerMaker {
 							System.out.println("ALTITUDE: " + altitude);
 							marker.setAltitude(altitude);
 						}else if(name.equals("Date")){
-							System.out.println("DATE: " + reader.nextString());
+							String date = reader.nextString();
+							data += "Upload Date: " + date + "\r\n";
+							System.out.println("DATE: " + date);
 						}else if(name.equals("Link")){
-							System.out.println("LINK: " + reader.nextString());
+							String link = reader.nextString();
+							data += "Data link: " + link;
+							System.out.println("LINK: " + link);
 						}
 						}catch(IllegalStateException e){
 							System.out.println(reader.nextString());
 						}
 					}
+					marker.setData(data);
 					markerArray.add(marker);
 					reader.endObject();	
 				}

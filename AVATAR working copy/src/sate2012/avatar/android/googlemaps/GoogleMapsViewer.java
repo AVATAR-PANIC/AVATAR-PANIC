@@ -63,7 +63,7 @@ public class GoogleMapsViewer extends Activity implements LocationListener {
         LocationListener mlocListener = new MyLocationListener();
         mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 2, mlocListener);
         for(MarkerPlus marker: markerArray){
-        	map.addMarker(marker.getMarkerOptions());
+        	map.addMarker(marker.getMarkerOptions().title(marker.getName()).snippet(marker.getData()));
         }
         map.setMyLocationEnabled(true);
         
