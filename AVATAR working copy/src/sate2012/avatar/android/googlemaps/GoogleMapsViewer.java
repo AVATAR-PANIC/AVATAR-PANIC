@@ -24,17 +24,23 @@ public class GoogleMapsViewer extends Activity {
 
 	GoogleMap map;
 	Location myLocation = new Location(LocationManager.NETWORK_PROVIDER);
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.googlemap_viewer);
-		MapFragment mapfrag = ((MapFragment) getFragmentManager().findFragmentById(R.id.googlemap));
+		MapFragment mapfrag = ((MapFragment) getFragmentManager()
+				.findFragmentById(R.id.googlemap));
 		map = mapfrag.getMap();
 		map.setOnMapLongClickListener(new Listener());
-		LatLng location = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+		LatLng location = new LatLng(myLocation.getLatitude(),
+				myLocation.getLongitude());
 		map.addMarker(new MarkerOptions().position(location));
-		map.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(map.getCameraPosition().target, map.getCameraPosition().zoom, 30, map.getCameraPosition().bearing)));
+		map.moveCamera(CameraUpdateFactory
+				.newCameraPosition(new CameraPosition(
+						map.getCameraPosition().target,
+						map.getCameraPosition().zoom, 30, map
+								.getCameraPosition().bearing)));
 	}
 
 	@Override
@@ -44,26 +50,27 @@ public class GoogleMapsViewer extends Activity {
 		return true;
 	}
 
-	public void myClickMethod(View v){
-		  Intent i;
-		  switch(v.getId()){
-			  case R.id.map:
-				  i = new Intent(getApplicationContext(), MapsForgeMapViewer.class);
-				  startActivity(i);
-				  break;
-			  case R.id.augmentedReality:
-				  i = new Intent(getApplicationContext(), CameraView.class);
-				  startActivity(i);
-				  break;
-			  case R.id.emergencyCall:
-				  System.out.println("BOO");
-				  break;
-			  case R.id.exit:
-				  System.exit(0);
-				  break;
-		  }
-	  }
-	class Listener implements OnMapLongClickListener{
+	public void myClickMethod(View v) {
+		Intent i;
+		switch (v.getId()) {
+		case R.id.map:
+			i = new Intent(getApplicationContext(), MapsForgeMapViewer.class);
+			startActivity(i);
+			break;
+		case R.id.augmentedReality:
+			i = new Intent(getApplicationContext(), CameraView.class);
+			startActivity(i);
+			break;
+		case R.id.emergencyCall:
+			System.out.println("BOO");
+			break;
+		case R.id.exit:
+			System.exit(0);
+			break;
+		}
+	}
+
+	class Listener implements OnMapLongClickListener {
 
 		@Override
 		public void onMapLongClick(LatLng arg0) {

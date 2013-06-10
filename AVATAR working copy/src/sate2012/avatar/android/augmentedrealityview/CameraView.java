@@ -44,10 +44,10 @@ import android.view.Window;
 import android.widget.Button;
 
 public class CameraView extends Activity implements Callback {
-	
-	//Use these variables to determine size of side fragment to offset in the PointerView class
+
+	// Use these variables to determine size of side fragment to offset in the
+	// PointerView class
 	private int fragWidth;
-	
 
 	// Camera dependent variables
 	private GeoDataRepository repo;
@@ -101,7 +101,6 @@ public class CameraView extends Activity implements Callback {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.camera_view);
 
-		
 		// Initializes the button
 		backButton = (Button) findViewById(R.id.to_main_activity);
 		makeGeoDataRepository();
@@ -115,15 +114,16 @@ public class CameraView extends Activity implements Callback {
 
 		// Initialize the view surface for the points
 		pointerView = new PointerView(mSurfaceView.getContext());
-		
+
 		// Define layout parameters for the pointer view
 		LayoutParams layoutParamsDrawing = new LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		// add the pointer view
 		this.addContentView(pointerView, layoutParamsDrawing);
-		pointerView.setPadding(300, pointerView.getPaddingTop(), pointerView.getPaddingRight(), pointerView.getPaddingBottom());
+		pointerView.setPadding(300, pointerView.getPaddingTop(),
+				pointerView.getPaddingRight(), pointerView.getPaddingBottom());
 
-		//Set up the sensors
+		// Set up the sensors
 		final SensorManager SENSORMANAGER = (SensorManager) getSystemService(SENSOR_SERVICE);
 		final Sensor ROTATION = SENSORMANAGER
 				.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
@@ -159,13 +159,15 @@ public class CameraView extends Activity implements Callback {
 
 				// Update the bearing and pitch of the pointer view to keep the
 				// points in the right place.
-				pointerView.updateBearing((float) -(Math.atan2(rot[3], rot[0])));
+				pointerView
+						.updateBearing((float) -(Math.atan2(rot[3], rot[0])));
 				pointerView
 						.updatePitch((float) -(Math.atan2(rot[7], rot[8]) - (Math.PI / 2)));
 
 				// Redraw the screen
 				pointerView.postInvalidate();
-				fragWidth = getFragmentManager().findFragmentById(R.id.frag1).getView().getWidth();
+				fragWidth = getFragmentManager().findFragmentById(R.id.frag1)
+						.getView().getWidth();
 			}
 		};
 		SENSORMANAGER.registerListener(listener, ROTATION,
@@ -320,42 +322,44 @@ public class CameraView extends Activity implements Callback {
 			// location and only draws it in the correct place.
 			if (myLocation.getLatitude() < gpLocation.getLatitude()) {
 				if (myBearing >= 0) {
-					
-					if((float) (Math.tan(gpBearing - myBearing)
+
+					if ((float) (Math.tan(gpBearing - myBearing)
 							* (mSurfaceView.getWidth() / 2)
 							/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-							.getWidth() / 2)) > fragWidth){
-						
-					canvas.drawBitmap(
-							pointIcon,
-							(float) (Math.tan(gpBearing - myBearing)
-									* (mSurfaceView.getWidth() / 2)
-									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-									.getWidth() / 2)),
-							(float) (Math.tan(myPitchA - myPitch + Math.PI
-									/ 2.0)
-									* (mSurfaceView.getHeight() / 2)
-									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-									.getHeight() / 2)), null);}
+							.getWidth() / 2)) > fragWidth) {
+
+						canvas.drawBitmap(
+								pointIcon,
+								(float) (Math.tan(gpBearing - myBearing)
+										* (mSurfaceView.getWidth() / 2)
+										/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+										.getWidth() / 2)),
+								(float) (Math.tan(myPitchA - myPitch + Math.PI
+										/ 2.0)
+										* (mSurfaceView.getHeight() / 2)
+										/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+										.getHeight() / 2)), null);
+					}
 				}
 			} else if (myLocation.getLatitude() > gpLocation.getLatitude()) {
 				if (myBearing <= 0) {
-					
-					if((float) (Math.tan(gpBearing - myBearing)
-									* (mSurfaceView.getWidth() / 2)
-									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-									.getWidth() / 2)) > fragWidth){
-					
-					canvas.drawBitmap(
-							pointIcon,
-							(float) (Math.tan(gpBearing - myBearing)
-									* (mSurfaceView.getWidth() / 2)
-									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-									.getWidth() / 2)),
-							(float) (Math.tan(myPitchA - myPitch)
-									* (mSurfaceView.getHeight() / 2)
-									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-									.getHeight() / 2)), null);}
+
+					if ((float) (Math.tan(gpBearing - myBearing)
+							* (mSurfaceView.getWidth() / 2)
+							/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+							.getWidth() / 2)) > fragWidth) {
+
+						canvas.drawBitmap(
+								pointIcon,
+								(float) (Math.tan(gpBearing - myBearing)
+										* (mSurfaceView.getWidth() / 2)
+										/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+										.getWidth() / 2)),
+								(float) (Math.tan(myPitchA - myPitch)
+										* (mSurfaceView.getHeight() / 2)
+										/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+										.getHeight() / 2)), null);
+					}
 				}
 			} else {
 				if (myLocation.getLongitude() < gpLocation.getLongitude()) {
@@ -373,7 +377,7 @@ public class CameraView extends Activity implements Callback {
 					}
 				}
 			}
-			
+
 			// }
 			// }
 			// }
@@ -384,22 +388,24 @@ public class CameraView extends Activity implements Callback {
 		canvas.drawBitmap(null, overLayPoint.getLongitudeE6(),
 				overLayPoint.getLongitudeE6(), null);
 	}
-	public void myClickMethod(View v){
-		  Intent i;
-		  switch(v.getId()){
-			  case R.id.map:
-				  i = new Intent(getApplicationContext(), sate2012.avatar.android.googlemaps.GoogleMapsViewer.class);
-				  startActivity(i);
-				  break;
-			  case R.id.emergencyCall:
-				  System.out.println("BOO");
-				  break;
-			  case R.id.exit:
-				  System.exit(0);
-				  break;
-		  }
-	  }
-	
+
+	public void myClickMethod(View v) {
+		Intent i;
+		switch (v.getId()) {
+		case R.id.map:
+			i = new Intent(getApplicationContext(),
+					sate2012.avatar.android.googlemaps.GoogleMapsViewer.class);
+			startActivity(i);
+			break;
+		case R.id.emergencyCall:
+			System.out.println("BOO");
+			break;
+		case R.id.exit:
+			System.exit(0);
+			break;
+		}
+	}
+
 	public Canvas getMyCanvas() {
 		return myCanvas;
 	}

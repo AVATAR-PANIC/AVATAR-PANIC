@@ -4,35 +4,37 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MarkerPlus {
-	
+
 	private MarkerOptions markerOptions = new MarkerOptions();
 	private String info;
 	private double altitude;
-	
+
 	public MarkerPlus(MarkerOptions marker, double altitude, String info) {
 		this.markerOptions = marker;
 		this.info = info;
 		this.altitude = altitude;
 	}
-	
+
 	public MarkerPlus(MarkerOptions markerOptions, double altitude) {
 		this.markerOptions = markerOptions;
 		this.altitude = altitude;
 	}
-	
+
 	public MarkerPlus(MarkerOptions markerOptions) {
 		this.markerOptions = markerOptions;
 	}
-	
-	public MarkerPlus(double latitude, double longitude){
+
+	public MarkerPlus(double latitude, double longitude) {
 		markerOptions.position(new LatLng(latitude, longitude));
 	}
-	
-	public MarkerPlus(double latitude, double longitude, double altitude){
+
+	public MarkerPlus(double latitude, double longitude, double altitude) {
 		this(latitude, longitude);
 		this.altitude = altitude;
 	}
-	public MarkerPlus(double latitude, double longitude, double altitude, String info){
+
+	public MarkerPlus(double latitude, double longitude, double altitude,
+			String info) {
 		this(latitude, longitude, altitude);
 		this.info = info;
 	}
