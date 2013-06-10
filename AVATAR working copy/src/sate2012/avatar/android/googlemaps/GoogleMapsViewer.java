@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutionException;
 import sate2012.avatar.android.Frag;
 import sate2012.avatar.android.MapsForgeMapViewer;
 import sate2012.avatar.android.UploadMedia;
+import sate2012.avatar.android.augmentedrealityview.CameraView;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -157,6 +158,10 @@ InfoWindowAdapter, OnCameraChangeListener {
 			i = new Intent(getApplicationContext(), MapsForgeMapViewer.class);
 			startActivity(i);
 			break;
+		case R.id.augmentedReality:
+			i = new Intent(getApplicationContext(), CameraView.class);
+			startActivity(i);
+			break;
 		case R.id.changeType:
 
 			for (int c = 0; c < mapTypes.length; c++) {
@@ -171,9 +176,6 @@ InfoWindowAdapter, OnCameraChangeListener {
 					c = mapTypes.length;
 				}
 			}
-
-			break;
-		default:
 
 		}
 	}
