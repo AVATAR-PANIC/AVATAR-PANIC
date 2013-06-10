@@ -1,9 +1,13 @@
 package sate2012.avatar.android.googlemaps;
 
+import android.view.View;
+
+import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MarkerPlus {
+public class MarkerPlus{
 	
 	private MarkerOptions markerOptions = new MarkerOptions();
 	private String data;
@@ -60,4 +64,5 @@ public class MarkerPlus {
 	public void setAltitude(double altitude) {
 		this.altitude = altitude;
 	}
+
 }

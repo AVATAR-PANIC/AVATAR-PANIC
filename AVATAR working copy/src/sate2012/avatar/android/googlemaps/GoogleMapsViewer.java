@@ -22,14 +22,16 @@ import android.view.View;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class GoogleMapsViewer extends Activity implements LocationListener {
+public class GoogleMapsViewer extends Activity implements LocationListener, InfoWindowAdapter {
 
 	public GoogleMap map;
 	public Location myLocation = new Location(LocationManager.NETWORK_PROVIDER);
@@ -42,6 +44,7 @@ public class GoogleMapsViewer extends Activity implements LocationListener {
 	private boolean hasMapCentered = false;
 	private int[] mapTypes = { GoogleMap.MAP_TYPE_NORMAL, GoogleMap.MAP_TYPE_SATELLITE, GoogleMap.MAP_TYPE_HYBRID, GoogleMap.MAP_TYPE_TERRAIN };
 	private int currentMapType = mapTypes[0];
+	
 
 	
 	sate2012.avatar.android.augmentedrealityview.CameraView myCameraView = new sate2012.avatar.android.augmentedrealityview.CameraView();
@@ -54,13 +57,11 @@ public class GoogleMapsViewer extends Activity implements LocationListener {
 		MapFragment mapfrag = ((MapFragment) getFragmentManager().findFragmentById(R.id.googlemap));
 		map = mapfrag.getMap();
 		map.setOnMapLongClickListener(new Listener());
-		
-		//Set location listeners
-        LocationManager mlocManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        LocationListener mlocListener = new MyLocationListener();
-        mlocManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 2, mlocListener);
+		map.setInfoWindowAdapter(this);
         
         map.setMyLocationEnabled(true);
+        map.setIndoorEnabled(true);
+        map.setTrafficEnabled(false);
         
         //System.out.println(myLocation.getLatitude() + " " + myLocation.getLongitude());
 		//LatLng location = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
@@ -68,6 +69,10 @@ public class GoogleMapsViewer extends Activity implements LocationListener {
 		//map.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(map.getCameraPosition().target, map.getCameraPosition().zoom, 30, map.getCameraPosition().bearing)));
 		//map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), map.getMaxZoomLevel()/3)));
 		map.setMapType(mapTypes[0]);
+		
+		//How to add marker
+		//map.addMarker(new MarkerOptions().title("TITLE").snippet("DESCRIPTION").position(new LatLng(0,0)));
+		
 	}
 
 	@Override
@@ -77,6 +82,10 @@ public class GoogleMapsViewer extends Activity implements LocationListener {
 		return true;
 	}
 
+	/**
+	 * Method that determines what happens depending on which button was clicked
+	 * @param v: The view
+	 */
 	public void myClickMethod(View v){
 		  Intent i;
 		  switch(v.getId()){
@@ -112,6 +121,10 @@ public class GoogleMapsViewer extends Activity implements LocationListener {
 		  }
 	  }
 	
+	/**
+	 * Method called whenever the user's location is changed
+	 * @param loc: New location of the user.
+	 */
     public void onLocationChanged(Location loc)
     {
     	
@@ -130,6 +143,7 @@ public class GoogleMapsViewer extends Activity implements LocationListener {
     	
   	  if(!hasMapCentered){
   		  map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), map.getMaxZoomLevel()/3)));
+  		  hasMapCentered = true;
   	  }
     }
 	
@@ -178,64 +192,31 @@ public class GoogleMapsViewer extends Activity implements LocationListener {
 	protected void onResume() {
 		super.onResume();
 	}
-	
-	 /* Class My Location Listener */
-    public class MyLocationListener implements LocationListener
-    {
-
-      @Override
-      public void onLocationChanged(Location loc)
-      {
-    	  //Debugging Tools
-//    	  myLatitude = loc.getLatitude();
-//    	  myLongitude = loc.getLongitude();
-//    	  myAltitude = loc.getAltitude();
-//    	  String TAG = "Testing: ";
-//    	  
-//    	  Log.d(TAG, "Latitude: " + String.valueOf(myLatitude));
-//    	  Log.d(TAG, "Longitude: " + String.valueOf(myLongitude));
-//    	  Log.d(TAG, "Altitude: " + String.valueOf(myAltitude));
-//    	  map.addMarker(new MarkerOptions().position(new LatLng(myLatitude, myLongitude)));
-//    	  System.out.println("HEY");
-//    	  if(!hasMapCentered){
-//    		  map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), map.getMaxZoomLevel()/3)));
-//    	  }
-      }
-
-      @Override
-      public void onProviderDisabled(String provider)
-      {
-       
-      }
-
-      @Override
-      public void onProviderEnabled(String provider)
-      {
-        
-      }
-
-      @Override
-      public void onStatusChanged(String provider, int status, Bundle extras)
-      {
-
-      }
-    }
 
 	@Override
-	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
+	public void onProviderDisabled(String arg0) {
 		
 	}
 
 	@Override
 	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
 		
+	}
+	
+	//Info Window Adapter implemented methods
+
+	@Override
+	public View getInfoContents(Marker marker) {
+		return null;
+	}
+
+	@Override
+	public View getInfoWindow(Marker marker) {
+		return null;
 	}
 }
