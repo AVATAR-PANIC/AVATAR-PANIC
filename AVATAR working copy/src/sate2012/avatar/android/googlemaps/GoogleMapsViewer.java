@@ -1,5 +1,9 @@
 package sate2012.avatar.android.googlemaps;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import org.mapsforge.android.maps.GeoPoint;
@@ -12,6 +16,7 @@ import sate2012.avatar.android.UploadMedia;
 import sate2012.avatar.android.augmentedrealityview.CameraView;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -48,7 +53,8 @@ public class GoogleMapsViewer extends Activity implements LocationListener, Info
 	private boolean hasMapCentered = false;
 	private int[] mapTypes = { GoogleMap.MAP_TYPE_NORMAL, GoogleMap.MAP_TYPE_SATELLITE, GoogleMap.MAP_TYPE_HYBRID, GoogleMap.MAP_TYPE_TERRAIN };
 	private int currentMapType = mapTypes[0];
-	private ArrayList<MarkerPlus> markerArray = MarkerMaker.makeMarkers();
+	private ArrayList<MarkerPlus> markerPlusArray = MarkerMaker.makeMarkers();
+	private ArrayList<Marker> markerArray = new ArrayList<Marker>();
 
 	
 	sate2012.avatar.android.augmentedrealityview.CameraView myCameraView = new sate2012.avatar.android.augmentedrealityview.CameraView();
@@ -64,8 +70,8 @@ public class GoogleMapsViewer extends Activity implements LocationListener, Info
 
 		map.setInfoWindowAdapter(this);
 
-        for(MarkerPlus marker: markerArray){
-        	map.addMarker(marker.getMarkerOptions().title(marker.getName()).snippet(marker.getData()));
+        for(MarkerPlus marker: markerPlusArray){
+        	markerArray.add(map.addMarker(marker.getMarkerOptions().title(marker.getName()).snippet(marker.getData())));
         }
         
         
@@ -79,7 +85,7 @@ public class GoogleMapsViewer extends Activity implements LocationListener, Info
 		map.setMapType(mapTypes[0]);
 		
 		//How to add marker
-		map.addMarker(new MarkerOptions().title("TITLE").snippet("DESCRIPTION").position(new LatLng(0,0)));
+		//map.addMarker(new MarkerOptions().title("TITLE").snippet("DESCRIPTION").position(new LatLng(0,0)));
 		
 	}
 
@@ -229,8 +235,13 @@ public class GoogleMapsViewer extends Activity implements LocationListener, Info
 
         title.setText(marker.getTitle() );
         info.setText(marker.getSnippet() );
-        image.setImageDrawable(getResources().getDrawable(
-				R.drawable.ic_launcher));
+        String url = marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ") + 1);
+        System.out.println(url);
+        try {
+			image.setImageDrawable(Drawable.createFromStream((InputStream)(new URL(url).getContent()), "blah"));
+		} catch (Exception e){
+			e.printStackTrace();
+		}
 
         // Returning the view containing InfoWindow contents
         return v;
