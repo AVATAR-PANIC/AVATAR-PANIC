@@ -263,18 +263,19 @@ public class CameraView extends Activity implements Callback {
 	
 	@Override
 	public void onDestroy(){
+		super.onDestroy();
 		mCamera.release();
 		mCamera = null;
 	}
 	
 	@Override
 	public void onPause(){
-		
+		super.onPause();
 	}
 	
 	@Override
 	public void onResume(){
-		
+		super.onResume();
 	}
 
 	/**
