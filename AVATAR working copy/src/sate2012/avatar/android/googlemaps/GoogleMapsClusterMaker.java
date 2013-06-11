@@ -8,7 +8,12 @@ import org.mapsforge.android.maps.MapView;
  * 
  * @author Garrett Emrick emrickgarrett@gmail.com
  * This class clusters the points on the map based on distance. 
- * This value can be changed by changing the MAXDISTANCE value
+ * 
+ * If you want to change the distance points will cluster, I recommend changing 
+ * the multiplication factor in the MAXDISTANCE variable below.
+ * The value for MAXDISTANCE (1.89.....E7) is the distance between points
+ * of 1 latitude & longitude difference with zoom level of 4.
+ * 
  * This ClusterMaker is called whenever the zoom level of the GoogleMapsViewer is changed
  */
 public class GoogleMapsClusterMaker {
@@ -16,7 +21,7 @@ public class GoogleMapsClusterMaker {
 	//Temp points to prevent from tampering with the points in the main array
 	public ArrayList<MarkerPlus> tempPoints;
 	//Distance in which the points should cluster
-	private double MAXDISTANCE = 1.8934702197223254E7*64; //= 3E8;
+	private double MAXDISTANCE = 1.8934702197223254E7*64; // 64 is the current Multiplication factor
 	
 	//Offset and Radius
 	private static final double OFFSET = 268435456;
@@ -51,10 +56,13 @@ public class GoogleMapsClusterMaker {
 		}
 		
 		if(zoomLevel <= 18){
+			
+			//Boolean used to determine if it needs to restart the cluster comparison from 0
 			boolean wasMerged = false;
 			//Loop to compare Clusters
 			for(int i = 0; i < clusters.size(); i++){
 				
+				//If there was a merge, restart at 0 to begin comparisons
 				if(wasMerged){
 					i = 0;
 					wasMerged = false;
@@ -137,11 +145,11 @@ public class GoogleMapsClusterMaker {
 	}
 	
 	/**
-	 * Pretty much tooken from the ClusterMaker for the original maps, with some adjustments
+	 * Pretty much taken from the ClusterMaker for the original maps, with some adjustments
 	 * @param c1 : First cluster
 	 * @param c2 : Second cluster
 	 * @param zoom : zoom level
-	 * @return : Supposedly distance in pixels?
+	 * @return : Supposedly distance in pixels? I'd say it's an imaginary unit of some kind. Combination of distance and pixels/zoom? - Garrett
 	 */
 	private double pixelDistance(GoogleMapsClusterMarker c1, GoogleMapsClusterMarker c2, float zoom){
 		// this might not work... i don't know if a byte can be converted into
