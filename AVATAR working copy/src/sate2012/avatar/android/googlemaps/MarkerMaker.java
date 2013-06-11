@@ -81,6 +81,7 @@ public class MarkerMaker {
 					markerArray.add(marker);
 					reader.endObject();	
 				}
+				//HELP!!!
 				reader.endArray();
 			} catch (Exception e) {
 				e.printStackTrace();
