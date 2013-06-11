@@ -4,10 +4,13 @@ import java.util.ArrayList;
 
 import org.mapsforge.android.maps.MapView;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+
 /**
  * 
  * @author Garrett Emrick emrickgarrett@gmail.com
- * This class clusters the points on the map based on distance. 
+ * This class groupClusters the points on the map based on distance. 
  * 
  * If you want to change the distance points will cluster, I recommend changing 
  * the multiplication factor in the MAXDISTANCE variable below.
@@ -36,33 +39,39 @@ public class GoogleMapsClusterMaker {
 	}
 
 	/**
-	 * This method clusters all points, and points will always be in a cluster as well to allow this to 
+	 * This method groupClusters all points, and points will always be in a cluster as well to allow this to 
 	 * work effectively, and maintain simplicity.
 	 * 
 	 * @param zoomLevel : Current Zoom Level of the Google Maps Class
 	 * @param points : Points to be clustered
 	 * @return Array of GoogleMapsClusterMarker Objects
 	 */
-	public ArrayList<GoogleMapsClusterMarker> generateClusters(float zoomLevel, ArrayList<MarkerPlus> points){
+	public ArrayList<GoogleMapsClusterMarker> generateClusters(float zoomLevel, ArrayList<MarkerPlus> points, LatLngBounds bounds){
 		//System.out.println(MAXDISTANCE / zoomLevel*.5);
 		double pixelDistance;
-		ArrayList<GoogleMapsClusterMarker> clusters = new ArrayList<GoogleMapsClusterMarker>();
+		ArrayList<GoogleMapsClusterMarker> groupClusters = new ArrayList<GoogleMapsClusterMarker>();
+		ArrayList<GoogleMapsClusterMarker> allClusters = new ArrayList<GoogleMapsClusterMarker>();
 		tempPoints = new ArrayList<MarkerPlus>(points); //Prevent tampering with the points, Copy Constructor
 		double tempMAXDISTANCE =(MAXDISTANCE * Math.pow(.5, zoomLevel));
 		
-		
-		//Put all points within their own clusters for comparison
+		//Put all points within their own groupClusters for comparison
 		for(int i = 0; i < tempPoints.size(); i++){
-			clusters.add(i,new GoogleMapsClusterMarker());
-			clusters.get(i).addPoint(tempPoints.get(i));
+			MarkerPlus tempPoint = tempPoints.get(i);
+			if(bounds.contains(new LatLng(tempPoint.getLatitude(), tempPoint.getLongitude()))){
+				groupClusters.add(new GoogleMapsClusterMarker());
+				groupClusters.get(groupClusters.size()-1).addPoint(tempPoint);
+			}else{
+				allClusters.add(new GoogleMapsClusterMarker());
+				allClusters.get(allClusters.size()-1).addPoint(tempPoint);
+			}
 		}
 		
 		if(zoomLevel <= 18){
 			
 			//Boolean used to determine if it needs to restart the cluster comparison from 0
 			boolean wasMerged = false;
-			//Loop to compare Clusters
-			for(int i = 0; i < clusters.size()-1; i++){
+			//Loop to compare groupClusters
+			for(int i = 0; i < groupClusters.size()-1; i++){
 				
 				//If there was a merge, restart at 0 to begin comparisons
 				if(wasMerged){
@@ -70,43 +79,48 @@ public class GoogleMapsClusterMaker {
 					wasMerged = false;
 				}
 				
-				for(int j = i+1; j < clusters.size(); j++){
+				for(int j = i+1; j < groupClusters.size(); j++){
 					//System.out.println("I: " + i + " | J: " + j);
-					pixelDistance = pixelDistance(clusters.get(i), clusters.get(j), zoomLevel);
+					pixelDistance = pixelDistance(groupClusters.get(i), groupClusters.get(j), zoomLevel);
 //					System.out.println("Pixel Distance: " + pixelDistance);
 //					System.out.println("Max Distance: " + MAXDISTANCE * Math.pow(.5, zoomLevel));
-//					System.out.println("Point Names 1: " + clusters.get(i).getPointNames());
-//					System.out.println("Point Names 2: " + clusters.get(j).getPointNames());
+//					System.out.println("Point Names 1: " + groupClusters.get(i).getPointNames());
+//					System.out.println("Point Names 2: " + groupClusters.get(j).getPointNames());
 					
-					if(pixelDistance < tempMAXDISTANCE && clusters.get(i).equals(clusters.get(j)) == false){
-						clusters.add(mergeClusters(clusters.get(i), clusters.get(j)));
-						clusters.remove(j);
-						clusters.remove(i);
+					if(pixelDistance < tempMAXDISTANCE && groupClusters.get(i).equals(groupClusters.get(j)) == false){
+						groupClusters.add(mergegroupClusters(groupClusters.get(i), groupClusters.get(j)));
+						groupClusters.remove(j);
+						groupClusters.remove(i);
 						
 						wasMerged = true;
 						j=0;
 
-						i=1;
 						
 						//System.out.println("Point added!");
 						
 					}
 					
 				}
+				
 			}
 			
 		}
 		
-		return clusters; //Clustered Points
+		for(int i = 0; i < groupClusters.size(); i++){
+			allClusters.add(groupClusters.get(i));
+		}
+		
+
+		return allClusters; //Clustered Points
 	}
 	
 	/**
 	 * Helper method, merges the two Cluster Marker objects and returns the final version.
 	 * @param c1 : The first cluster to be merged.
 	 * @param c2 : The second cluster to be merged.
-	 * @return A combination of the two clusters, no repeats.
+	 * @return A combination of the two groupClusters, no repeats.
 	 */
-	public GoogleMapsClusterMarker mergeClusters(GoogleMapsClusterMarker c1, GoogleMapsClusterMarker c2){
+	public GoogleMapsClusterMarker mergegroupClusters(GoogleMapsClusterMarker c1, GoogleMapsClusterMarker c2){
 		
 		GoogleMapsClusterMarker cluster = new GoogleMapsClusterMarker();
 		ArrayList<MarkerPlus> points = new ArrayList<MarkerPlus>();
@@ -170,6 +184,22 @@ public class GoogleMapsClusterMaker {
 				/ Math.pow(2, (21 - zoom));
 		// the php script references a bitshift operator >>. THe equivalent
 		// statement is implemented above.
+	}
+	
+	private double pixelDistance(GoogleMapsClusterMarker c1, MarkerPlus p, float zoom){
+		// this might not work... i don't know if a byte can be converted into
+				// an int
+				double x1 = lonToX(c1.lon);
+				double y1 = latToY(c1.lat);
+
+				double x2 = lonToX(p.getLongitude());
+				double y2 = latToY(p.getLatitude());
+				// this will calculate the pixel distance of the points on the screen
+				return Math.sqrt((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2))
+						/ Math.pow(2, (21 - zoom));
+				// the php script references a bitshift operator >>. THe equivalent
+				// statement is implemented above.
+		
 	}
 	
 }

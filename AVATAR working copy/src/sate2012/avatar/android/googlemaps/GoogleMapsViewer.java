@@ -113,7 +113,7 @@ InfoWindowAdapter, OnCameraChangeListener {
 		LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
 		
 		int i = 1;
-		for(GoogleMapsClusterMarker marker: clusters.generateClusters(map.getCameraPosition().zoom, markerArray)){
+		for(GoogleMapsClusterMarker marker: clusters.generateClusters(map.getCameraPosition().zoom, markerArray, bounds)){
 			if(bounds.contains(marker.latlng)){
 				if(marker.getPoints().size() > 1){
 					map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames() + " | " + marker.getPoints().size()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
@@ -316,8 +316,6 @@ InfoWindowAdapter, OnCameraChangeListener {
 			}
 	        
 		}else{
-			image.setImageResource(R.drawable.ic_launcher);
-			
 			Bitmap clusterImage = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
 			Bitmap tempImage = clusterImage.copy(Bitmap.Config.ARGB_8888, true);
 			Canvas canvas = new Canvas(tempImage);
