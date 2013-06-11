@@ -3,6 +3,7 @@ package sate2012.avatar.android;
 import gupta.ashutosh.avatar.R;
 import java.io.File;
 import java.net.URI;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -49,6 +50,7 @@ public class UploadMedia extends Activity implements OnClickListener {
 	private String media_extension;
 	private static String image_filepath;
 	public static Context thisContext;
+	public static String ptName;
 
 	/**
 	 * Called when the activity is first created.
@@ -124,7 +126,7 @@ public class UploadMedia extends Activity implements OnClickListener {
 			LatLng latlng = (LatLng) emergencyIntent.getParcelableExtra("LatLng");
 			HttpSender connect = new HttpSender();
 			connect.execute("EMERGENCY", latlng.latitude + "",
-					latlng.longitude + "", "0");
+					latlng.longitude + "", "0", "EMERGENCY");
 			
 			i.putExtra("Type", dataType);
 			startActivity(i);
@@ -154,17 +156,27 @@ public class UploadMedia extends Activity implements OnClickListener {
 			}
 			Intent i = getIntent();
 
-			media_filename = UploadFTP.FTPUpload(media_filepath,
-					media_extension, thisContext);
+			UploadFTP ftp = new UploadFTP();
+			ftp.execute(media_filepath, media_extension);
+			try {
+				media_filename = ftp.get();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			LatLng latlng = (LatLng) i.getParcelableExtra("LatLng");
 			HttpSender connect = new HttpSender();
-			connect.execute("test", latlng.latitude + "",
-					latlng.longitude + "", "0");
-
+			connect.execute(ptName, latlng.latitude + "",
+					latlng.longitude + "", "0", media_filename);
+			
 			Intent MailIntent = new Intent(getApplicationContext(),
 					MailSenderActivity.class);
 			MailIntent.putExtra("Type", dataType);
 			MailIntent.putExtra("Filename", media_filename);
+			MailIntent.putExtra("LatLng", latlng);
 			startActivity(MailIntent);
 			finish();
 		}
@@ -204,6 +216,15 @@ public class UploadMedia extends Activity implements OnClickListener {
 	public String getImage_filepath() {
 		return image_filepath;
 	}
+	
+	public static void setPtName(String name){
+		ptName = name;
+		System.out.println("NAME IS: " + ptName);
+	}
+	
+	public static String getPtName(){
+		return ptName;
+	}
 
 	@Override
 	public void onDestroy() {
@@ -224,7 +245,7 @@ public class UploadMedia extends Activity implements OnClickListener {
 		}
 	}
 
-	class HttpSender extends AsyncTask<String, String, String> {
+	public static class HttpSender extends AsyncTask<String, String, String> {
 
 		@Override
 		protected String doInBackground(String... params) {
@@ -234,7 +255,7 @@ public class UploadMedia extends Activity implements OnClickListener {
 						"http://10.0.10.147/sqladdrow.php?Name=" + params[0]
 								+ "&Lat=" + params[1] + "&Long=" + params[2]
 								+ "&Alt=" + params[3]
-								+ "&Link=http://www.google.com"));
+								+ "&Link=" + params[4]));
 				HttpResponse response = client.execute(get);
 				//System.out.println("YAY");
 			} catch (Exception e) {

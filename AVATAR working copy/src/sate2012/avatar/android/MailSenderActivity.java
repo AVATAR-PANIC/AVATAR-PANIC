@@ -1,5 +1,7 @@
 package sate2012.avatar.android;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import gupta.ashutosh.avatar.R;
 import android.location.Location;
 import android.location.LocationListener;
@@ -80,13 +82,22 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 				toList = "sate2012.avatar@gmail.com";
 				EditText etName = (EditText) findViewById(R.id.pointName);
 				ptName = etName.getText().toString();
+				
+				System.out.println("NAME SET");
+				Intent i = getIntent();
+				LatLng latlng = i.getParcelableExtra("LatLng");
+				UploadMedia.HttpSender httpSender = new UploadMedia.HttpSender();
+				httpSender.execute(ptName, latlng.latitude + "",
+						latlng.longitude + "", "0", "TEST");
+				
+				
 				EditText etDesc = (EditText) findViewById(R.id.pointDesc);
 				ptDesc = etDesc.getText().toString();
 				item_sep = getResources().getString(R.string.item_separator);
 				subj = "POINT: " + ptName + item_sep + ptLat + item_sep + ptLng
 						+ item_sep + ptType + item_sep + ptDesc;
 				GMailSender sender = new GMailSender(
-						"sate2012.avatar@gmail.com", "EmbraceChaos");
+						"sate2012.avatar@gmail.com", "SATE2013AVATARpass");
 				sender.sendMail(subj, body, from, toList);
 				setContentView(R.layout.sent);
 				button_return = (Button) findViewById(R.id.Return);
