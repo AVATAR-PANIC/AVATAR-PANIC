@@ -94,15 +94,8 @@ InfoWindowAdapter, OnCameraChangeListener {
         
         map.setMyLocationEnabled(true);
         drawMarkers(false);
-        
-        //System.out.println(myLocation.getLatitude() + " " + myLocation.getLongitude());
-		//LatLng location = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-		//map.addMarker(new MarkerOptions().position(location));
-		//map.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(map.getCameraPosition().target, map.getCameraPosition().zoom, 30, map.getCameraPosition().bearing)));
-		//map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), map.getMaxZoomLevel()/3)));
 		map.setMapType(mapTypes[0]);
-		//How to add marker
-		//map.addMarker(new MarkerOptions().title("TITLE").snippet("DESCRIPTION").position(new LatLng(0,0)));
+
 		
 
 		
@@ -146,9 +139,6 @@ InfoWindowAdapter, OnCameraChangeListener {
 		       //}
 //		}
 		
-//        for(MarkerPlus marker: markerArray){
-//        	map.addMarker(marker.getMarkerOptions().title(marker.getName()).snippet(marker.getData()));
-//        }
 		
 	}
 	
@@ -307,12 +297,17 @@ InfoWindowAdapter, OnCameraChangeListener {
 		info.setText(marker.getSnippet());
 		// image.setImageDrawable();
         
-        ImageGrabber grab = new ImageGrabber();
-         grab = (ImageGrabber) grab.execute(marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ")));
-        try {
-			image.setImageDrawable(grab.get());
-		} catch (Exception e){
-			e.printStackTrace();
+		if(!(new String("Cluster").regionMatches(0, marker.getTitle(), 0, 6))){
+	        ImageGrabber grab = new ImageGrabber();
+	         grab = (ImageGrabber) grab.execute(marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ")));
+	        try {
+				image.setImageDrawable(grab.get());
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+	        
+		}else{
+			image.setImageResource(R.drawable.ic_launcher);
 		}
         //Returning the view containing InfoWindow contents
         return v;
