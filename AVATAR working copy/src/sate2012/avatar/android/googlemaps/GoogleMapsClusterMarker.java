@@ -47,7 +47,7 @@ public class GoogleMapsClusterMarker {
 		
 		markerloop:
 		for(MarkerPlus point: points){
-			if(i != 5){
+			if(i != 4){
 				if(point.getName() != null){
 					listOfNames += point.getName() + "\n";
 				}else{
