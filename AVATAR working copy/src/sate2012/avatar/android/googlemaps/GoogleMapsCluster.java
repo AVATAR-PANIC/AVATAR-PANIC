@@ -11,6 +11,7 @@ private int MAXDISTANCE = 100;
 /**
 * Default Constructor
 */
+
 public GoogleMapsCluster(){
 
 }

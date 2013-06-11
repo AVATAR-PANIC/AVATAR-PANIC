@@ -1,17 +1,14 @@
 package sate2012.avatar.android.googlemaps;
 
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.JsonReader;
 
@@ -52,28 +49,28 @@ public class MarkerMaker {
 						String name = reader.nextName();
 						if(name.equals("Name")){
 							String pointName = reader.nextString();
-							System.out.println("NAME: " + pointName);
+							//System.out.println("NAME: " + pointName);
 							marker.setName(pointName);
 						}else if(name.equals("Lat")){
 							double latitude = reader.nextDouble();
-							System.out.println("LATITUDE: " + latitude);
+							//System.out.println("LATITUDE: " + latitude);
 							marker.setLatitude(latitude);
 						}else if(name.equals("Long")){
 							double longitude = reader.nextDouble();
-							System.out.println("LONGITUDE: " + longitude);
+							//System.out.println("LONGITUDE: " + longitude);
 							marker.setLongitude(longitude);
 						}else if(name.equals("Alt (ft)")){
 							double altitude = reader.nextDouble();
-							System.out.println("ALTITUDE: " + altitude);
+							//System.out.println("ALTITUDE: " + altitude);
 							marker.setAltitude(altitude);
 						}else if(name.equals("Date")){
 							String date = reader.nextString();
 							data += "Upload Date: " + date + "\r\n";
-							System.out.println("DATE: " + date);
+							//System.out.println("DATE: " + date);
 						}else if(name.equals("Link")){
 							String link = reader.nextString();
 							data += "Data link: " + link;
-							System.out.println("LINK: " + link);
+							//System.out.println("LINK: " + link);
 							//marker.setImage(Drawable.createFromStream(((InputStream)new java.net.URL(link).getContent()), "BLAH"));
 						}
 						}catch(IllegalStateException e){
