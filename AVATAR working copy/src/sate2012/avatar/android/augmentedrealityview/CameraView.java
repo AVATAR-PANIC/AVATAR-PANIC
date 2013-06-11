@@ -490,6 +490,7 @@ public class CameraView extends Activity implements Callback {
 	public void setmCamera(Camera mCamera) {
 		this.mCamera = mCamera;
 	}
+	
 
 	public SurfaceView getmSurfaceView() {
 		return mSurfaceView;
