@@ -40,6 +40,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
@@ -57,7 +58,6 @@ public class CameraView extends Activity implements Callback {
 	
 
 	// Camera dependent variables
-	private Frag frag = new Frag();
 	private GeoDataRepository repo;
 	private Camera mCamera;
 	private SurfaceView mSurfaceView;
@@ -260,6 +260,22 @@ public class CameraView extends Activity implements Callback {
 		mCamera.release();
 
 	}
+	
+	@Override
+	public void onDestroy(){
+		mCamera.release();
+		mCamera = null;
+	}
+	
+	@Override
+	public void onPause(){
+		
+	}
+	
+	@Override
+	public void onResume(){
+		
+	}
 
 	/**
 	 * This is the Pointer view. It is what the points are drawn on. It lives in
@@ -316,82 +332,31 @@ public class CameraView extends Activity implements Callback {
 			int x = 0;
 			
 			for(MarkerPlus marker: markerArray){
-	        	drawPoint(marker, canvas);
+				Log.i("Augmented Reality", "myLocation is: " + myLocation.getLongitude() + "myLongitude is: " + myLocation.getLatitude());
+	        	if(pointClose(marker)){
+	        		drawPoint(marker, canvas);
+	        	}
 	        	x++;
 	        }
 			System.out.println(x + " points created.");
-			// System.out.println((Math.tan(gpBearing - myBearing) * 640 /
-			// Math.tan(Math.PI / 6.0) + 640) + " "
-			// + (Math.tan(myPitchA - myPitch) * 400 / Math.tan(Math.PI / 6.0) +
-			// 400));
-			// System.out.println(gpBearing + " " + myBearing);
-			// if(gpBearing <= myBearing + 26 || gpBearing >= myBearing - 26)
-			// if(myPitchA <= 20 + myPitch && myPitchA >= -20 + myPitch)
-
-			// This checks where the point is in relation to the tablets
-			// location and only draws it in the correct place.
-			/*if (myLocation.getLatitude() < gpLocation.getLatitude()) {    //DELETE ME
-				if (myBearing >= 0) {
-
-					if ((float) (Math.tan(gpBearing - myBearing)
-							* (mSurfaceView.getWidth() / 2)
-							/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-							.getWidth() / 2)) > fragWidth) {
-
-						canvas.drawBitmap(
-								pointIcon,
-								(float) (Math.tan(gpBearing - myBearing)
-										* (mSurfaceView.getWidth() / 2)
-										/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-										.getWidth() / 2)),
-								(float) (Math.tan(myPitchA - myPitch + Math.PI
-										/ 2.0)
-										* (mSurfaceView.getHeight() / 2)
-										/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-										.getHeight() / 2)), null);
-					}
-				}
-			} else if (myLocation.getLatitude() > gpLocation.getLatitude()) {
-				if (myBearing <= 0) {
-
-					if ((float) (Math.tan(gpBearing - myBearing)
-							* (mSurfaceView.getWidth() / 2)
-							/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-							.getWidth() / 2)) > fragWidth) {
-
-						canvas.drawBitmap(
-								pointIcon,
-								(float) (Math.tan(gpBearing - myBearing)
-										* (mSurfaceView.getWidth() / 2)
-										/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-										.getWidth() / 2)),
-								(float) (Math.tan(myPitchA - myPitch)
-										* (mSurfaceView.getHeight() / 2)
-										/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-										.getHeight() / 2)), null);
-					}
-				}
-			} else {
-				if (myLocation.getLongitude() < gpLocation.getLongitude()) {
-					if (Math.abs(myBearing) > Math.PI / 2) {
-						canvas.drawBitmap(
-								pointIcon,
-								(float) (Math.tan(gpBearing - myBearing)
-										* (mSurfaceView.getWidth() / 2)
-										/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-										.getWidth() / 2)),
-								(float) (Math.tan(myPitchA - myPitch)
-										* (mSurfaceView.getHeight() / 2)
-										/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-										.getHeight() / 2)), null);
-					}
-				}
-			}*/
-
-			// }
-			// }
-			// }
 	}
+		
+	  //Returns true if the point is within 3 degrees on longitude and latitude.
+	  //assumes myLocation to be the user's location
+		
+	protected boolean pointClose(MarkerPlus marker){
+		boolean returnVal = false;
+		if ( ( ( marker.getLatitude() - myLocation.getLatitude() ) > -3 ) && 
+				( ( marker.getLatitude() - myLocation.getLatitude() ) < 3 )){
+			if ( ( ( marker.getLongitude() - myLocation.getLongitude() ) > -3 ) && 
+					( ( marker.getLongitude() - myLocation.getLongitude() ) < 3 )){
+				returnVal = true;
+			}
+			
+		}
+		return returnVal;
+	}
+		
 	
 		//draws a point relative to the tablet's perspective.
 		
@@ -414,7 +379,7 @@ public class CameraView extends Activity implements Callback {
 		double gpAlt = gpLocation.getAltitude();
 		double myPitchA = Math.atan((myAlt - gpAlt)
 				/ myLocation.distanceTo(gpLocation));
-
+		Log.i("Augmented Reality", "myAltitude = " + myAlt + " gpLocation Altitude = " + gpAlt);
 		// System.out.println((Math.tan(gpBearing - myBearing) * 640 /
 		// Math.tan(Math.PI / 6.0) + 640) + " "
 		// + (Math.tan(myPitchA - myPitch) * 400 / Math.tan(Math.PI / 6.0) +
