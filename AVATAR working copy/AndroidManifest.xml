@@ -39,7 +39,8 @@
         <activity
             android:name="sate2012.avatar.android.AVATARMainMenuActivity"
             android:label="AVATAR"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,11 +50,13 @@
         <activity
             android:name="sate2012.avatar.android.VideoView"
             android:label="VideoView"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name="sate2012.avatar.android.UploadMedia"
             android:label="@string/app_name"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
         </activity>
         <activity
             android:name="sate2012.avatar.android.GPSActivity"
@@ -62,19 +65,22 @@
         <activity
             android:name="sate2012.avatar.android.Photographer"
             android:label="Camera Application"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
         </activity>
         <activity
             android:name="sate2012.avatar.android.VideoRecorder"
             android:label="Video Application"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
         </activity>
         <activity
             android:name="sate2012.avatar.android.augmentedrealityview.CameraView"
             android:label="Augmented Reality"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
         </activity>
         <activity
             android:name="android.media.MediaRecorder"
@@ -83,7 +89,8 @@
         <activity
             android:name="sate2012.avatar.android.VoiceNotes"
             android:label="@string/app_name"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
         </activity>
         <activity
             android:name="sate2012.avatar.android.MailSenderActivity"
@@ -98,7 +105,8 @@
         <activity
             android:name="sate2012.avatar.android.GMailSender"
             android:label="@string/title_mail_sender_activity"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
             <intent-filter>
                 <action android:name="sate2012.avatar.android.GMAILSENDER" />
 
@@ -133,11 +141,14 @@
         </activity>
         <activity
             android:name="sate2012.avatar.android.PhoneCall"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
         </activity>
 		<activity
             android:name="sate2012.avatar.android.googlemaps.GoogleMapsViewer"
-            android:label="@string/title_activity_google_maps_viewer" >
+            android:label="@string/title_activity_google_maps_viewer"
+            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
         </activity>
         
         <meta-data
