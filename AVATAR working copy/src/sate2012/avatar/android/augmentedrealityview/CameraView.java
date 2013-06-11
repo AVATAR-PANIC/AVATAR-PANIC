@@ -521,6 +521,7 @@ public class CameraView extends Activity implements Callback {
 		this.mPreviewRunning = mPreviewRunning;
 	}
 
+	
 	public Button getBackButton() {
 		return backButton;
 	}
