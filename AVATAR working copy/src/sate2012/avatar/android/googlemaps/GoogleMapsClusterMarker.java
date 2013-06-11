@@ -44,13 +44,20 @@ public class GoogleMapsClusterMarker {
 		String listOfNames = "";
 		
 		int i = 0;
+		
+		markerloop:
 		for(MarkerPlus point: points){
-			if(point.getName() != null){
-				listOfNames += point.getName() + "\n";
+			if(i != 5){
+				if(point.getName() != null){
+					listOfNames += point.getName() + "\n";
+				}else{
+					listOfNames += ("Point index: " + i + "\n");
+				}
+				i++;
 			}else{
-				listOfNames += ("Point index: " + i + "\n");
+				listOfNames += ("Plus More...");
+				break markerloop;
 			}
-			i++;
 		}
 		
 		if(listOfNames.equals("")){

@@ -78,13 +78,13 @@ public class GoogleMapsClusterMaker {
 //					System.out.println("Point Names 1: " + clusters.get(i).getPointNames());
 //					System.out.println("Point Names 2: " + clusters.get(j).getPointNames());
 					
-					if(pixelDistance < tempMAXDISTANCE){
+					if(pixelDistance < tempMAXDISTANCE && clusters.get(i).equals(clusters.get(j)) == false){
 						clusters.add(mergeClusters(clusters.get(i), clusters.get(j)));
 						clusters.remove(j);
 						clusters.remove(i);
 						
 						wasMerged = true;
-						j=1;
+						j=0;
 
 						i=1;
 						
