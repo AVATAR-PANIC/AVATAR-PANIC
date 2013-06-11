@@ -318,20 +318,29 @@ InfoWindowAdapter, OnCameraChangeListener {
 			    InputStream input = connection.getInputStream();
 			    Bitmap x = BitmapFactory.decodeStream(input);
 			    
-			    int imageWidth = x.getWidth();
-			    int imageHeight = x.getHeight();
 			    
-			    if(imageWidth > 270 || imageHeight > 150){
-			    	double ratio = (imageWidth > imageHeight)? ((float) 270)/imageWidth: ((float) 150)/imageHeight;
-			    	
-			    	imageWidth =(int) (imageWidth*ratio);
-			    	imageHeight =(int) (imageHeight*ratio);
-			    	
-			    	x = Bitmap.createScaledBitmap(x, imageWidth, imageHeight, false);
-			    }
+			    //Max Image Height and Width
+			    int MAXWIDTH = 150;//= 270;
+			    int MAXHEIGHT = 100;//=150;
 			    
+			    if(x != null){
+				    int imageWidth = x.getWidth();
+				    int imageHeight = x.getHeight();
+				    
+				    if(imageWidth > MAXWIDTH || imageHeight > MAXHEIGHT){
+				    	double ratio = (imageWidth > imageHeight)? ((float) MAXWIDTH)/imageWidth: ((float) MAXHEIGHT)/imageHeight;
+				    	
+				    	imageWidth =(int) (imageWidth*ratio);
+				    	imageHeight =(int) (imageHeight*ratio);
+				    	
+				    	x = Bitmap.createScaledBitmap(x, imageWidth, imageHeight, false);
+				    }
+				    
+				    input.close();
+					return new BitmapDrawable(null, x);
+				    }
 			    input.close();
-				return new BitmapDrawable(null, x);
+			    return null;
 			} catch (Exception e){
 				e.printStackTrace();
 			}
