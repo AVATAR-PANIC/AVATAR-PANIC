@@ -70,8 +70,9 @@ public class UploadMedia extends Activity implements OnClickListener {
 		audioB.setOnClickListener(this);
 		commentB = (ImageButton) findViewById(R.id.commentButton);
 		commentB.setOnClickListener(this);
-		gpsB = (Button) findViewById(R.id.gpsButton);
-		gpsB.setOnClickListener(this);
+//		button was removed and its function was added to the emergency phone call
+//		gpsB = (Button) findViewById(R.id.gpsButton);
+//		gpsB.setOnClickListener(this);
 		emergency = (Button) findViewById(R.id.emergency);
 		emergency.setOnClickListener(this);
 		
@@ -108,12 +109,12 @@ public class UploadMedia extends Activity implements OnClickListener {
 			i.putExtra("Type", dataType);
 			startActivity(i);
 			break;
-		case (R.id.gpsButton):
-			dataType = getResources().getString(R.string.type_android);
-			i = new Intent(getApplicationContext(), MailSenderActivity.class);
-			i.putExtra("Type", dataType);
-			startActivity(i);
-			break;
+//		case (R.id.gpsButton):
+//			dataType = getResources().getString(R.string.type_android);
+//			i = new Intent(getApplicationContext(), MailSenderActivity.class);
+//			i.putExtra("Type", dataType);
+//			startActivity(i);
+//			break;
 		case (R.id.emergency):
 			dataType = getResources().getString(R.string.type_emergency);
 			i = new Intent(getApplicationContext(), PhoneCall.class);
