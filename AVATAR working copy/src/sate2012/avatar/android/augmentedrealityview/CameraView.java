@@ -263,18 +263,19 @@ public class CameraView extends Activity implements Callback {
 	
 	@Override
 	public void onDestroy(){
+		super.onDestroy();
 		mCamera.release();
 		mCamera = null;
 	}
 	
 	@Override
 	public void onPause(){
-		
+		super.onPause();
 	}
 	
 	@Override
 	public void onResume(){
-		
+		super.onResume();
 	}
 
 	/**
@@ -331,8 +332,12 @@ public class CameraView extends Activity implements Callback {
 			// for(GeoPoint testPoint: pointArray){
 			int x = 0;
 			
+			//this is for testing purposes ONLY
+			myLocation.setLatitude(39.759727);
+			myLocation.setLongitude(-84.120383);
+			
 			for(MarkerPlus marker: markerArray){
-				Log.i("Augmented Reality", "myLocation is: " + myLocation.getLongitude() + "myLongitude is: " + myLocation.getLatitude());
+				Log.i("Augmented Reality", "myLongitude is: " + myLocation.getLongitude() + "  myLatitude is: " + myLocation.getLatitude());
 	        	if(pointClose(marker)){
 	        		drawPoint(marker, canvas);
 	        	}
