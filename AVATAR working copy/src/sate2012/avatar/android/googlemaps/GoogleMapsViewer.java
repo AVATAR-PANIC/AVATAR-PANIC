@@ -97,8 +97,8 @@ InfoWindowAdapter, OnCameraChangeListener {
 		for(GoogleMapsClusterMarker marker: clusters.generateClusters(map.getCameraPosition().zoom, markerArray)){
 			if(marker.getPoints().size() > 1){
 				map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-				System.out.println("Added Marker! Position: " + new LatLng(marker.latlng.latitude, marker.latlng.longitude).toString());
-				System.out.println("Marker Name!: " + marker.getPointNames());
+//				System.out.println("Added Marker! Position: " + new LatLng(marker.latlng.latitude, marker.latlng.longitude).toString());
+//				System.out.println("Marker Name!: " + marker.getPointNames());
 			}else{
 				if(marker.getPoints().size() == 1){
 				map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()));
@@ -337,11 +337,12 @@ InfoWindowAdapter, OnCameraChangeListener {
 				map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 				//System.out.println("Added Marker! Position: " + new LatLng(marker.latlng.latitude, marker.latlng.longitude).toString());
 				//System.out.println("Marker Name!: " + marker.getPointNames());
-			}else{
-				if(marker.getPoints().size() == 1){
+			}else if(marker.getPoints().size() == 1){
 				map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()));
 			
-				}
+			}else{
+				System.out.println("DIDN'T DRAW");
+				
 			}
 		}
 		
