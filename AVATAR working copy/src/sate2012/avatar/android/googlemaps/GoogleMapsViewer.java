@@ -40,6 +40,7 @@ import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -63,7 +64,7 @@ InfoWindowAdapter, OnCameraChangeListener {
 			GoogleMap.MAP_TYPE_TERRAIN };
 	private int currentMapType = mapTypes[0];
 	private ArrayList<MarkerPlus> markerArray = MarkerMaker.makeMarkers();
-	//private ArrayList<MarkerPlus> offlineMarkerArray = new ArrayList<MarkerPlus>();
+	private ArrayList<MarkerPlus> offlineMarkerArray = new ArrayList<MarkerPlus>();
 
 	sate2012.avatar.android.augmentedrealityview.CameraView myCameraView = new sate2012.avatar.android.augmentedrealityview.CameraView();
 	sate2012.avatar.android.pointclustering.ClusterMaker geoPointClusterMaker = new sate2012.avatar.android.pointclustering.ClusterMaker();
@@ -83,20 +84,19 @@ InfoWindowAdapter, OnCameraChangeListener {
 		map.setOnCameraChangeListener(this);
 		
 //		offlineMarkerArray.add(new MarkerPlus(10.0,10.0,10.0, "POINT 1"));
-//		offlineMarkerArray.add(new MarkerPlus(9.0,9.0,9.0, "POINT 2"));
-//		offlineMarkerArray.add(new MarkerPlus(8.0, 8.0, 8.0, "POINT 3"));
-//		offlineMarkerArray.add(new MarkerPlus(20.0, 20.0, 8.0, "POINT 4"));
+//		offlineMarkerArray.add(new MarkerPlus(9.9,9.9,9.0, "POINT 2"));
+//		offlineMarkerArray.add(new MarkerPlus(9.5, 9.5, 8.0, "POINT 3"));
+//		offlineMarkerArray.add(new MarkerPlus(9.0, 9.0, 8.0, "POINT 4"));
 //		
 //		int name = 1;
-//		for(MarkerPlus tempMark: markerArray){
+//		for(MarkerPlus tempMark: offlineMarkerArray){
 //			tempMark.setName("POINT " + name++);
-//			System.out.println("POINT COUNT: " + name);
 //		}
 		
-		int i = 0;
+		int i = 1;
 		for(GoogleMapsClusterMarker marker: clusters.generateClusters(map.getCameraPosition().zoom, markerArray)){
 			if(marker.getPoints().size() > 1){
-				map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames()));
+				map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 				System.out.println("Added Marker! Position: " + new LatLng(marker.latlng.latitude, marker.latlng.longitude).toString());
 				System.out.println("Marker Name!: " + marker.getPointNames());
 			}else{
@@ -106,11 +106,11 @@ InfoWindowAdapter, OnCameraChangeListener {
 			}
 		}
 		
-//		int i = 0;
+//		int i = 1;
 //		for(GoogleMapsClusterMarker marker: clusters.generateClusters(map.getCameraPosition().zoom, offlineMarkerArray)){
 //			
 //			if(marker.getPoints().size() > 1){
-//				map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames()));
+//				map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 //				System.out.println("Added Marker! Position: " + new LatLng(marker.latlng.latitude, marker.latlng.longitude).toString());
 //				System.out.println("Marker Name!: " + marker.getPointNames());
 //			}else{
@@ -288,10 +288,6 @@ InfoWindowAdapter, OnCameraChangeListener {
 		title.setText(marker.getTitle());
 		info.setText(marker.getSnippet());
 		// image.setImageDrawable();
-
-        title.setText(marker.getTitle() );
-        info.setText(marker.getSnippet() );
-        //image.setImageDrawable();
         
         ImageGrabber grab = new ImageGrabber();
          grab = (ImageGrabber) grab.execute(marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ")));
@@ -300,7 +296,7 @@ InfoWindowAdapter, OnCameraChangeListener {
 		} catch (Exception e){
 			e.printStackTrace();
 		}
-        // Returning the view containing InfoWindow contents
+        //Returning the view containing InfoWindow contents
         return v;
 
 	}
@@ -334,11 +330,11 @@ InfoWindowAdapter, OnCameraChangeListener {
 	public void onCameraChange(CameraPosition arg0) {
 		map.clear();
 		
-		int i = 0;
+		int i = 1;
 		for(GoogleMapsClusterMarker marker: clusters.generateClusters(map.getCameraPosition().zoom, markerArray)){
 			
 			if(marker.getPoints().size() > 1){
-				map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames()));
+				map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 				//System.out.println("Added Marker! Position: " + new LatLng(marker.latlng.latitude, marker.latlng.longitude).toString());
 				//System.out.println("Marker Name!: " + marker.getPointNames());
 			}else{

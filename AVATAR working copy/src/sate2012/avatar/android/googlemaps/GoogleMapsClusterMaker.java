@@ -9,16 +9,14 @@ import org.mapsforge.android.maps.MapView;
  * @author Garrett Emrick emrickgarrett@gmail.com
  * This class clusters the points on the map based on distance. 
  * This value can be changed by changing the MAXDISTANCE value
- * This ClusterMaker is called whenever the zoom level of the GoogleMapsViewer is called
+ * This ClusterMaker is called whenever the zoom level of the GoogleMapsViewer is changed
  */
 public class GoogleMapsClusterMaker {
 
-	//Clusters
-	private ArrayList<GoogleMapsClusterMarker> clusters = new ArrayList<GoogleMapsClusterMarker>();
 	//Temp points to prevent from tampering with the points in the main array
 	public ArrayList<MarkerPlus> tempPoints;
 	//Distance in which the points should cluster
-	private double MAXDISTANCE = 3E8;
+	private double MAXDISTANCE = 1.8934702197223254E7*64; //= 3E8;
 	
 	//Offset and Radius
 	private static final double OFFSET = 268435456;
@@ -41,7 +39,7 @@ public class GoogleMapsClusterMaker {
 	 * @return Array of GoogleMapsClusterMarker Objects
 	 */
 	public ArrayList<GoogleMapsClusterMarker> generateClusters(float zoomLevel, ArrayList<MarkerPlus> points){
-		System.out.println(MAXDISTANCE / zoomLevel*.5);
+		//System.out.println(MAXDISTANCE / zoomLevel*.5);
 		double pixelDistance;
 		ArrayList<GoogleMapsClusterMarker> clusters = new ArrayList<GoogleMapsClusterMarker>();
 		tempPoints = new ArrayList<MarkerPlus>(points); //Prevent tampering with the points, Copy Constructor
@@ -53,20 +51,30 @@ public class GoogleMapsClusterMaker {
 		}
 		
 		if(zoomLevel <= 18){
-			
+			boolean wasMerged = false;
 			//Loop to compare Clusters
 			for(int i = 0; i < clusters.size(); i++){
 				
+				if(wasMerged){
+					i = 0;
+					wasMerged = false;
+				}
+				
 				for(int j = i+1; j < clusters.size(); j++){
 					pixelDistance = pixelDistance(clusters.get(i), clusters.get(j), zoomLevel);
-					//System.out.println(pixelDistance);
+					System.out.println("Pixel Distance: " + pixelDistance);
+					System.out.println("Max Distance: " + MAXDISTANCE * Math.pow(.5, zoomLevel));
+					System.out.println("Point Names 1: " + clusters.get(i).getPointNames());
+					System.out.println("Point Names 2: " + clusters.get(j).getPointNames());
 					
-					if(pixelDistance < MAXDISTANCE * Math.pow(.5, zoomLevel)){
+					if(pixelDistance < (MAXDISTANCE * Math.pow(.5, zoomLevel))){
 						clusters.add(mergeClusters(clusters.get(i), clusters.get(j)));
 						clusters.remove(j);
 						clusters.remove(i);
-						i=0;
-						//System.out.println("Point added!");
+						
+						wasMerged = true;
+						j=1;
+						System.out.println("Point added!");
 						
 					}
 					
