@@ -70,13 +70,13 @@ public class UploadMedia extends Activity implements OnClickListener {
 		audioB.setOnClickListener(this);
 		commentB = (ImageButton) findViewById(R.id.commentButton);
 		commentB.setOnClickListener(this);
-//		button was removed and its function was added to the emergency phone call
-//		gpsB = (Button) findViewById(R.id.gpsButton);
-//		gpsB.setOnClickListener(this);
+		// button was removed and its function was added to the emergency phone
+		// call
+		// gpsB = (Button) findViewById(R.id.gpsButton);
+		// gpsB.setOnClickListener(this);
 		emergency = (Button) findViewById(R.id.emergency);
 		emergency.setOnClickListener(this);
-		
-		
+
 	}
 
 	/**
@@ -109,15 +109,23 @@ public class UploadMedia extends Activity implements OnClickListener {
 			i.putExtra("Type", dataType);
 			startActivity(i);
 			break;
-//		case (R.id.gpsButton):
-//			dataType = getResources().getString(R.string.type_android);
-//			i = new Intent(getApplicationContext(), MailSenderActivity.class);
-//			i.putExtra("Type", dataType);
-//			startActivity(i);
-//			break;
+		// case (R.id.gpsButton):
+		// dataType = getResources().getString(R.string.type_android);
+		// i = new Intent(getApplicationContext(), MailSenderActivity.class);
+		// i.putExtra("Type", dataType);
+		// startActivity(i);
+		// break;
 		case (R.id.emergency):
 			dataType = getResources().getString(R.string.type_emergency);
 			i = new Intent(getApplicationContext(), PhoneCall.class);
+			
+			Intent emergencyIntent = getIntent();
+
+			LatLng latlng = (LatLng) emergencyIntent.getParcelableExtra("LatLng");
+			HttpSender connect = new HttpSender();
+			connect.execute("EMERGENCY", latlng.latitude + "",
+					latlng.longitude + "", "0");
+			
 			i.putExtra("Type", dataType);
 			startActivity(i);
 			break;
@@ -130,7 +138,7 @@ public class UploadMedia extends Activity implements OnClickListener {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		
+
 		if (resultCode == Activity.RESULT_OK) {
 			if (requestCode == Constants.VIDEO_REQUEST) {
 				media_filepath = VideoRecorder.getPath();
@@ -145,13 +153,14 @@ public class UploadMedia extends Activity implements OnClickListener {
 				media_extension = "_P.png";
 			}
 			Intent i = getIntent();
-			
+
 			media_filename = UploadFTP.FTPUpload(media_filepath,
 					media_extension, thisContext);
 			LatLng latlng = (LatLng) i.getParcelableExtra("LatLng");
 			HttpSender connect = new HttpSender();
-			connect.execute(latlng.latitude + "", latlng.longitude + "", "0");
-			
+			connect.execute("test", latlng.latitude + "",
+					latlng.longitude + "", "0");
+
 			Intent MailIntent = new Intent(getApplicationContext(),
 					MailSenderActivity.class);
 			MailIntent.putExtra("Type", dataType);
@@ -160,31 +169,33 @@ public class UploadMedia extends Activity implements OnClickListener {
 			finish();
 		}
 	}
-	
-//public void onBackPressed(){
-//		LayoutInflater layoutInflater = (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);  
-//	    View popupView = layoutInflater.inflate(R.layout.pop_up, null);  
-//	             final PopupWindow popupWindow = new PopupWindow(popupView, LayoutParams.WRAP_CONTENT,  LayoutParams.WRAP_CONTENT);  
-//	             
-//	             Button no = (Button)popupView.findViewById(R.id.no_button);
-//	             no.setOnClickListener(new Button.OnClickListener(){
-//
-//	     @Override
-//	     public void onClick(View v) {
-//	      // TODO Auto-generated method stub
-//	      popupWindow.dismiss();
-//	      finish();
-//	     }});
-//	         
-//	             Button yes = (Button)popupView.findViewById(R.id.yes_button);
-//	             yes.setOnClickListener(new Button.OnClickListener(){
-//
-//	     @Override
-//	     public void onClick(View v) {
-//	      // TODO Auto-generated method stub
-//	      popupWindow.dismiss();
-//	     }});
-//	}
+
+	// public void onBackPressed(){
+	// LayoutInflater layoutInflater =
+	// (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+	// View popupView = layoutInflater.inflate(R.layout.pop_up, null);
+	// final PopupWindow popupWindow = new PopupWindow(popupView,
+	// LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+	//
+	// Button no = (Button)popupView.findViewById(R.id.no_button);
+	// no.setOnClickListener(new Button.OnClickListener(){
+	//
+	// @Override
+	// public void onClick(View v) {
+	// // TODO Auto-generated method stub
+	// popupWindow.dismiss();
+	// finish();
+	// }});
+	//
+	// Button yes = (Button)popupView.findViewById(R.id.yes_button);
+	// yes.setOnClickListener(new Button.OnClickListener(){
+	//
+	// @Override
+	// public void onClick(View v) {
+	// // TODO Auto-generated method stub
+	// popupWindow.dismiss();
+	// }});
+	// }
 
 	public static void setImage_filepath(String fp) {
 		image_filepath = fp;
@@ -212,24 +223,27 @@ public class UploadMedia extends Activity implements OnClickListener {
 				mediaFolder.mkdir();
 		}
 	}
-	
-	class HttpSender extends AsyncTask<String, String, String>{
+
+	class HttpSender extends AsyncTask<String, String, String> {
 
 		@Override
 		protected String doInBackground(String... params) {
 			try {
 				HttpClient client = new DefaultHttpClient();
-				HttpGet get = new HttpGet(new URI("http://10.0.10.147/sqladdrow.php?Name=Test&Lat=" + params[0] + "&Long=" + params[1] + "&Alt=" + params[2] + "&Link=http://www.google.com"));
+				HttpGet get = new HttpGet(new URI(
+						"http://10.0.10.147/sqladdrow.php?Name=" + params[0]
+								+ "&Lat=" + params[1] + "&Long=" + params[2]
+								+ "&Alt=" + params[3]
+								+ "&Link=http://www.google.com"));
 				HttpResponse response = client.execute(get);
 				System.out.println("YAY");
-			}catch(Exception e){
+			} catch (Exception e) {
 				System.out.println("SOMETHING WENT BOOM!");
 				e.printStackTrace();
 			}
 			return null;
 		}
-		
-	}
 
+	}
 
 }
