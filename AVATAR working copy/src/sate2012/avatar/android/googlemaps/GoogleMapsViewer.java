@@ -56,6 +56,7 @@ InfoWindowAdapter, OnCameraChangeListener {
 	private double myAltitude;
 	private double myLatitude;
 	private double myLongitude;
+	private float lastKnownZoomLevel;
 	private static SensorManager mySensorManager;
 	private boolean sensorrunning;
 	private boolean hasMapCentered = false;
@@ -136,6 +137,8 @@ InfoWindowAdapter, OnCameraChangeListener {
 		//map.addMarker(new MarkerOptions().title("TITLE").snippet("DESCRIPTION").position(new LatLng(0,0)));
 		
 
+		
+		lastKnownZoomLevel = map.getCameraPosition().zoom;
 	}
 
 	@Override
@@ -328,7 +331,13 @@ InfoWindowAdapter, OnCameraChangeListener {
 
 	@Override
 	public void onCameraChange(CameraPosition arg0) {
-		map.clear();
+		
+		if(arg0.zoom != lastKnownZoomLevel){
+			map.clear();
+			lastKnownZoomLevel = arg0.zoom;
+		}
+		
+		
 		
 		int i = 1;
 		for(GoogleMapsClusterMarker marker: clusters.generateClusters(map.getCameraPosition().zoom, markerArray)){
