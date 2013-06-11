@@ -236,9 +236,9 @@ public class UploadMedia extends Activity implements OnClickListener {
 								+ "&Alt=" + params[3]
 								+ "&Link=http://www.google.com"));
 				HttpResponse response = client.execute(get);
-				System.out.println("YAY");
+				//System.out.println("YAY");
 			} catch (Exception e) {
-				System.out.println("SOMETHING WENT BOOM!");
+				//System.out.println("SOMETHING WENT BOOM!");
 				e.printStackTrace();
 			}
 			return null;
