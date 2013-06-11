@@ -313,6 +313,8 @@ InfoWindowAdapter, OnCameraChangeListener {
 			try {
 				HttpURLConnection connection = (HttpURLConnection) new URL(params[0]).openConnection();
 			    connection.connect();
+			    connection.setConnectTimeout(1000);
+			    connection.setReadTimeout(1000);
 			    InputStream input = connection.getInputStream();
 			    Bitmap x = BitmapFactory.decodeStream(input);
 			    
@@ -328,6 +330,7 @@ InfoWindowAdapter, OnCameraChangeListener {
 			    	x = Bitmap.createScaledBitmap(x, imageWidth, imageHeight, false);
 			    }
 			    
+			    input.close();
 				return new BitmapDrawable(null, x);
 			} catch (Exception e){
 				e.printStackTrace();

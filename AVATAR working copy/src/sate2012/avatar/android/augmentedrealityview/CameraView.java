@@ -57,7 +57,6 @@ public class CameraView extends Activity implements Callback {
 	
 
 	// Camera dependent variables
-	private Frag frag = new Frag();
 	private GeoDataRepository repo;
 	private Camera mCamera;
 	private SurfaceView mSurfaceView;
@@ -259,6 +258,22 @@ public class CameraView extends Activity implements Callback {
 		mPreviewRunning = false;
 		mCamera.release();
 
+	}
+	
+	@Override
+	public void onDestroy(){
+		mCamera.release();
+		mCamera = null;
+	}
+	
+	@Override
+	public void onPause(){
+		
+	}
+	
+	@Override
+	public void onResume(){
+		
 	}
 
 	/**
