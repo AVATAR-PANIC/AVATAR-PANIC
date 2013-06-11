@@ -14,6 +14,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
@@ -42,7 +45,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.VisibleRegion;
 
 public class GoogleMapsViewer extends Activity implements LocationListener,
 InfoWindowAdapter, OnCameraChangeListener {
@@ -114,7 +116,7 @@ InfoWindowAdapter, OnCameraChangeListener {
 		for(GoogleMapsClusterMarker marker: clusters.generateClusters(map.getCameraPosition().zoom, markerArray)){
 			if(bounds.contains(marker.latlng)){
 				if(marker.getPoints().size() > 1){
-					map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+					map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames() + " | " + marker.getPoints().size()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 	//				System.out.println("Added Marker! Position: " + new LatLng(marker.latlng.latitude, marker.latlng.longitude).toString());
 	//				System.out.println("Marker Name!: " + marker.getPointNames());
 				}else{
@@ -237,7 +239,6 @@ InfoWindowAdapter, OnCameraChangeListener {
 		}
 
 		public void onSensorChanged(SensorEvent event) {
-			// myCompassView.updateDirection((float) event.values[0]);
 		}
 	};
 
@@ -293,8 +294,16 @@ InfoWindowAdapter, OnCameraChangeListener {
 		TextView info = (TextView) v.findViewById(R.id.marker_info);
 		ImageView image = (ImageView) v.findViewById(R.id.marker_image);
 
+		//Determining what is the snippit, what is not.
+		int snippetIndex = marker.getSnippet().length();
+		int clusterSize = 1;
+		if(marker.getSnippet().contains("|")){
+			snippetIndex = marker.getSnippet().lastIndexOf("|")-1;
+			clusterSize = Integer.parseInt(marker.getSnippet().substring(snippetIndex+3));
+		}
+		
 		title.setText(marker.getTitle());
-		info.setText(marker.getSnippet());
+		info.setText(marker.getSnippet().substring(0, snippetIndex));
 		// image.setImageDrawable();
         
 		if(!(new String("Cluster").regionMatches(0, marker.getTitle(), 0, 6))){
@@ -308,6 +317,16 @@ InfoWindowAdapter, OnCameraChangeListener {
 	        
 		}else{
 			image.setImageResource(R.drawable.ic_launcher);
+			
+			Bitmap clusterImage = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+			Bitmap tempImage = clusterImage.copy(Bitmap.Config.ARGB_8888, true);
+			Canvas canvas = new Canvas(tempImage);
+			Paint paint = new Paint();
+			paint.setColor(Color.WHITE);
+			int xOffset = (int) (3*(clusterSize+"").length());
+			canvas.drawText(clusterSize+"", tempImage.getWidth()/2-xOffset, tempImage.getHeight()/2+4, paint);
+			
+			image.setImageBitmap(tempImage);
 		}
         //Returning the view containing InfoWindow contents
         return v;
