@@ -93,7 +93,6 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 		public void onPostExecute(ArrayList<MarkerPlus> array){
 			if(maps != null){
 				maps.setMarkerArray(array);
-				maps.drawMarkers(true);
 				maps = null;
 			}else{
 				cameraView.setMarkerArray(array);
