@@ -385,8 +385,10 @@ public class CameraView extends Activity implements Callback {
 		double gpBearing = myLocation.bearingTo(gpLocation) * Math.PI
 				/ 180.0;
 		double gpAlt = gpLocation.getAltitude();
+		Paint paint = new Paint();
 		double myPitchA = Math.atan((myAlt - gpAlt)
 				/ myLocation.distanceTo(gpLocation));
+		double dist = myLocation.distanceTo(gpLocation);
 		Log.i("Augmented Reality", "myAltitude = " + myAlt + " gpLocation Altitude = " + gpAlt);
 		// System.out.println((Math.tan(gpBearing - myBearing) * 640 /
 		// Math.tan(Math.PI / 6.0) + 640) + " "
@@ -417,6 +419,15 @@ public class CameraView extends Activity implements Callback {
 									* (mSurfaceView.getHeight() / 2)
 									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
 									.getHeight() / 2)), null);
+					canvas.drawText( dist + "",
+							(float) (Math.tan(gpBearing - myBearing)
+									* (mSurfaceView.getWidth() / 2)
+									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+									.getWidth() / 2)),
+							(float) (Math.tan(myPitchA - myPitch + Math.PI/ 2.0)
+									* (mSurfaceView.getHeight() / 2)
+									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+									.getHeight() / 2)), paint);
 				}
 			}
 		} else if (myLocation.getLatitude() > gpLocation.getLatitude()) {
@@ -437,6 +448,16 @@ public class CameraView extends Activity implements Callback {
 									* (mSurfaceView.getHeight() / 2)
 									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
 									.getHeight() / 2)), null);
+					canvas.drawText( dist + "",
+							(float) (Math.tan(gpBearing - myBearing)
+									* (mSurfaceView.getWidth() / 2)
+									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+									.getWidth() / 2)),
+							(float) (Math.tan(myPitchA - myPitch)
+									* (mSurfaceView.getHeight() / 2)
+									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
+									.getHeight() / 2)), paint);
+					
 				}
 			}
 		} else {

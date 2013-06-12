@@ -20,10 +20,10 @@ public class UploadFTP extends AsyncTask<String, String, String> {
 		long time = (System.currentTimeMillis());
 		String filename = "T" + time;
 		try {
-			ftpClient.connect(InetAddress.getByName("10.0.10.147"));
+			ftpClient.connect(InetAddress.getByName("10.0.1.189"));
 			ftpClient.login("Sean", "");
 			Looper.prepare();
-			//ftpClient.changeWorkingDirectory("../../var/www/avatar/Uploaded");
+			ftpClient.changeWorkingDirectory("AVATAR Pictures/");
 			//if (ftpClient.getReplyString().contains("250")) {
 				Handler progressHandler = new Handler();
 				ftpClient

@@ -89,7 +89,7 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 				
 				UploadMedia.HttpSender httpSender = new UploadMedia.HttpSender();
 				httpSender.execute(ptName, latlng.latitude + "",
-						latlng.longitude + "", "0", "http://10.0.10.147/" + i.getStringExtra("Filename"));
+						latlng.longitude + "", "0", "http://10.0.1.189/AVATAR Pictures/" + i.getStringExtra("Filename"));
 				System.out.println("POINT UPLOADED");
 				
 				
