@@ -52,7 +52,7 @@ public class GoogleMapsViewer extends Activity implements LocationListener,
 InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener {
 
 	public GoogleMap map;
-	public GoogleMapsClusterMaker clusters = new GoogleMapsClusterMaker();
+	public GoogleMapsClusterMaker clusterMaker;
 	public Location myLocation = new Location(LocationManager.NETWORK_PROVIDER);
 	public Location myCurrentLocation;
 	private double myAltitude;
@@ -84,6 +84,7 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 				.findFragmentById(R.id.googlemap));
 		map = mapfrag.getMap();
 		new HttpThread(this).execute("");
+		clusterMaker = new GoogleMapsClusterMaker(map);
 		map.setOnMapLongClickListener(new Listener());
 		
 		map.setInfoWindowAdapter(this);
@@ -124,9 +125,10 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 		}
 		LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
 		
+		
 		if(markerArray != null){
 			int i = 1;
-			for(GoogleMapsClusterMarker marker: clusters.generateClusters(map.getCameraPosition().zoom, markerArray, bounds)){
+			for(GoogleMapsClusterMarker marker: clusterMaker.generateClusters(markerArray, bounds, map.getProjection())){
 				//if(bounds.contains(marker.latlng)){
 					if(marker.getPoints().size() > 1){
 						map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames() + " | " + marker.getPoints().size()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
@@ -140,6 +142,29 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 				//}
 			}
 		}
+		
+		
+		
+		
+		
+		
+		
+//		if(markerArray != null){
+//			int i = 1;
+//			for(GoogleMapsClusterMarker marker: clusterMaker.generateClusters(map.getCameraPosition().zoom, markerArray, bounds)){
+//				//if(bounds.contains(marker.latlng)){
+//					if(marker.getPoints().size() > 1){
+//						map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames() + " | " + marker.getPoints().size()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+//		//				System.out.println("Added Marker! Position: " + new LatLng(marker.latlng.latitude, marker.latlng.longitude).toString());
+//		//				System.out.println("Marker Name!: " + marker.getPointNames());
+//					}else{
+//						if(marker.getPoints().size() == 1){
+//						map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()));
+//						}
+//					}
+//				//}
+//			}
+//		}
 		
 //		int i = 1;
 //		for(GoogleMapsClusterMarker marker: clusters.generateClusters(map.getCameraPosition().zoom, offlineMarkerArray)){
@@ -217,6 +242,7 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 			if(!activeMarker.getSnippet().equals(marker.getSnippet())){
 				currentImage = null;
 				asyncTaskCancel = true;
+				//System.out.println("Snippets No Match");
 			}
 		}
 		this.activeMarker = marker;
@@ -413,7 +439,7 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 	
 	public void setMarkerArray(ArrayList<MarkerPlus> array){
 		this.markerArray = array;
-		System.out.println("Set the Array!");
+		//System.out.println("Set the Array!");
 	}
 	
 	private class ImageGrabber extends AsyncTask<String, Void,  Bitmap>{
@@ -434,7 +460,7 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 				currentImage = null;
 				url = params[0];
 				if(asyncTaskCancel){
-					System.out.println("CANCEL 1");
+					//System.out.println("CANCEL 1");
 					asyncTaskCancel = false;
 					gettingURL = false;
 					this.cancel(true);
@@ -465,7 +491,7 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 				    }
 				    
 				    if(asyncTaskCancel){
-				    	System.out.println("CANCEL 2");
+				    	//System.out.println("CANCEL 2");
 				    	asyncTaskCancel = false;
 				    	gettingURL = false;
 				    	x = null;
@@ -491,7 +517,7 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 		@Override
 		protected void onPostExecute(Bitmap results){
 			if(asyncTaskCancel && !(activeMarker.getSnippet().substring(activeMarker.getSnippet().lastIndexOf(" ")).equals(url))){
-				System.out.println("CANCEL 3");
+				//System.out.println("CANCEL 3");
 				asyncTaskCancel = false;
 				gettingURL = false;
 				results = null;
@@ -499,7 +525,7 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 				map.drawMarkers(true);
 				this.cancel(true);
 			}else if(!(activeMarker.getSnippet().substring(activeMarker.getSnippet().lastIndexOf(" ")).equals(url))){
-				System.out.println("CANCEL 5");
+				//System.out.println("CANCEL 5");
 				asyncTaskCancel = false;
 				gettingURL = false;
 				results = null;
