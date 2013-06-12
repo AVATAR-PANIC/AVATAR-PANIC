@@ -27,7 +27,6 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.MediaMetadataRetriever;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -76,8 +75,6 @@ OnInfoWindowClickListener{
 	private boolean gettingURL = false;
 	private boolean asyncTaskCancel = false;
 
-	sate2012.avatar.android.augmentedrealityview.CameraView myCameraView = new sate2012.avatar.android.augmentedrealityview.CameraView();
-	sate2012.avatar.android.pointclustering.ClusterMaker geoPointClusterMaker = new sate2012.avatar.android.pointclustering.ClusterMaker();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +85,9 @@ OnInfoWindowClickListener{
 		map = mapfrag.getMap();
 		new HttpThread(this).execute("");
 		clusterMaker = new GoogleMapsClusterMaker();
-		map.setOnMapLongClickListener(new Listener());
 		
+		
+		map.setOnMapLongClickListener(new Listener());
 		map.setInfoWindowAdapter(this);
 		map.setOnCameraChangeListener(this);
 		map.setOnMapClickListener(this);
@@ -188,7 +186,6 @@ OnInfoWindowClickListener{
 	public void onInfoWindowClick(Marker marker){
 		System.out.println("Clicked!");
 		if(marker != null){
-				Intent i;
 				try{
 					if(marker.getSnippet().contains(".f4v")){
 						Intent playVideo = new Intent(getApplicationContext(), VideoPlayer.class);
@@ -389,9 +386,7 @@ OnInfoWindowClickListener{
 			activeMarker = null;
 			drawMarkers(true);
 		}
-		
-		//drawMarkers(false);
-		
+
 	}
 	
 	public void setMarkerArray(ArrayList<MarkerPlus> array){
@@ -399,12 +394,29 @@ OnInfoWindowClickListener{
 		//System.out.println("Set the Array!");
 	}
 	
+	
+	/**
+	 * 
+	 * @author Garrett Emrick emrickgarrett@gmail.com
+	 * 
+	 * Class that will run Asynchronously when executed to get the image for a file
+	 * This class will try and cancel the thread if another marker is clicked
+	 * If the entire thread is successful, returns the bitmap retrieved from the URL
+	 * scaled to fit the dimensions needed to fit nicely within the Google Maps Info Window
+	 * 
+	 *
+	 */
 	private class ImageGrabber extends AsyncTask<String, Void,  Bitmap>{
 
 		private ImageView imageSlot;
 		private GoogleMapsViewer map;
 		private String url;
 		
+		/**
+		 * Constructor, make sure to put the ImageView where we want the image to display.
+		 * @param imageSlot : The ImageView where we want the image to appear.
+		 * @param map : The map that we want to have the image to appear on (Should be a reference to above class).
+		 */
 		public ImageGrabber(ImageView imageSlot, GoogleMapsViewer map){
 			this.imageSlot = imageSlot;
 			this.map = map;
@@ -421,8 +433,10 @@ OnInfoWindowClickListener{
 					asyncTaskCancel = false;
 					gettingURL = false;
 					this.cancel(true);
-				}else
-				System.out.println("Getting URL!");
+				}
+				//System.out.println("Getting URL!");
+				
+				//Get the connection, set it to a bitmap
 				HttpURLConnection connection = (HttpURLConnection) new URL(params[0]).openConnection();
 			    connection.connect();
 			    connection.setConnectTimeout(5000);
@@ -438,13 +452,16 @@ OnInfoWindowClickListener{
 				    int imageWidth = x.getWidth();
 				    int imageHeight = x.getHeight();
 				    
+				    //Find out if image dimensions are too large, then sizes it appropriately.
 				    if(imageWidth > MAXWIDTH || imageHeight > MAXHEIGHT){
+				    	
+				    	//Ternary, determines which is larger: image or height?
 				    	double ratio = (imageWidth > imageHeight)? ((float) MAXWIDTH)/imageWidth: ((float) MAXHEIGHT)/imageHeight;
 				    	
 				    	imageWidth =(int) (imageWidth*ratio);
 				    	imageHeight =(int) (imageHeight*ratio);
 				    	
-				    	x = Bitmap.createScaledBitmap(x, imageWidth, imageHeight, false);
+				    	x = Bitmap.createScaledBitmap(x, imageWidth, imageHeight, false); //Create scaled Bitmap
 				    }
 				    
 				    if(asyncTaskCancel){
@@ -455,10 +472,9 @@ OnInfoWindowClickListener{
 				    	this.cancel(true);
 				    }
 				    
+				    //close connections, return the x value. Goes to OnPostExecute() method.
 				    input.close();
 				    connection.disconnect();
-				    //System.out.println("Set Bitmap :)");
-					//return new BitmapDrawable(null, x);
 					return x;
 				    }
 			    input.close();
@@ -471,6 +487,9 @@ OnInfoWindowClickListener{
 			}
 		}
 		
+		/**
+		 * Runs after the thread, sets the image and calls the re-draw method if image is correct.
+		 */
 		@Override
 		protected void onPostExecute(Bitmap results){
 			if(asyncTaskCancel && !(activeMarker.getSnippet().substring(activeMarker.getSnippet().lastIndexOf(" ")).equals(url))){
