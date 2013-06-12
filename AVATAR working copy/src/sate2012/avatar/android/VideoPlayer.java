@@ -17,7 +17,7 @@ public class VideoPlayer extends Activity {
 	public void onCreate(Bundle b){
 		super.onCreate(b);
 //		Intent i = getIntent();
-//  	String path = i.getStringExtra("video_tag");
+//		String path = i.getStringExtra("video_tag");
 		setContentView(R.layout.video_player_layout);
 //		
 //		VideoView videoView = (VideoView) findViewById(R.id.video_player);
@@ -34,17 +34,17 @@ public class VideoPlayer extends Activity {
 //		
 //		videoView.start();
 		
-		//VideoView videoView = (VideoView) findViewById(R.id.video_player);
-		//videoView.setVideoURI(Uri.parse("http://commonsware.com/misc/test2.3gp"));
-		//videoView.start();
+		VideoView videoView = (VideoView) findViewById(R.id.video_player);
+		videoView.setVideoURI(Uri.parse("http://commonsware.com/misc/test2.3gp"));
+		videoView.start();
 		
 		
 	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.video_player_view, menu);
+		// Inflate the menu; this adds items to the action bar if it is present.
+		//getMenuInflater().inflate(R.menu.video_player_view, menu);
 		return true;
 	}
 	
