@@ -150,7 +150,11 @@
             android:screenOrientation="landscape"
             android:configChanges="keyboardHidden|orientation|screenSize" >
         </activity>
-        
+        <activity
+            android:name="sate2012.avatar.android.VideoPlayer"
+            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
+           </activity>
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCxAfbwQJc5DxdwTJvf2nHyAC0d5hWQhv8" />
