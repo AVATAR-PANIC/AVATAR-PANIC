@@ -33,6 +33,8 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -58,6 +60,7 @@ public class CameraView extends Activity implements Callback {
 	private SurfaceHolder mSurfaceHolder;
 	private PointerView pointerView;// pointer view variable
 	boolean mPreviewRunning;
+	private boolean internetCon = true; //true if connected to a provider, false otherwise
 	private Canvas myCanvas = new Canvas();
 	private Button backButton;
 	private ArrayList<String> pointNameList = new ArrayList<String>();
@@ -293,6 +296,7 @@ public class CameraView extends Activity implements Callback {
 			// TODO Auto-generated method stub
 			Toast.makeText(getApplicationContext(), "GPS Disabled",
 					Toast.LENGTH_LONG).show();
+			internetCon = false;
 		}
 
 		@Override
@@ -300,6 +304,7 @@ public class CameraView extends Activity implements Callback {
 			// TODO Auto-generated method stub
 			Toast.makeText(getApplicationContext(), "GPS Enabled",
 					Toast.LENGTH_LONG).show();
+			internetCon = true;
 		}
 
 		@Override
@@ -367,7 +372,7 @@ public class CameraView extends Activity implements Callback {
 			
 			if(markerArray != null){
 				for(MarkerPlus marker: markerArray){
-					Log.i("Augmented Reality", "myLongitude is: " + myLocation.getLongitude() + "  myLatitude is: " + myLocation.getLatitude());
+					//Log.i("Augmented Reality", "myLongitude is: " + myLocation.getLongitude() + "  myLatitude is: " + myLocation.getLatitude());
 		        	if(pointClose(marker))  //TODO uncomment this code.
 					{
 		        		drawPoint(marker, canvas);
@@ -388,7 +393,19 @@ public class CameraView extends Activity implements Callback {
 		
 	protected void drawGUI(Canvas canvas) {
 			// TODO Auto-generated method stub
-			
+			Bitmap connected = BitmapFactory.decodeResource(getResources(),
+				R.drawable.connectedimage);
+			Bitmap disconneceted = BitmapFactory.decodeResource(getResources(),
+					R.drawable.disconnectedimage);
+			ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+			NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+			if (mWifi.isConnected()) {
+				canvas.drawBitmap(connected, mSurfaceView.getWidth()/16*15, mSurfaceView.getHeight()/4*3, null);
+			}
+			else
+			{
+				canvas.drawBitmap(disconneceted, mSurfaceView.getWidth()/16*15, mSurfaceView.getHeight()/4*3, null);  //TODO Change values to something reasonable
+			}
 	}
 
 	protected boolean pointClose(MarkerPlus marker){
@@ -445,7 +462,7 @@ public class CameraView extends Activity implements Callback {
 		double myPitchA = Math.atan((myAlt - gpAlt)
 				/ myLocation.distanceTo(gpLocation));
 		double dist = myLocation.distanceTo(gpLocation);
-		Log.i("Augmented Reality", "myAltitude = " + myAlt + " gpLocation Altitude = " + gpAlt);
+		//Log.i("Augmented Reality", "myAltitude = " + myAlt + " gpLocation Altitude = " + gpAlt);
 		// System.out.println((Math.tan(gpBearing - myBearing) * 640 /
 		// Math.tan(Math.PI / 6.0) + 640) + " "
 		// + (Math.tan(myPitchA - myPitch) * 400 / Math.tan(Math.PI / 6.0) +
