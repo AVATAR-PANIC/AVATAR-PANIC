@@ -18,7 +18,7 @@ public class VideoPlayer extends Activity {
 		super.onCreate(b);
 //		Intent i = getIntent();
 //		String path = i.getStringExtra("video_tag");
-		setContentView(R.layout.video_player_layout);
+		//setContentView(R.layout.video_player_layout);
 //		
 //		VideoView videoView = (VideoView) findViewById(R.id.video_player);
 //		videoView.setKeepScreenOn(true);
@@ -34,9 +34,9 @@ public class VideoPlayer extends Activity {
 //		
 //		videoView.start();
 		
-		VideoView videoView = (VideoView) findViewById(R.id.video_player);
-		videoView.setVideoURI(Uri.parse("http://commonsware.com/misc/test2.3gp"));
-		videoView.start();
+		//VideoView videoView = (VideoView) findViewById(R.id.video_player);
+		//videoView.setVideoURI(Uri.parse("http://commonsware.com/misc/test2.3gp"));
+		//videoView.start();
 		
 		
 	}
