@@ -195,7 +195,12 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 					c = mapTypes.length;
 				}
 			}
+			break;
 
+		case R.id.exit:
+			finish();
+			System.exit(0);
+			break;
 		}
 	}
 	
