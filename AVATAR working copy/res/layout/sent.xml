@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="200dp"
+        android:layout_weight=".5"
         android:text="@string/thank_submission"
         android:textColor="@android:color/white"
         android:textSize="60dp" />
@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:layout_marginTop="40dp"
+        android:layout_weight=".5"
         android:background="@drawable/buttonbackground"
         android:text="@string/back"
         android:textColor="@android:color/white"

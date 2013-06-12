@@ -57,7 +57,7 @@ public class PhoneCall extends Activity implements OnClickListener {
 			break;
 		case R.id.parents:
 			Intent callIntent2 = new Intent(Intent.ACTION_CALL);
-			callIntent2.setData(Uri.parse("tel:9376027201"));
+			callIntent2.setData(Uri.parse("tel:9379023700"));
 			startActivity(callIntent2);
 			break;
 		}
