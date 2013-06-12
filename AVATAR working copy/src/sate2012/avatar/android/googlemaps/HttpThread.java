@@ -9,33 +9,32 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import sate2012.avatar.android.augmentedrealityview.CameraView;
 import android.os.AsyncTask;
 import android.util.JsonReader;
 
-public class MarkerMaker {
+public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 
-	public static ArrayList<MarkerPlus> makeMarkers(){
-		HttpThread thread = new HttpThread();
-		thread.execute();
-		ArrayList<MarkerPlus> markerArray = null;
-		try {
-			markerArray = thread.get();
-		} catch (Exception e){
-			System.out.println("BLAHBLAHBLAH");
+		private GoogleMapsViewer maps;
+		private CameraView cameraView;
+		
+		public HttpThread(GoogleMapsViewer maps){
+			this.maps = maps;
 		}
-		return markerArray;
-	}
-	
-	private static class HttpThread extends AsyncTask<String, String, ArrayList<MarkerPlus>>{
-
+		
+		public HttpThread(CameraView view){
+			this.cameraView = view;
+		}
+		
+		
 		@Override
-		protected ArrayList<MarkerPlus> doInBackground(String... arg0) {
+		protected ArrayList<MarkerPlus> doInBackground(String...args) {
 
 			ArrayList<MarkerPlus> markerArray = new ArrayList<MarkerPlus>();
 			try {
 				
 				HttpClient client = new DefaultHttpClient();
-				HttpGet get = new HttpGet(new URI("http://10.0.10.147/jsontest.php"));
+				HttpGet get = new HttpGet(new URI("http://10.0.1.189/jsontest.php"));
 				HttpResponse response = client.execute(get);
 				JsonReader reader = new JsonReader(new InputStreamReader(response.getEntity().getContent()));
 				
@@ -83,10 +82,23 @@ public class MarkerMaker {
 				}
 				//HELP!!!
 				reader.endArray();
+				reader.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			return markerArray;
 		}
-	}
+		
+		@Override
+		public void onPostExecute(ArrayList<MarkerPlus> array){
+			if(maps != null){
+				maps.setMarkerArray(array);
+				maps.drawMarkers(true);
+				maps = null;
+			}else{
+				cameraView.setMarkerArray(array);
+				cameraView = null;
+				
+			}
+		}
 }
