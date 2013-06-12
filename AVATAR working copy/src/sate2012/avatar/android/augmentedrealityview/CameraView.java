@@ -30,6 +30,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +42,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class CameraView extends Activity implements Callback {
 	
@@ -269,6 +271,35 @@ public class CameraView extends Activity implements Callback {
 	public void onResume(){
 		super.onResume();
 	}
+	
+	public class MyLocationListener implements LocationListener {
+		public void onLocationChanged(Location loc) {
+			if (loc != null)
+			{
+			  myLocation.set(loc);
+			}
+		}
+
+		@Override
+		public void onProviderDisabled(String provider) {
+			// TODO Auto-generated method stub
+			Toast.makeText(getApplicationContext(), "GPS Disabled",
+					Toast.LENGTH_LONG).show();
+		}
+
+		@Override
+		public void onProviderEnabled(String provider) {
+			// TODO Auto-generated method stub
+			Toast.makeText(getApplicationContext(), "GPS Enabled",
+					Toast.LENGTH_LONG).show();
+		}
+
+		@Override
+		public void onStatusChanged(String provider, int status, Bundle extras) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
 
 	/**
 	 * This is the Pointer view. It is what the points are drawn on. It lives in
@@ -323,10 +354,8 @@ public class CameraView extends Activity implements Callback {
 			// repo.getCollectionOfDataEntries()){
 			// for(GeoPoint testPoint: pointArray){
 			int x = 0;
+
 			
-			//this is for testing purposes ONLY
-			myLocation.setLatitude(39.759727);
-			myLocation.setLongitude(-84.120383);
 			
 			if(markerArray != null){
 				for(MarkerPlus marker: markerArray){
@@ -371,6 +400,7 @@ public class CameraView extends Activity implements Callback {
 		gpLocation.setLatitude(marker.getLatitude());
 		gpLocation.setLongitude(marker.getLongitude());
 		gpLocation.setAltitude(marker.getAltitude());
+		String name = marker.getName();
 
 		// All of these angles are in Radians.
 		double gpBearing = myLocation.bearingTo(gpLocation) * Math.PI
@@ -410,7 +440,7 @@ public class CameraView extends Activity implements Callback {
 									* (mSurfaceView.getHeight() / 2)
 									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
 									.getHeight() / 2)), null);
-					canvas.drawText( dist + "",
+					canvas.drawText( name + ": " + dist,
 							(float) (Math.tan(gpBearing - myBearing)
 									* (mSurfaceView.getWidth() / 2)
 									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
@@ -439,7 +469,7 @@ public class CameraView extends Activity implements Callback {
 									* (mSurfaceView.getHeight() / 2)
 									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
 									.getHeight() / 2)), null);
-					canvas.drawText( dist + "",
+					canvas.drawText( name + ": " + dist,
 							(float) (Math.tan(gpBearing - myBearing)
 									* (mSurfaceView.getWidth() / 2)
 									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
