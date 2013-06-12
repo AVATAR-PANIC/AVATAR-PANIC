@@ -1,11 +1,8 @@
 package sate2012.avatar.android;
 
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.app.Activity;
-import android.content.Context;
 import java.io.IOException;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;

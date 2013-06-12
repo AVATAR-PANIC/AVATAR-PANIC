@@ -7,11 +7,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.mapsforge.android.maps.GeoPoint;
-
-import android.content.Context;
-import android.widget.Toast;
-
 public class LocationDataReceiverAVATAR {
 
 	private LocationDataReceiverAVATAR() {

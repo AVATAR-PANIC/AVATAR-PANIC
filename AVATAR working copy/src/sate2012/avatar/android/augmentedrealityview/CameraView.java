@@ -101,6 +101,7 @@ public class CameraView extends Activity implements Callback {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.camera_view);
 
+		new HttpThread(this).execute();
 		// Initializes the button
 		backButton = (Button) findViewById(R.id.to_main_activity);
 		makeGeoDataRepository();
