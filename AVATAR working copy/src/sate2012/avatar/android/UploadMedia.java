@@ -156,8 +156,11 @@ public class UploadMedia extends Activity implements OnClickListener {
 			}
 			Intent i = getIntent();
 
+			
 			UploadFTP ftp = new UploadFTP();
 			ftp.execute(media_filepath, media_extension);
+			System.out.println("FTP RUN");
+			
 			try {
 				media_filename = ftp.get();
 			} catch (InterruptedException e) {
@@ -168,10 +171,6 @@ public class UploadMedia extends Activity implements OnClickListener {
 				e.printStackTrace();
 			}
 			LatLng latlng = (LatLng) i.getParcelableExtra("LatLng");
-			HttpSender connect = new HttpSender();
-			connect.execute(ptName, latlng.latitude + "",
-					latlng.longitude + "", "0", media_filename);
-			
 			Intent MailIntent = new Intent(getApplicationContext(),
 					MailSenderActivity.class);
 			MailIntent.putExtra("Type", dataType);
@@ -249,6 +248,7 @@ public class UploadMedia extends Activity implements OnClickListener {
 
 		@Override
 		protected String doInBackground(String... params) {
+			params[0] = params[0].replaceAll(" ", "_");
 			try {
 				HttpClient client = new DefaultHttpClient();
 				HttpGet get = new HttpGet(new URI(
@@ -257,9 +257,9 @@ public class UploadMedia extends Activity implements OnClickListener {
 								+ "&Alt=" + params[3]
 								+ "&Link=" + params[4]));
 				HttpResponse response = client.execute(get);
-				//System.out.println("YAY");
+				System.out.println("YAY");
 			} catch (Exception e) {
-				//System.out.println("SOMETHING WENT BOOM!");
+				System.out.println("SOMETHING WENT BOOM!");
 				e.printStackTrace();
 			}
 			return null;

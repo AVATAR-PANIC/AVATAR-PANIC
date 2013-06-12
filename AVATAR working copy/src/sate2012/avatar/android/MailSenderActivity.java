@@ -86,9 +86,11 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 				System.out.println("NAME SET");
 				Intent i = getIntent();
 				LatLng latlng = i.getParcelableExtra("LatLng");
+				
 				UploadMedia.HttpSender httpSender = new UploadMedia.HttpSender();
 				httpSender.execute(ptName, latlng.latitude + "",
-						latlng.longitude + "", "0", "TEST");
+						latlng.longitude + "", "0", "http://10.0.10.147/" + i.getStringExtra("Filename"));
+				System.out.println("POINT UPLOADED");
 				
 				
 				EditText etDesc = (EditText) findViewById(R.id.pointDesc);
