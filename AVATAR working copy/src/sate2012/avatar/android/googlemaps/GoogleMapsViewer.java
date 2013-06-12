@@ -66,8 +66,7 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 			GoogleMap.MAP_TYPE_SATELLITE, GoogleMap.MAP_TYPE_HYBRID,
 			GoogleMap.MAP_TYPE_TERRAIN };
 	private int currentMapType = mapTypes[0];
-	private ArrayList<MarkerPlus> markerArray;// = MarkerMaker.makeMarkers();
-	private ArrayList<MarkerPlus> offlineMarkerArray = new ArrayList<MarkerPlus>();
+	private ArrayList<MarkerPlus> markerArray = new ArrayList<MarkerPlus>();// = MarkerMaker.makeMarkers();
 	private Marker activeMarker = null;
 	private Bitmap currentImage = null;
 	private boolean gettingURL = false;
@@ -84,7 +83,7 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 				.findFragmentById(R.id.googlemap));
 		map = mapfrag.getMap();
 		new HttpThread(this).execute("");
-		clusterMaker = new GoogleMapsClusterMaker(map);
+		clusterMaker = new GoogleMapsClusterMaker();
 		map.setOnMapLongClickListener(new Listener());
 		
 		map.setInfoWindowAdapter(this);
@@ -105,7 +104,7 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 //		}
         
         map.setMyLocationEnabled(true);
-        drawMarkers(false);
+        drawMarkers(true);
 		map.setMapType(mapTypes[0]);
 
 		
@@ -116,10 +115,10 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 	
 	public void drawMarkers(boolean shouldClear){
 	
-		//if(shouldClear){
-			//map.clear();
-		//}
-		map.clear();
+		if(shouldClear){
+			map.clear();
+		}
+		//map.clear();
 		if(activeMarker != null){
 			activeMarker.showInfoWindow();
 		}
@@ -128,7 +127,7 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 		
 		if(markerArray != null){
 			int i = 1;
-			for(GoogleMapsClusterMarker marker: clusterMaker.generateClusters(markerArray, bounds, map.getProjection())){
+			for(GoogleMapsClusterMarker marker: clusterMaker.generateClusters(markerArray, map.getProjection(), bounds)){
 				//if(bounds.contains(marker.latlng)){
 					if(marker.getPoints().size() > 1){
 						map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames() + " | " + marker.getPoints().size()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
@@ -296,10 +295,14 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 
 		@Override
 		public void onMapLongClick(LatLng arg0) {
-			Intent senderIntent = new Intent(getApplicationContext(),
-					UploadMedia.class);
-			senderIntent.putExtra("LatLng", arg0);
-			startActivity(senderIntent);
+			try{
+				Intent senderIntent = new Intent(getApplicationContext(),
+						UploadMedia.class);
+				senderIntent.putExtra("LatLng", arg0);
+				startActivity(senderIntent);
+			}catch(Exception ex){
+				ex.printStackTrace();
+			}
 			MarkerPlus tempPoint = new MarkerPlus(arg0.latitude, arg0.longitude, map.getMyLocation().getAltitude());
 			tempPoint.setName("User Point");
 			tempPoint.setInfo("User Submitted Point");
@@ -428,12 +431,12 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 	public void onCameraChange(CameraPosition arg0) {
 		
 		if(arg0.zoom != lastKnownZoomLevel){
-			//map.clear();
 			lastKnownZoomLevel = arg0.zoom;
 			activeMarker = null;
+			drawMarkers(true);
 		}
 		
-		drawMarkers(false);
+		//drawMarkers(false);
 		
 	}
 	

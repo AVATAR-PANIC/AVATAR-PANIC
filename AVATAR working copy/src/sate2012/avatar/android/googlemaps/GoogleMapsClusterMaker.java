@@ -21,7 +21,7 @@ public class GoogleMapsClusterMaker {
 	//Temp points to prevent from tampering with the points in the main array
 	public ArrayList<MarkerPlus> tempPoints;
 	//Distance in which the points should cluster
-	private final double MAXDISTANCEPIXELS = 20.0;
+	private final double MAXDISTANCEPIXELS = 30.0;
 	
 	/**
 	 * Default Constructor
@@ -30,10 +30,7 @@ public class GoogleMapsClusterMaker {
 		
 	}
 	
-	public GoogleMapsClusterMaker(GoogleMap map){
-	}
-	
-	public ArrayList<GoogleMapsClusterMarker> generateClusters(ArrayList<MarkerPlus> points, LatLngBounds bounds, Projection projection){
+	public ArrayList<GoogleMapsClusterMarker> generateClusters(ArrayList<MarkerPlus> points, Projection projection, LatLngBounds bounds){
 		
 		double pixelDistance;
 		ArrayList<GoogleMapsClusterMarker> groupClusters = new ArrayList<GoogleMapsClusterMarker>();
