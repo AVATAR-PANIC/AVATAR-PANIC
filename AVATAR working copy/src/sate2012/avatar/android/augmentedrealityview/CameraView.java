@@ -13,6 +13,7 @@ import sate2012.avatar.android.GeoDataRepository;
 import sate2012.avatar.android.LocationDataReceiverAVATAR;
 import sate2012.avatar.android.MapsForgeMapViewer;
 import sate2012.avatar.android.PhoneCall;
+import sate2012.avatar.android.MapsForgeMapViewer.MyLocationListener;
 import sate2012.avatar.android.googlemaps.GoogleMapsViewer;
 import sate2012.avatar.android.googlemaps.HttpThread;
 import sate2012.avatar.android.googlemaps.MarkerPlus;
@@ -59,7 +60,9 @@ public class CameraView extends Activity implements Callback {
 	boolean mPreviewRunning;
 	private Canvas myCanvas = new Canvas();
 	private Button backButton;
+	MyLocationListener locationListener = new MyLocationListener();
 	Location myLocation = new Location(LocationManager.NETWORK_PROVIDER);
+	
 	GeoPoint testPoint = new GeoPoint(myLocation.getLatitude() - 1,
 			myLocation.getLongitude() - 1);
 	// GeoPoint testPoint2 = new GeoPoint(testLocation.getLatitude() - 2,
@@ -107,6 +110,10 @@ public class CameraView extends Activity implements Callback {
 		// Initializes the button
 		backButton = (Button) findViewById(R.id.to_main_activity);
 		makeGeoDataRepository();
+		LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		LocationListener mlocListener = new MyLocationListener();
+		mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+				100, 0, mlocListener);
 
 
 		// Initialize the surface for the camera
@@ -360,7 +367,8 @@ public class CameraView extends Activity implements Callback {
 			if(markerArray != null){
 				for(MarkerPlus marker: markerArray){
 					Log.i("Augmented Reality", "myLongitude is: " + myLocation.getLongitude() + "  myLatitude is: " + myLocation.getLatitude());
-		        	if(pointClose(marker)){
+		        	//if(pointClose(marker))
+					{
 		        		drawPoint(marker, canvas);
 		        	}
 		        	x++;
