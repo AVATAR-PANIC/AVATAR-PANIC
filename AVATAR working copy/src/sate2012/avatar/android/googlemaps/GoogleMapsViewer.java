@@ -87,6 +87,7 @@ OnInfoWindowClickListener{
 		clusterMaker = new GoogleMapsClusterMaker();
 		
 		
+		//Set the Maps listeners
 		map.setOnMapLongClickListener(new Listener());
 		map.setInfoWindowAdapter(this);
 		map.setOnCameraChangeListener(this);
@@ -100,11 +101,16 @@ OnInfoWindowClickListener{
 		lastKnownZoomLevel = map.getCameraPosition().zoom;
 	}
 	
+	/**
+	 * Used to draw the markers onto the map, draws from the markerArray
+	 * @param shouldClear : Whether or not it should clear the markers from the map.
+	 */
 	public void drawMarkers(boolean shouldClear){
 	
 		if(shouldClear){
 			map.clear();
 		}
+		//If the map was cleared and this wasn't hear, it would stop showing the info window.
 		if(activeMarker != null){
 			activeMarker.showInfoWindow();
 		}
@@ -183,6 +189,9 @@ OnInfoWindowClickListener{
 
 	}
 	
+	/**
+	 * Does not work atm.
+	 */
 	public void onInfoWindowClick(Marker marker){
 		System.out.println("Clicked!");
 		if(marker != null){
@@ -198,6 +207,9 @@ OnInfoWindowClickListener{
 		}
 	}
 	
+	/**
+	 * Important for knowing if it should start loading another image, or continue with the image it is loading.
+	 */
 	public boolean onMarkerClick(Marker marker){
 		
 		if(activeMarker != null){
@@ -337,26 +349,33 @@ OnInfoWindowClickListener{
 		//If the Marker is not a "Cluster" of points. IE just one point.
 		if(!(new String("Cluster").regionMatches(0, marker.getTitle(), 0, 6))){
 	       
+			//If there is no current image, and it is not currently getting a url, and the marker has an image
 			if(currentImage == null && !gettingURL && (marker.getSnippet().contains("png") || marker.getSnippet().contains("jpg") || marker.getSnippet().contains("gif"))){
 				activeMarker = marker;
 				gettingURL = true;
+				//Start new asynchronous thread to grab the image (Class below)
 		        new ImageGrabber(image, this).execute(marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ")));
 		        try {
+		        	//If image received was not null
 					if(currentImage != null){
 						image.setImageDrawable(new BitmapDrawable(null , currentImage));
 					}
 				} catch (Exception e){
 					e.printStackTrace();
 				}
+		        //If the current image is not null 
 			}else if(currentImage != null){
 				image.setImageDrawable(new BitmapDrawable(null, currentImage));
-			}else if(marker.getSnippet().contains("png") || marker.getSnippet().contains("jpg") || marker.getSnippet().contains("gif")){
+			}//If the marker has an image, draw the "Loading" image I have created
+			else if(marker.getSnippet().contains("png") || marker.getSnippet().contains("jpg") || marker.getSnippet().contains("gif")){
 				image.setImageDrawable(new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.loading)));
-			}else if(marker.getSnippet().contains(".f4v")){
+			}//If the image is a video, draw the loading icon temporarily
+			else if(marker.getSnippet().contains(".f4v")){
 				image.setImageDrawable(new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.loading)));
 			}
 	        
-		}else{
+		}//If it is a cluster, draw the ic_launcher and add the number of points within the cluster to it for display
+		else{
 			Bitmap clusterImage = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
 			Bitmap tempImage = clusterImage.copy(Bitmap.Config.ARGB_8888, true);
 			Canvas canvas = new Canvas(tempImage);
