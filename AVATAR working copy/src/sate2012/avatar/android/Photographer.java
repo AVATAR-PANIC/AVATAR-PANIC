@@ -12,7 +12,6 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public class Photographer extends Activity implements View.OnClickListener {
 	private File pic;
