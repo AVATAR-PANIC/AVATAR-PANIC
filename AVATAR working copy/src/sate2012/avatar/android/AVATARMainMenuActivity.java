@@ -56,26 +56,6 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			Intent intent = new Intent(getApplicationContext(),
 					GoogleMapsViewer.class);
 			startActivity(intent);
-			// break;
-			/*
-			 * case (R.id.mapB): Toast.makeText(getApplicationContext(),
-			 * "These are not the maps you're looking for...",
-			 * Toast.LENGTH_LONG).show(); // Create/call intent to map activity
-			 * here // Load the MapsForgeMapViewer
-			 * Toast.makeText(getApplicationContext(),
-			 * "MapViewer is not yet available.", Toast.LENGTH_LONG) .show();
-			 * break; case (R.id.naoB): Toast.makeText(getApplicationContext(),
-			 * "Ashu couldn't get this to work.", Toast.LENGTH_LONG) .show(); //
-			 * Create/call intent to nao activity here break; case (R.id.arB):
-			 * Toast.makeText(getApplicationContext(),
-			 * "Yeah, like WE are ever going to get this to work?",
-			 * Toast.LENGTH_LONG).show(); // Create/call intent to augmented
-			 * reality activity here break; case (R.id.settingB):
-			 * Toast.makeText( getApplicationContext(),
-			 * "There are no settings. You WILL like it the way we made it.",
-			 * Toast.LENGTH_LONG).show(); // Create/call intent to settings
-			 * activity here break;
-			 */
 		}
 	}
 }

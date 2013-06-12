@@ -21,7 +21,7 @@ public class GoogleMapsClusterMaker {
 	//Temp points to prevent from tampering with the points in the main array
 	public ArrayList<MarkerPlus> tempPoints;
 	//Distance in which the points should cluster
-	private final double MAXDISTANCEPIXELS = 30.0;
+	private final double MAXDISTANCEPIXELS = 40.0;
 	
 	/**
 	 * Default Constructor
@@ -76,7 +76,6 @@ public class GoogleMapsClusterMaker {
 						groupClusters.remove(i);
 						
 						wasMerged = true;
-						j=0;
 
 						
 						//System.out.println("Point added!");
