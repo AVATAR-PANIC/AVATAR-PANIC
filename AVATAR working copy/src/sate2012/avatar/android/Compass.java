@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
+
 public class Compass extends View {
 	private float direction = 0;
 	private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
