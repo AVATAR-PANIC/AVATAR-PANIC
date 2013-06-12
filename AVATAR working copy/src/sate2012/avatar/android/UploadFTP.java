@@ -23,7 +23,7 @@ public class UploadFTP extends AsyncTask<String, String, String> {
 			ftpClient.connect(InetAddress.getByName("10.0.1.189"));
 			ftpClient.login("Sean", "");
 			Looper.prepare();
-			//ftpClient.changeWorkingDirectory("AVATAR%20Pictures/");
+			ftpClient.changeWorkingDirectory("AVATAR Pictures/");
 			//if (ftpClient.getReplyString().contains("250")) {
 				Handler progressHandler = new Handler();
 				ftpClient
