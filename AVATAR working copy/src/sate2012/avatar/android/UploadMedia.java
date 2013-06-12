@@ -248,7 +248,7 @@ public class UploadMedia extends Activity implements OnClickListener {
 
 		@Override
 		protected String doInBackground(String... params) {
-			params[0] = params[0].replaceAll(" ", "_");
+			params[0] = params[0].replaceAll(" ", "%20");
 			try {
 				HttpClient client = new DefaultHttpClient();
 				HttpGet get = new HttpGet(new URI(
