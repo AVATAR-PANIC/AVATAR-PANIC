@@ -52,6 +52,8 @@
                 android:textSize="50dp" />
         </LinearLayout>
 
+        
+        
         <LinearLayout
             android:id="@+id/Rec"
             android:layout_width="wrap_content"
