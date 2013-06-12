@@ -439,8 +439,8 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 				System.out.println("Getting URL!");
 				HttpURLConnection connection = (HttpURLConnection) new URL(params[0]).openConnection();
 			    connection.connect();
-			    connection.setConnectTimeout(1000);
-			    connection.setReadTimeout(1000);
+			    connection.setConnectTimeout(5000);
+			    connection.setReadTimeout(5000);
 			    InputStream input = connection.getInputStream();
 			    Bitmap x = BitmapFactory.decodeStream(input);
 			    
