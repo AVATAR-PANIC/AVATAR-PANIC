@@ -9,10 +9,10 @@
         android:id="@+id/media_clock_ui"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:padding="10dp"
-        android:textColor="@android:color/white"
+        android:layout_centerHorizontal="true"
+        android:padding="1dp"
+        android:textColor="@android:color/black"
         android:visibility="invisible" />
 
     <LinearLayout
@@ -23,12 +23,17 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal" >
 
+        <View
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight=".03" />
+
         <LinearLayout
             android:id="@+id/Play"
-            android:layout_width="wrap_content"
+            android:layout_width="0px"
             android:layout_height="fill_parent"
-            android:layout_weight=".3"
             android:layout_below="@id/media_clock_ui"
+            android:layout_weight=".3"
             android:gravity="center_horizontal"
             android:orientation="vertical" >
 
@@ -49,17 +54,20 @@
                 android:gravity="center_horizontal"
                 android:text="@string/play"
                 android:textColor="@android:color/white"
-                android:textSize="50dp" />
+                android:textSize="40dp" />
         </LinearLayout>
 
-        
-        
+        <View
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight=".03" />
+
         <LinearLayout
             android:id="@+id/Rec"
-            android:layout_width="wrap_content"
+            android:layout_width="0px"
             android:layout_height="fill_parent"
-            android:layout_weight=".3"
             android:layout_below="@id/media_clock_ui"
+            android:layout_weight=".3"
             android:gravity="center_horizontal"
             android:orientation="vertical" >
 
@@ -80,15 +88,20 @@
                 android:gravity="center_horizontal"
                 android:text="@string/record"
                 android:textColor="@android:color/white"
-                android:textSize="50dp" />
+                android:textSize="40dp" />
         </LinearLayout>
+
+        <View
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight=".03" />
 
         <LinearLayout
             android:id="@+id/Upld"
-            android:layout_width="wrap_content"
+            android:layout_width="0px"
             android:layout_height="fill_parent"
-            android:layout_weight=".3"
             android:layout_below="@id/media_clock_ui"
+            android:layout_weight=".3"
             android:gravity="center_horizontal"
             android:orientation="vertical" >
 
@@ -109,8 +122,13 @@
                 android:gravity="center_horizontal"
                 android:text="@string/upload"
                 android:textColor="@android:color/white"
-                android:textSize="50dp" />
+                android:textSize="40dp" />
         </LinearLayout>
+
+        <View
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight=".03" />
     </LinearLayout>
 
 </RelativeLayout>
