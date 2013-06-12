@@ -245,18 +245,6 @@ OnInfoWindowClickListener{
 		}
 	}
 	
-	public double getMyLatitude(){
-		return myLatitude;
-	}
-	
-	public double getMyLongitude(){
-		return myLongitude;
-	}
-	
-	public double getMyAltitude(){
-		return myAltitude;
-	}
-
 	class Listener implements OnMapLongClickListener  {
 
 		@Override
