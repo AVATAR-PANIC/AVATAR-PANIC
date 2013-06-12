@@ -60,6 +60,7 @@ public class CameraView extends Activity implements Callback {
 	boolean mPreviewRunning;
 	private Canvas myCanvas = new Canvas();
 	private Button backButton;
+	private ArrayList<String> pointNameList = new ArrayList<String>();
 	MyLocationListener locationListener = new MyLocationListener();
 	Location myLocation = new Location(LocationManager.NETWORK_PROVIDER);
 	
@@ -367,20 +368,29 @@ public class CameraView extends Activity implements Callback {
 			if(markerArray != null){
 				for(MarkerPlus marker: markerArray){
 					Log.i("Augmented Reality", "myLongitude is: " + myLocation.getLongitude() + "  myLatitude is: " + myLocation.getLatitude());
-
 		        	if(pointClose(marker))  //TODO uncomment this code.
 					{
+		        		drawPoint(marker, canvas);
+		        	}
+		        	if(pointNameList.contains(marker.getName()))
+		        	{
 		        		drawPoint(marker, canvas);
 		        	}
 		        	x++;
 		        }
 			}
 			System.out.println(x + " points created.");
+			drawGUI(canvas);
 	}
 		
 	  //Returns true if the point is within 3 degrees on longitude and latitude.
 	  //assumes myLocation to be the user's location
 		
+	protected void drawGUI(Canvas canvas) {
+			// TODO Auto-generated method stub
+			
+	}
+
 	protected boolean pointClose(MarkerPlus marker){
 		boolean returnVal = false;
 		if ( ( ( marker.getLatitude() - myLocation.getLatitude() ) > -3 ) && 
@@ -393,7 +403,23 @@ public class CameraView extends Activity implements Callback {
 		}
 		return returnVal;
 	}
-		
+
+	/**
+	 * onPoint() returns a boolean telling the user if they are within 20 meters of the requested 20 meters.
+	 * 
+	*/
+	protected boolean onPoint(MarkerPlus marker){   //TODO Implement + test this method
+		boolean onTopOfPoint = false;
+		Location gpLocation = new Location(LocationManager.NETWORK_PROVIDER);
+		gpLocation.setLatitude(marker.getLatitude());
+		gpLocation.setLongitude(marker.getLongitude());
+		gpLocation.setAltitude(marker.getAltitude());
+		if(myLocation.distanceTo(gpLocation)<20)
+		{
+			onTopOfPoint = true;
+		}
+		return onTopOfPoint;	
+	}
 	
 		//draws a point relative to the tablet's perspective.
 		
