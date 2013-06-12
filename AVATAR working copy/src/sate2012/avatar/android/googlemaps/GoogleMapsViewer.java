@@ -70,6 +70,7 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 	private Marker activeMarker = null;
 	private Bitmap currentImage = null;
 	private boolean gettingURL = false;
+	private boolean asyncTaskCancel = false;
 
 	sate2012.avatar.android.augmentedrealityview.CameraView myCameraView = new sate2012.avatar.android.augmentedrealityview.CameraView();
 	sate2012.avatar.android.pointclustering.ClusterMaker geoPointClusterMaker = new sate2012.avatar.android.pointclustering.ClusterMaker();
@@ -209,8 +210,12 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 	}
 	
 	public boolean onMarkerClick(Marker marker){
-		if(activeMarker != marker){
-			currentImage = null;
+		
+		if(activeMarker != null){
+			if(!activeMarker.getSnippet().equals(marker.getSnippet())){
+				currentImage = null;
+				asyncTaskCancel = true;
+			}
 		}
 		this.activeMarker = marker;
 		return false;
@@ -337,7 +342,7 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
         
 		if(!(new String("Cluster").regionMatches(0, marker.getTitle(), 0, 6))){
 	       
-			if(currentImage == null && !gettingURL){
+			if(currentImage == null && !gettingURL && (marker.getSnippet().contains("png") || marker.getSnippet().contains("jpg") || marker.getSnippet().contains("gif"))){
 				activeMarker = marker;
 				gettingURL = true;
 		        new ImageGrabber(image, this).execute(marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ")));
@@ -348,8 +353,12 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 				} catch (Exception e){
 					e.printStackTrace();
 				}
-			}else{
+			}else if(currentImage != null){
 				image.setImageDrawable(new BitmapDrawable(null, currentImage));
+			}else if(marker.getSnippet().contains("png") || marker.getSnippet().contains("jpg") || marker.getSnippet().contains("gif")){
+				image.setImageDrawable(new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.loading)));
+			}else{
+				
 			}
 	        
 		}else{
@@ -397,57 +406,25 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 
 		private ImageView imageSlot;
 		private GoogleMapsViewer map;
+		private String url;
 		
 		public ImageGrabber(ImageView imageSlot, GoogleMapsViewer map){
 			this.imageSlot = imageSlot;
 			this.map = map;
 		}
 		
-//		@Override
-//		protected Boolean doInBackground(String... params) {
-//			try {
-//				HttpURLConnection connection = (HttpURLConnection) new URL(params[0]).openConnection();
-//			    connection.connect();
-//			    connection.setConnectTimeout(1000);
-//			    connection.setReadTimeout(1000);
-//			    InputStream input = connection.getInputStream();
-//			    Bitmap x = BitmapFactory.decodeStream(input);
-//			    
-//			    
-//			    //Max Image Height and Width
-//			    int MAXWIDTH = 150;//= 270;
-//			    int MAXHEIGHT = 100;//=150;
-//			    
-//			    if(x != null){
-//				    int imageWidth = x.getWidth();
-//				    int imageHeight = x.getHeight();
-//				    
-//				    if(imageWidth > MAXWIDTH || imageHeight > MAXHEIGHT){
-//				    	double ratio = (imageWidth > imageHeight)? ((float) MAXWIDTH)/imageWidth: ((float) MAXHEIGHT)/imageHeight;
-//				    	
-//				    	imageWidth =(int) (imageWidth*ratio);
-//				    	imageHeight =(int) (imageHeight*ratio);
-//				    	
-//				    	x = Bitmap.createScaledBitmap(x, imageWidth, imageHeight, false);
-//				    }
-//				    
-//				    input.close();
-//					//return new BitmapDrawable(null, x);
-//					return true;
-//				    }
-//			    input.close();
-//			    return false;
-//			} catch (Exception e){
-//				e.printStackTrace();
-//			}
-//			return false;
-//		}
-
 		@Override
 		protected Bitmap doInBackground(String...params) {
 			// TODO Auto-generated method stub
 			try {
 				currentImage = null;
+				url = params[0];
+				if(asyncTaskCancel){
+					System.out.println("CANCEL 1");
+					asyncTaskCancel = false;
+					gettingURL = false;
+					this.cancel(true);
+				}else
 				System.out.println("Getting URL!");
 				HttpURLConnection connection = (HttpURLConnection) new URL(params[0]).openConnection();
 			    connection.connect();
@@ -473,6 +450,14 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 				    	x = Bitmap.createScaledBitmap(x, imageWidth, imageHeight, false);
 				    }
 				    
+				    if(asyncTaskCancel){
+				    	System.out.println("CANCEL 2");
+				    	asyncTaskCancel = false;
+				    	gettingURL = false;
+				    	x = null;
+				    	this.cancel(true);
+				    }
+				    
 				    input.close();
 				    connection.disconnect();
 				    //System.out.println("Set Bitmap :)");
@@ -491,12 +476,30 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 		
 		@Override
 		protected void onPostExecute(Bitmap results){
-			imageSlot.setImageBitmap(results);
-			currentImage = results;
-			map.drawMarkers(true);
-			gettingURL = false;
-			imageSlot = null;
-			map = null;
+			if(asyncTaskCancel && !(activeMarker.getSnippet().substring(activeMarker.getSnippet().lastIndexOf(" ")).equals(url))){
+				System.out.println("CANCEL 3");
+				asyncTaskCancel = false;
+				gettingURL = false;
+				results = null;
+				currentImage = null;
+				map.drawMarkers(true);
+				this.cancel(true);
+			}else if(!(activeMarker.getSnippet().substring(activeMarker.getSnippet().lastIndexOf(" ")).equals(url))){
+				System.out.println("CANCEL 5");
+				asyncTaskCancel = false;
+				gettingURL = false;
+				results = null;
+				currentImage = null;
+				map.drawMarkers(true);
+				this.cancel(true);
+			}else{
+				imageSlot.setImageBitmap(results);
+				currentImage = results;
+				map.drawMarkers(true);
+				gettingURL = false;
+				imageSlot = null;
+				map = null;
+			}
 			
 		}
 			

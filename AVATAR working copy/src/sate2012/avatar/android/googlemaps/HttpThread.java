@@ -34,7 +34,7 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 			boolean successful = false;
 			while(!successful){
 				try {
-					
+					//System.out.println("TRYING TO CONNECT");
 					HttpClient client = new DefaultHttpClient();
 					HttpGet get = new HttpGet(new URI("http://10.0.1.189/jsontest.php"));
 					HttpResponse response = client.execute(get);
@@ -98,6 +98,7 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 		public void onPostExecute(ArrayList<MarkerPlus> array){
 			if(maps != null){
 				maps.setMarkerArray(array);
+				maps.drawMarkers(true);
 				maps = null;
 			}else{
 				cameraView.setMarkerArray(array);
