@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import sate2012.avatar.android.MapsForgeMapViewer;
 import sate2012.avatar.android.PhoneCall;
 import sate2012.avatar.android.UploadMedia;
+import sate2012.avatar.android.VideoPlayer;
 import sate2012.avatar.android.augmentedrealityview.CameraView;
 import android.app.Activity;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaMetadataRetriever;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -37,6 +39,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
@@ -49,7 +52,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class GoogleMapsViewer extends Activity implements LocationListener,
-InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener {
+InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, 
+OnInfoWindowClickListener{
 
 	public GoogleMap map;
 	public GoogleMapsClusterMaker clusterMaker;
@@ -87,12 +91,12 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 		map.setOnMapLongClickListener(new Listener());
 		
 		map.setInfoWindowAdapter(this);
-
-		map.setInfoWindowAdapter(this);
 		map.setOnCameraChangeListener(this);
 		map.setOnMapClickListener(this);
 		map.setOnMarkerClickListener(this);
         map.setMyLocationEnabled(true);
+        map.setOnInfoWindowClickListener(this);
+        
         drawMarkers(true);
 		map.setMapType(mapTypes[0]);
 		lastKnownZoomLevel = map.getCameraPosition().zoom;
@@ -178,7 +182,23 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 	}
 	
 	public void onMapClick(LatLng latlng){
-		
+
+	}
+	
+	public void onInfoWindowClick(Marker marker){
+		System.out.println("Clicked!");
+		if(marker != null){
+				Intent i;
+				try{
+					if(marker.getSnippet().contains(".f4v")){
+						Intent playVideo = new Intent(getApplicationContext(), VideoPlayer.class);
+						playVideo.putExtra("video_tag", marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ")));
+						startActivity(playVideo);
+					}
+				}catch(Exception ex){
+					ex.printStackTrace();
+			}
+		}
 	}
 	
 	public boolean onMarkerClick(Marker marker){
@@ -346,8 +366,8 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 				image.setImageDrawable(new BitmapDrawable(null, currentImage));
 			}else if(marker.getSnippet().contains("png") || marker.getSnippet().contains("jpg") || marker.getSnippet().contains("gif")){
 				image.setImageDrawable(new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.loading)));
-			}else{
-				
+			}else if(marker.getSnippet().contains(".f4v")){
+				image.setImageDrawable(new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.loading)));
 			}
 	        
 		}else{
