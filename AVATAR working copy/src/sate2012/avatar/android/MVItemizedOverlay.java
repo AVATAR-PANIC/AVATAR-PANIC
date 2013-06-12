@@ -1,14 +1,10 @@
 package sate2012.avatar.android;
 
 import java.util.ArrayList;
-import java.util.Collection;
-
-import org.mapsforge.android.maps.GeoPoint;
 import org.mapsforge.android.maps.ItemizedOverlay;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.DropBoxManager.Entry;
 
 public class MVItemizedOverlay extends ItemizedOverlay<DataObjectItem> {
 	public Context mContext;

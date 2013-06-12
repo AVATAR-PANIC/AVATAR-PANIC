@@ -6,11 +6,8 @@ import android.app.Activity;
 import java.util.List;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-
 import sate2012.avatar.android.UploadMedia;
 
-import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;

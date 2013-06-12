@@ -2,8 +2,6 @@ package sate2012.avatar.android.googlemaps;
 
 import java.util.ArrayList;
 
-import org.mapsforge.android.maps.MapView;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 

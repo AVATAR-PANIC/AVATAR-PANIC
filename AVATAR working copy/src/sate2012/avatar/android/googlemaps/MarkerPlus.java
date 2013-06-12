@@ -3,7 +3,6 @@ package sate2012.avatar.android.googlemaps;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
-import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;

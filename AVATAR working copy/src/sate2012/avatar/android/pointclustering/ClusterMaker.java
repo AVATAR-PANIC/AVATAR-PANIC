@@ -4,16 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-
 import org.mapsforge.android.maps.GeoPoint;
 import org.mapsforge.android.maps.MapView;
 
 import sate2012.avatar.android.DataObject;
 import sate2012.avatar.android.GeoDataRepository;
 import sate2012.avatar.android.LocationDataReceiverAVATAR;
-import sate2012.avatar.android.MapsForgeMapViewer;
-import android.location.Location;
 
 /**
  * @author William

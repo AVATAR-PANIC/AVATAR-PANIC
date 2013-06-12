@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
-
 import org.mapsforge.android.maps.GeoPoint;
 
 public class GeoDataRepository {

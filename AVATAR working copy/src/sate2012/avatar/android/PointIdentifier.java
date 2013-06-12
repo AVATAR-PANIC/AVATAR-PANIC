@@ -2,7 +2,6 @@ package sate2012.avatar.android;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
 
