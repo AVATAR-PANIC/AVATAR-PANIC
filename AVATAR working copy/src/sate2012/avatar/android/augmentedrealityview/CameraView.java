@@ -4,18 +4,14 @@ import gupta.ashutosh.avatar.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Map;
 
 import org.mapsforge.android.maps.GeoPoint;
-
-import com.google.android.gms.maps.model.Marker;
 
 import sate2012.avatar.android.DataObject;
 import sate2012.avatar.android.GeoDataRepository;
 import sate2012.avatar.android.LocationDataReceiverAVATAR;
 import sate2012.avatar.android.MapsForgeMapViewer;
-import sate2012.avatar.android.Frag;
 import sate2012.avatar.android.PhoneCall;
 import sate2012.avatar.android.googlemaps.GoogleMapsViewer;
 import sate2012.avatar.android.googlemaps.HttpThread;
@@ -26,11 +22,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -38,7 +31,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -48,7 +40,6 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
 import android.widget.Button;
 
 public class CameraView extends Activity implements Callback {
