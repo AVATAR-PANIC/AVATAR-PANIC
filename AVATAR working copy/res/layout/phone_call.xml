@@ -6,11 +6,18 @@
     android:gravity="center"
     android:orientation="vertical" >
 
+    <View
+        android:layout_width="0px"
+        android:layout_height="match_parent"
+        android:layout_weight=".2" />
+
     <Button
         android:id="@+id/police"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_weight=".3"
+        android:background="@drawable/buttonbackground"
         android:text="Call Police"
         android:textColor="@android:color/black" />
 
@@ -19,6 +26,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_weight=".3"
+        android:background="@drawable/buttonbackground"
         android:text="Call Fire Department"
         android:textColor="@android:color/black" />
 
@@ -27,7 +36,14 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_weight=".3"
+        android:background="@drawable/buttonbackground"
         android:text="Call Parents"
         android:textColor="@android:color/black" />
+
+    <View
+        android:layout_width="0px"
+        android:layout_height="match_parent"
+        android:layout_weight=".2" />
 
 </LinearLayout>
