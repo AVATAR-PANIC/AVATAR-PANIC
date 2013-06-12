@@ -92,24 +92,9 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 		map.setOnCameraChangeListener(this);
 		map.setOnMapClickListener(this);
 		map.setOnMarkerClickListener(this);
-		
-//		offlineMarkerArray.add(new MarkerPlus(10.0,10.0,10.0, "POINT 1"));
-//		offlineMarkerArray.add(new MarkerPlus(9.9,9.9,9.0, "POINT 2"));
-//		offlineMarkerArray.add(new MarkerPlus(9.5, 9.5, 8.0, "POINT 3"));
-//		offlineMarkerArray.add(new MarkerPlus(9.0, 9.0, 8.0, "POINT 4"));
-//		
-//		int name = 1;
-//		for(MarkerPlus tempMark: offlineMarkerArray){
-//			tempMark.setName("POINT " + name++);
-//		}
-        
         map.setMyLocationEnabled(true);
         drawMarkers(true);
 		map.setMapType(mapTypes[0]);
-
-		
-
-		
 		lastKnownZoomLevel = map.getCameraPosition().zoom;
 	}
 	
@@ -118,7 +103,6 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 		if(shouldClear){
 			map.clear();
 		}
-		//map.clear();
 		if(activeMarker != null){
 			activeMarker.showInfoWindow();
 		}
@@ -141,44 +125,6 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 				//}
 			}
 		}
-		
-		
-		
-		
-		
-		
-		
-//		if(markerArray != null){
-//			int i = 1;
-//			for(GoogleMapsClusterMarker marker: clusterMaker.generateClusters(map.getCameraPosition().zoom, markerArray, bounds)){
-//				//if(bounds.contains(marker.latlng)){
-//					if(marker.getPoints().size() > 1){
-//						map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames() + " | " + marker.getPoints().size()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-//		//				System.out.println("Added Marker! Position: " + new LatLng(marker.latlng.latitude, marker.latlng.longitude).toString());
-//		//				System.out.println("Marker Name!: " + marker.getPointNames());
-//					}else{
-//						if(marker.getPoints().size() == 1){
-//						map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()));
-//						}
-//					}
-//				//}
-//			}
-//		}
-		
-//		int i = 1;
-//		for(GoogleMapsClusterMarker marker: clusters.generateClusters(map.getCameraPosition().zoom, offlineMarkerArray)){
-//			
-//			if(marker.getPoints().size() > 1){
-		      // if(bounds.contains(marker.latlng)){
-	//				map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-	//				System.out.println("Added Marker! Position: " + new LatLng(marker.latlng.latitude, marker.latlng.longitude).toString());
-	//				System.out.println("Marker Name!: " + marker.getPointNames());
-	//			}else{
-	//				map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()));
-	//			}
-		       //}
-//		}
-		
 		
 	}
 	
