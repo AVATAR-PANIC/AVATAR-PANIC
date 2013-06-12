@@ -73,7 +73,7 @@ public class CameraView extends Activity implements Callback {
 	// testLocation.getLongitude() - 1);
 	// GeoPoint[] pointArray = {testPoint, testPoint2};
 	float[] currentValues = new float[3];
-	private ArrayList<MarkerPlus> markerArray; // = MarkerMaker.makeMarkers();
+	private ArrayList<MarkerPlus> markerArray = MarkerMaker.makeMarkers();
 
 	/**
 	 * This is a lowpass filter. It is used to smooth out the tablets movements.
@@ -110,7 +110,6 @@ public class CameraView extends Activity implements Callback {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.camera_view);
 
-		new HttpThread(this).execute("");
 		// Initializes the button
 		backButton = (Button) findViewById(R.id.to_main_activity);
 		makeGeoDataRepository();
@@ -337,15 +336,13 @@ public class CameraView extends Activity implements Callback {
 			myLocation.setLatitude(39.759727);
 			myLocation.setLongitude(-84.120383);
 			
-			if(markerArray != null){
-				for(MarkerPlus marker: markerArray){
-					Log.i("Augmented Reality", "myLongitude is: " + myLocation.getLongitude() + "  myLatitude is: " + myLocation.getLatitude());
-		        	if(pointClose(marker)){
-		        		drawPoint(marker, canvas);
-		        	}
-		        	x++;
-		        }
-			}
+			for(MarkerPlus marker: markerArray){
+				Log.i("Augmented Reality", "myLongitude is: " + myLocation.getLongitude() + "  myLatitude is: " + myLocation.getLatitude());
+	        	if(pointClose(marker)){
+	        		drawPoint(marker, canvas);
+	        	}
+	        	x++;
+	        }
 			System.out.println(x + " points created.");
 	}
 		
@@ -552,9 +549,5 @@ public class CameraView extends Activity implements Callback {
 
 	public void setBackButton(Button backButton) {
 		this.backButton = backButton;
-	}
-	
-	public void setMarkerArray(ArrayList<MarkerPlus> array){
-		this.markerArray = array;
 	}
 }
