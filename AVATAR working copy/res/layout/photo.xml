@@ -11,6 +11,7 @@
         android:layout_height="fill_parent"
         android:layout_weight=".3"
         android:layout_gravity="center"
+        android:scaleType="fitCenter"
         android:background="@drawable/buttonbackground"
         android:src="@drawable/camerabackground"
         android:textSize="50dp" />
@@ -19,7 +20,7 @@
         android:id="@+id/ivReturnedPicture"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight=".3"
+        android:layout_weight=".15"
         android:layout_gravity="center"
         android:contentDescription="@string/app_name" />
 
@@ -29,6 +30,7 @@
         android:layout_height="fill_parent"
         android:layout_weight=".3"
         android:layout_gravity="center"
+        android:scaleType="fitCenter"
         android:background="@drawable/buttonbackground"
 		android:src="@drawable/upload_arrow"
         android:textSize="50dp" />
