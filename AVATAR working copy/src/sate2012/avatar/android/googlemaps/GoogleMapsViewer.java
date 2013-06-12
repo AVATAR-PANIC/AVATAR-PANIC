@@ -37,7 +37,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -47,7 +49,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class GoogleMapsViewer extends Activity implements LocationListener,
-InfoWindowAdapter, OnCameraChangeListener {
+InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener {
 
 	public GoogleMap map;
 	public GoogleMapsClusterMaker clusters = new GoogleMapsClusterMaker();
@@ -66,6 +68,9 @@ InfoWindowAdapter, OnCameraChangeListener {
 	private int currentMapType = mapTypes[0];
 	private ArrayList<MarkerPlus> markerArray = MarkerMaker.makeMarkers();
 	private ArrayList<MarkerPlus> offlineMarkerArray = new ArrayList<MarkerPlus>();
+	private Marker activeMarker = null;
+	private Bitmap currentImage = null;
+	private boolean gettingURL = false;
 
 	sate2012.avatar.android.augmentedrealityview.CameraView myCameraView = new sate2012.avatar.android.augmentedrealityview.CameraView();
 	sate2012.avatar.android.pointclustering.ClusterMaker geoPointClusterMaker = new sate2012.avatar.android.pointclustering.ClusterMaker();
@@ -83,6 +88,8 @@ InfoWindowAdapter, OnCameraChangeListener {
 
 		map.setInfoWindowAdapter(this);
 		map.setOnCameraChangeListener(this);
+		map.setOnMapClickListener(this);
+		map.setOnMarkerClickListener(this);
 		
 //		offlineMarkerArray.add(new MarkerPlus(10.0,10.0,10.0, "POINT 1"));
 //		offlineMarkerArray.add(new MarkerPlus(9.9,9.9,9.0, "POINT 2"));
@@ -106,15 +113,18 @@ InfoWindowAdapter, OnCameraChangeListener {
 	
 	private void drawMarkers(boolean shouldClear){
 	
-		if(shouldClear){
-			map.clear();
+		//if(shouldClear){
+			//map.clear();
+		//}
+		map.clear();
+		if(activeMarker != null){
+			activeMarker.showInfoWindow();
 		}
-		
 		LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
 		
 		int i = 1;
 		for(GoogleMapsClusterMarker marker: clusters.generateClusters(map.getCameraPosition().zoom, markerArray, bounds)){
-			if(bounds.contains(marker.latlng)){
+			//if(bounds.contains(marker.latlng)){
 				if(marker.getPoints().size() > 1){
 					map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames() + " | " + marker.getPoints().size()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 	//				System.out.println("Added Marker! Position: " + new LatLng(marker.latlng.latitude, marker.latlng.longitude).toString());
@@ -124,7 +134,7 @@ InfoWindowAdapter, OnCameraChangeListener {
 					map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()));
 					}
 				}
-			}
+			//}
 		}
 		
 //		int i = 1;
@@ -186,6 +196,18 @@ InfoWindowAdapter, OnCameraChangeListener {
 
 		}
 	}
+	
+	public void onMapClick(LatLng latlng){
+		
+	}
+	
+	public boolean onMarkerClick(Marker marker){
+		if(activeMarker != marker){
+			currentImage = null;
+		}
+		this.activeMarker = marker;
+		return false;
+	}
 
 	/**
 	 * Method called whenever the user's location is changed
@@ -218,7 +240,7 @@ InfoWindowAdapter, OnCameraChangeListener {
 		}
 	}
 
-	class Listener implements OnMapLongClickListener {
+	class Listener implements OnMapLongClickListener  {
 
 		@Override
 		public void onMapLongClick(LatLng arg0) {
@@ -307,12 +329,20 @@ InfoWindowAdapter, OnCameraChangeListener {
 		// image.setImageDrawable();
         
 		if(!(new String("Cluster").regionMatches(0, marker.getTitle(), 0, 6))){
-	        ImageGrabber grab = new ImageGrabber();
-	         grab = (ImageGrabber) grab.execute(marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ")));
-	        try {
-				image.setImageDrawable(grab.get());
-			} catch (Exception e){
-				e.printStackTrace();
+	       
+			if(currentImage == null && !gettingURL){
+				activeMarker = marker;
+				gettingURL = true;
+		        new ImageGrabber(image, this).execute(marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ")));
+		        try {
+					if(currentImage != null){
+						image.setImageDrawable(new BitmapDrawable(null , currentImage));
+					}
+				} catch (Exception e){
+					e.printStackTrace();
+				}
+			}else{
+				image.setImageDrawable(new BitmapDrawable(null, currentImage));
 			}
 	        
 		}else{
@@ -337,12 +367,76 @@ InfoWindowAdapter, OnCameraChangeListener {
 						// null);
 		return v;
 	}
+
+	@Override
+	public void onCameraChange(CameraPosition arg0) {
+		
+		if(arg0.zoom != lastKnownZoomLevel){
+			//map.clear();
+			lastKnownZoomLevel = arg0.zoom;
+			activeMarker = null;
+		}
+		
+		drawMarkers(false);
+		
+	}
 	
-	private class ImageGrabber extends AsyncTask<String, String, Drawable>{
+	private class ImageGrabber extends AsyncTask<String, Void,  Bitmap>{
+
+		private ImageView imageSlot;
+		private GoogleMapsViewer map;
+		
+		public ImageGrabber(ImageView imageSlot, GoogleMapsViewer map){
+			this.imageSlot = imageSlot;
+			this.map = map;
+		}
+		
+//		@Override
+//		protected Boolean doInBackground(String... params) {
+//			try {
+//				HttpURLConnection connection = (HttpURLConnection) new URL(params[0]).openConnection();
+//			    connection.connect();
+//			    connection.setConnectTimeout(1000);
+//			    connection.setReadTimeout(1000);
+//			    InputStream input = connection.getInputStream();
+//			    Bitmap x = BitmapFactory.decodeStream(input);
+//			    
+//			    
+//			    //Max Image Height and Width
+//			    int MAXWIDTH = 150;//= 270;
+//			    int MAXHEIGHT = 100;//=150;
+//			    
+//			    if(x != null){
+//				    int imageWidth = x.getWidth();
+//				    int imageHeight = x.getHeight();
+//				    
+//				    if(imageWidth > MAXWIDTH || imageHeight > MAXHEIGHT){
+//				    	double ratio = (imageWidth > imageHeight)? ((float) MAXWIDTH)/imageWidth: ((float) MAXHEIGHT)/imageHeight;
+//				    	
+//				    	imageWidth =(int) (imageWidth*ratio);
+//				    	imageHeight =(int) (imageHeight*ratio);
+//				    	
+//				    	x = Bitmap.createScaledBitmap(x, imageWidth, imageHeight, false);
+//				    }
+//				    
+//				    input.close();
+//					//return new BitmapDrawable(null, x);
+//					return true;
+//				    }
+//			    input.close();
+//			    return false;
+//			} catch (Exception e){
+//				e.printStackTrace();
+//			}
+//			return false;
+//		}
 
 		@Override
-		protected Drawable doInBackground(String... params) {
+		protected Bitmap doInBackground(String...params) {
+			// TODO Auto-generated method stub
 			try {
+				currentImage = null;
+				System.out.println("Getting URL!");
 				HttpURLConnection connection = (HttpURLConnection) new URL(params[0]).openConnection();
 			    connection.connect();
 			    connection.setConnectTimeout(1000);
@@ -369,27 +463,31 @@ InfoWindowAdapter, OnCameraChangeListener {
 				    }
 				    
 				    input.close();
-					return new BitmapDrawable(null, x);
+				    connection.disconnect();
+				    //System.out.println("Set Bitmap :)");
+					//return new BitmapDrawable(null, x);
+					return x;
 				    }
 			    input.close();
+			    connection.disconnect();
 			    return null;
 			} catch (Exception e){
+				gettingURL = false;
 				e.printStackTrace();
+				return null;
 			}
-			return null;
 		}
 		
-	}
-
-	@Override
-	public void onCameraChange(CameraPosition arg0) {
-		
-		if(arg0.zoom != lastKnownZoomLevel){
-			map.clear();
-			lastKnownZoomLevel = arg0.zoom;
+		@Override
+		protected void onPostExecute(Bitmap results){
+			imageSlot.setImageBitmap(results);
+			currentImage = results;
+			map.drawMarkers(true);
+			gettingURL = false;
+			imageSlot = null;
+			map = null;
+			
 		}
-		
-		drawMarkers(false);
-		
+			
 	}
 }

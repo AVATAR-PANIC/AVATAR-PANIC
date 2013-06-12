@@ -57,14 +57,14 @@ public class GoogleMapsClusterMaker {
 		//Put all points within their own groupClusters for comparison
 		for(int i = 0; i < tempPoints.size(); i++){
 			MarkerPlus tempPoint = tempPoints.get(i);
-			//if(bounds.contains(new LatLng(tempPoint.getLatitude(), tempPoint.getLongitude()))){
+			if(bounds.contains(new LatLng(tempPoint.getLatitude(), tempPoint.getLongitude()))){
 				groupClusters.add(new GoogleMapsClusterMarker());
 				groupClusters.get(groupClusters.size()-1).addPoint(tempPoint);
-			//}
-//			else{
-//				allClusters.add(new GoogleMapsClusterMarker());
-//				allClusters.get(allClusters.size()-1).addPoint(tempPoint);
-//			}
+			}
+			else{
+				allClusters.add(new GoogleMapsClusterMarker());
+				allClusters.get(allClusters.size()-1).addPoint(tempPoint);
+			}
 		}
 		
 		if(zoomLevel <= 18){
