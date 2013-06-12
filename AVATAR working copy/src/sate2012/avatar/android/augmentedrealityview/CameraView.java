@@ -368,7 +368,7 @@ public class CameraView extends Activity implements Callback {
 			if(markerArray != null){
 				for(MarkerPlus marker: markerArray){
 					Log.i("Augmented Reality", "myLongitude is: " + myLocation.getLongitude() + "  myLatitude is: " + myLocation.getLatitude());
-		        	if(pointClose(marker)) 
+		        	if(pointClose(marker))  //TODO uncomment this code.
 					{
 		        		drawPoint(marker, canvas);
 		        	}
