@@ -334,6 +334,7 @@ OnInfoWindowClickListener{
 		info.setText(marker.getSnippet().substring(0, snippetIndex));
 		// image.setImageDrawable();
         
+		//If the Marker is not a "Cluster" of points. IE just one point.
 		if(!(new String("Cluster").regionMatches(0, marker.getTitle(), 0, 6))){
 	       
 			if(currentImage == null && !gettingURL && (marker.getSnippet().contains("png") || marker.getSnippet().contains("jpg") || marker.getSnippet().contains("gif"))){
