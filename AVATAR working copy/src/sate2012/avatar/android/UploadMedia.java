@@ -252,7 +252,7 @@ public class UploadMedia extends Activity implements OnClickListener {
 			try {
 				HttpClient client = new DefaultHttpClient();
 				HttpGet get = new HttpGet(new URI(
-						"http://10.0.1.189/sqladdrow.php?Name=" + params[0]
+						"http://" + Constants.SERVER_ADDRESS + "/sqladdrow.php?Name=" + params[0]
 								+ "&Lat=" + params[1] + "&Long=" + params[2]
 								+ "&Alt=" + params[3]
 								+ "&Link=" + params[4]));

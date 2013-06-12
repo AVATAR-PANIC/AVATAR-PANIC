@@ -367,7 +367,11 @@ public class CameraView extends Activity implements Callback {
 			if(markerArray != null){
 				for(MarkerPlus marker: markerArray){
 					Log.i("Augmented Reality", "myLongitude is: " + myLocation.getLongitude() + "  myLatitude is: " + myLocation.getLatitude());
+<<<<<<< HEAD
 		        	//if(pointClose(marker))
+=======
+		        	if(pointClose(marker))  //TODO uncomment this code.
+>>>>>>> branch 'master' of https://github.com/AVATAR-PANIC/AVATAR-PANIC.git
 					{
 		        		drawPoint(marker, canvas);
 		        	}
