@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import sate2012.avatar.android.MapsForgeMapViewer;
+import sate2012.avatar.android.PhoneCall;
 import sate2012.avatar.android.UploadMedia;
 import sate2012.avatar.android.augmentedrealityview.CameraView;
 import android.app.Activity;
@@ -196,9 +197,10 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 				}
 			}
 			break;
-
+		case R.id.emergencyCall:
+			i = new Intent(getApplicationContext(), PhoneCall.class);
+			break;
 		case R.id.exit:
-			finish();
 			System.exit(0);
 			break;
 		}
