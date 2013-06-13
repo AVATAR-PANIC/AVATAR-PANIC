@@ -75,6 +75,7 @@ OnInfoWindowClickListener{
 	private Bitmap currentImage = null;
 	private boolean gettingURL = false;
 	private boolean asyncTaskCancel = false;
+	private MediaPlayer mp;
 
 
 	@Override
@@ -203,7 +204,7 @@ OnInfoWindowClickListener{
 						startActivity(playVideo);
 					}
 					if(marker.getSnippet().contains(".mp4")){
-						MediaPlayer mp = new MediaPlayer();
+						mp = new MediaPlayer();
 						mp.setDataSource(marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ") + 1));
 						mp.prepare();
 						mp.start();

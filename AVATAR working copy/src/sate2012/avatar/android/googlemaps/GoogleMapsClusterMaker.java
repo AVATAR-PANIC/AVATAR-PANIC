@@ -87,8 +87,8 @@ public class GoogleMapsClusterMaker {
 			}
 			
 		for(int i = 0; i < groupClusters.size(); i++){
-		allClusters.add(groupClusters.get(i));
-	}
+			allClusters.add(groupClusters.get(i));
+		}
 		
 		
 		return allClusters;
@@ -116,14 +116,14 @@ public class GoogleMapsClusterMaker {
 		//System.out.println("Cluster 1 Size: " + c1.getPoints().size() + "\nCluster 2 Size: " + c2.getPoints().size());
 		
 		for(MarkerPlus point: c1.getPoints()){
-			if(!points.contains(point)){
+			//if(!points.contains(point)){
 				points.add(point);
-			}
+			//}
 		}
 		for(MarkerPlus point: c2.getPoints()){
-			if(!points.contains(point)){
+			//if(!points.contains(point)){
 				points.add(point);
-			}
+			//}
 		}
 		
 		cluster.setPoints(points);
