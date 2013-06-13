@@ -356,7 +356,7 @@ public class CameraView extends Activity implements Callback {
 		}
 
 		/**
-		 * This is where the tablet draws all of the points it needs.
+		 * onDraw calls all of the graphics methods.
 		 */
 		@Override
 		protected void onDraw(Canvas canvas) {
@@ -373,7 +373,7 @@ public class CameraView extends Activity implements Callback {
 			if(markerArray != null){
 				for(MarkerPlus marker: markerArray){
 					//Log.i("Augmented Reality", "myLongitude is: " + myLocation.getLongitude() + "  myLatitude is: " + myLocation.getLatitude());
-		        	if(pointClose(marker))  //TODO uncomment this code.
+		        	if(pointClose(marker))  
 					{
 		        		drawPoint(marker, canvas);
 		        	}
@@ -393,19 +393,19 @@ public class CameraView extends Activity implements Callback {
 		
 	protected void drawGUI(Canvas canvas) {
 			// TODO Auto-generated method stub
-//			Bitmap connected = BitmapFactory.decodeResource(getResources(),
-//				R.drawable.connectedimage);
-//			Bitmap disconneceted = BitmapFactory.decodeResource(getResources(),
-//					R.drawable.disconnectedimage);
+			Bitmap connected = BitmapFactory.decodeResource(getResources(),
+				R.drawable.connectedimagesmall);
+			Bitmap disconneceted = BitmapFactory.decodeResource(getResources(),
+					R.drawable.disconnectedimagesmall);
 			ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 			NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-//			if (mWifi.isConnected()) {
-//				canvas.drawBitmap(connected, mSurfaceView.getWidth()/16*15, mSurfaceView.getHeight()/4*3, null);
-//			}
-//			else
-//			{
-//				canvas.drawBitmap(disconneceted, mSurfaceView.getWidth()/16*15, mSurfaceView.getHeight()/4*3, null);  //TODO Change values to something reasonable
-//			}
+			if (mWifi.isConnected()) {
+				canvas.drawBitmap(connected, mSurfaceView.getWidth()/7,0, null);
+			}
+			else
+			{
+				canvas.drawBitmap(disconneceted, mSurfaceView.getWidth()/7, 0, null);  //TODO Change values to something reasonable
+			}
 	}
 
 	protected boolean pointClose(MarkerPlus marker){
@@ -562,10 +562,6 @@ public class CameraView extends Activity implements Callback {
 		switch (v.getId()) {
 		case R.id.map:
 			i = new Intent(getApplicationContext(), GoogleMapsViewer.class);
-			startActivity(i);
-			break;
-		case R.id.augmentedReality:
-			i = new Intent(getApplicationContext(), CameraView.class);
 			startActivity(i);
 			break;
 		case R.id.emergencyCall:
