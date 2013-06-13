@@ -109,7 +109,7 @@ public class CameraView extends Activity implements Callback {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.camera_view);
-
+		
 		new HttpThread(this).execute();
 		// Initializes the button
 		backButton = (Button) findViewById(R.id.to_main_activity);
@@ -194,7 +194,7 @@ public class CameraView extends Activity implements Callback {
 			public void onClick(View v) {
 				// Creates activity intent
 				Intent main_activity = new Intent(getApplicationContext(),
-						MapsForgeMapViewer.class);
+						GoogleMapsViewer.class);
 				startActivity(main_activity);
 			}
 		});
@@ -560,6 +560,7 @@ public class CameraView extends Activity implements Callback {
 		Intent i;
 		switch (v.getId()) {
 		case R.id.map:
+			//this.finish();
 			i = new Intent(getApplicationContext(), GoogleMapsViewer.class);
 			startActivity(i);
 			break;
@@ -567,7 +568,11 @@ public class CameraView extends Activity implements Callback {
 			i = new Intent(getApplicationContext(), PhoneCall.class);
 			break;
 		case R.id.exit:
-			System.exit(0);
+			this.finish();//try activityname.finish instead of this
+			Intent intent = new Intent(Intent.ACTION_MAIN);
+			intent.addCategory(Intent.CATEGORY_HOME);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
 			break;
 		}
 	}
