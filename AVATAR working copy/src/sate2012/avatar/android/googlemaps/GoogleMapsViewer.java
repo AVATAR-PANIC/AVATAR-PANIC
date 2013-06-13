@@ -27,6 +27,7 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -201,6 +202,12 @@ OnInfoWindowClickListener{
 						playVideo.putExtra("video_tag", marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ") + 1));
 						startActivity(playVideo);
 					}
+					if(marker.getSnippet().contains(".mp4")){
+						MediaPlayer mp = new MediaPlayer();
+						mp.setDataSource(marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ") + 1));
+						mp.prepare();
+						mp.start();
+					}
 				}catch(Exception ex){
 					ex.printStackTrace();
 			}
@@ -371,7 +378,7 @@ OnInfoWindowClickListener{
 				image.setImageDrawable(new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.loading)));
 			}//If the image is a video, draw the loading icon temporarily
 			else if(marker.getSnippet().contains(".f4v")){
-				image.setImageDrawable(new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.loading)));
+				image.setImageDrawable(new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.videocambuttonbackground)));
 			}
 	        
 		}//If it is a cluster, draw the ic_launcher and add the number of points within the cluster to it for display
