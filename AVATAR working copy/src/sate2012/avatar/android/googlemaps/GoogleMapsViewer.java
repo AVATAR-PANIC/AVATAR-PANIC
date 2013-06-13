@@ -381,7 +381,9 @@ OnInfoWindowClickListener{
 			else if(marker.getSnippet().contains(".f4v")){
 				image.setImageDrawable(new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.videocambuttonbackground)));
 			}
-	        
+			else if(marker.getSnippet().contains(".mp4")){
+					image.setImageDrawable(new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.audiobuttonbackground)));
+			}
 		}//If it is a cluster, draw the ic_launcher and add the number of points within the cluster to it for display
 		else{
 			Bitmap clusterImage = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
