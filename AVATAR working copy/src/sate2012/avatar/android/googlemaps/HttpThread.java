@@ -9,6 +9,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import sate2012.avatar.android.Constants;
 import sate2012.avatar.android.augmentedrealityview.CameraView;
 import android.os.AsyncTask;
 import android.util.JsonReader;
@@ -36,7 +37,7 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 				try {
 					//System.out.println("TRYING TO CONNECT");
 					HttpClient client = new DefaultHttpClient();
-					HttpGet get = new HttpGet(new URI("http://10.0.1.189/jsontest.php"));
+					HttpGet get = new HttpGet(new URI("http://" + Constants.SERVER_ADDRESS + "/jsontest.php"));
 					HttpResponse response = client.execute(get);
 					JsonReader reader = new JsonReader(new InputStreamReader(response.getEntity().getContent()));
 					

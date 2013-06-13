@@ -16,26 +16,22 @@ public class VideoPlayer extends Activity {
 	@Override
 	public void onCreate(Bundle b){
 		super.onCreate(b);
-//		Intent i = getIntent();
-//		String path = i.getStringExtra("video_tag");
+		Intent i = getIntent();
+		String path = i.getStringExtra("video_tag");
 		setContentView(R.layout.video_player_layout);
-//		
-//		VideoView videoView = (VideoView) findViewById(R.id.video_player);
-//		videoView.setKeepScreenOn(true);
-//		
-//		if(path != null) videoView.setVideoURI(Uri.parse(path));
-//		
-//		MediaController mediaController = new MediaController(this);
-//		mediaController.setAnchorView(videoView);
-//		videoView.setMediaController(mediaController);
-//		if(videoView.canSeekForward()){
-//			videoView.seekTo(videoView.getDuration()/2);
-//		}
-//		
-//		videoView.start();
 		
 		VideoView videoView = (VideoView) findViewById(R.id.video_player);
-		videoView.setVideoURI(Uri.parse("http://commonsware.com/misc/test2.3gp"));
+		videoView.setKeepScreenOn(true);
+		
+		if(path != null) videoView.setVideoURI(Uri.parse(path));
+		
+		MediaController mediaController = new MediaController(this);
+		mediaController.setAnchorView(videoView);
+		videoView.setMediaController(mediaController);
+		if(videoView.canSeekForward()){
+			videoView.seekTo(videoView.getDuration()/2);
+		}
+		
 		videoView.start();
 		
 		

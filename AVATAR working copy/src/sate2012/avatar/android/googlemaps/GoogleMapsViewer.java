@@ -198,7 +198,7 @@ OnInfoWindowClickListener{
 				try{
 					if(marker.getSnippet().contains(".f4v")){
 						Intent playVideo = new Intent(getApplicationContext(), VideoPlayer.class);
-						playVideo.putExtra("video_tag", marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ")));
+						playVideo.putExtra("video_tag", marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ") + 1));
 						startActivity(playVideo);
 					}
 				}catch(Exception ex){
