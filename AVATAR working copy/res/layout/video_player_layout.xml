@@ -9,7 +9,6 @@
         android:id="@+id/frag1"
         android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         tools:layout="@layout/menu_frag" 
         class="sate2012.avatar.android.Frag" />
     

@@ -204,6 +204,7 @@ OnInfoWindowClickListener{
 						startActivity(playVideo);
 					}
 					if(marker.getSnippet().contains(".mp4")){
+						if(mp != null) mp.stop();
 						mp = new MediaPlayer();
 						mp.setDataSource(marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ") + 1));
 						mp.prepare();
@@ -219,6 +220,10 @@ OnInfoWindowClickListener{
 	 * Important for knowing if it should start loading another image, or continue with the image it is loading.
 	 */
 	public boolean onMarkerClick(Marker marker){
+		
+		if(mp != null){
+			mp.stop();
+		}
 		
 		if(activeMarker != null){
 			if(!activeMarker.getSnippet().equals(marker.getSnippet())){
