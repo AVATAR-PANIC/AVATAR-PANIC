@@ -60,11 +60,11 @@ public class CameraView extends Activity implements Callback {
 	private SurfaceHolder mSurfaceHolder;
 	private PointerView pointerView;// pointer view variable
 	boolean mPreviewRunning;
-	private boolean internetCon = true; //true if connected to a provider, false otherwise
 	private Canvas myCanvas = new Canvas();
 	private Button backButton;
 	private ArrayList<String> pointNameList = new ArrayList<String>();
 	MyLocationListener locationListener = new MyLocationListener();
+	
 	Location myLocation = new Location(LocationManager.NETWORK_PROVIDER);
 	
 	GeoPoint testPoint = new GeoPoint(myLocation.getLatitude() - 1,
@@ -115,9 +115,10 @@ public class CameraView extends Activity implements Callback {
 		backButton = (Button) findViewById(R.id.to_main_activity);
 		makeGeoDataRepository();
 		LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		LocationListener mlocListener = new MyLocationListener();
+		LocationListener mlocListener = new MyLocationListener();   //TODO
 		mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
-				100, 0, mlocListener);
+				1, 10, mlocListener);
+		myLocation = mlocManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
 
 		// Initialize the surface for the camera
@@ -296,7 +297,6 @@ public class CameraView extends Activity implements Callback {
 			// TODO Auto-generated method stub
 			Toast.makeText(getApplicationContext(), "GPS Disabled",
 					Toast.LENGTH_LONG).show();
-			internetCon = false;
 		}
 
 		@Override
@@ -304,7 +304,6 @@ public class CameraView extends Activity implements Callback {
 			// TODO Auto-generated method stub
 			Toast.makeText(getApplicationContext(), "GPS Enabled",
 					Toast.LENGTH_LONG).show();
-			internetCon = true;
 		}
 
 		@Override
