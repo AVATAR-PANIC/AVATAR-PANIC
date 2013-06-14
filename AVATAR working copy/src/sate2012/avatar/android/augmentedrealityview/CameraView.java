@@ -441,8 +441,18 @@ public class CameraView extends Activity implements Callback {
 		
 	public void drawPoint(MarkerPlus marker, Canvas canvas){
 		
-		Bitmap pointIcon = BitmapFactory.decodeResource(getResources(),
-				R.drawable.ic_launcher);
+		
+		//For determining which icon to draw
+		Bitmap pointIcon;
+		
+		if(marker.getName().equals("EMERGENCY")){
+			pointIcon = BitmapFactory.decodeResource(getResources(),
+					R.drawable.emergency);
+		}else{
+			pointIcon = BitmapFactory.decodeResource(getResources(),
+					R.drawable.ic_launcher);
+		}
+		
 		// for (java.util.Map.Entry<GeoPoint, DataObject> entry :
 		// repo.getCollectionOfDataEntries()){
 		// for(GeoPoint testPoint: pointArray){
