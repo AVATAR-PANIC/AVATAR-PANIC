@@ -245,14 +245,7 @@ OnInfoWindowClickListener{
 						startActivity(playVideo);
 					}
 					if(marker.getSnippet().contains(".mp4")){
-						if(mp != null){ 
-							//mp.release();
-							mp.stop();
-						}
-						mp = new MediaPlayer();
-						mp.setDataSource(marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ") + 1));
-						mp.prepare();
-						mp.start();
+						new SoundPlayer(this, marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ") + 1)).execute();
 					}
 				}catch(Exception ex){
 					ex.printStackTrace();
@@ -265,10 +258,7 @@ OnInfoWindowClickListener{
 	 */
 	public boolean onMarkerClick(Marker marker){
 		
-		if(mp != null){
-			//mp.release();
-			mp.stop();
-		}
+		stopSound();
 		
 		if(activeMarker != null){
 			if(!activeMarker.getSnippet().equals(marker.getSnippet())){
@@ -480,6 +470,27 @@ OnInfoWindowClickListener{
 	public void setMarkerArray(ArrayList<MarkerPlus> array){
 		this.markerArray = array;
 		//System.out.println("Set the Array!");
+	}
+	
+	//Dealing with sound on the maps
+	public void playSound(MediaPlayer mp){
+		stopSound();
+		this.mp = mp;
+		try{
+			this.mp.prepare();
+			this.mp.start();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public void stopSound(){
+		try{
+			this.mp.stop();
+			this.mp.release();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
 	}
 	
 	

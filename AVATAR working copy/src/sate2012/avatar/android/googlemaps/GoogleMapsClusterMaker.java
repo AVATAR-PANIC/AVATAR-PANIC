@@ -41,6 +41,7 @@ public class GoogleMapsClusterMaker extends AsyncTask<String, Void, ArrayList<Go
 		this.bounds = bounds;
 		this.projection = projection;
 		this.shouldClear = shouldClear;
+
 	}
 	
 	public ArrayList<GoogleMapsClusterMarker> generateClusters(ArrayList<MarkerPlus> points, Projection projection, LatLngBounds bounds){
