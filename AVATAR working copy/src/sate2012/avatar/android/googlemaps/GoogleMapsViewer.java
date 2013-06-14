@@ -216,6 +216,7 @@ OnInfoWindowClickListener{
 			break;
 		case R.id.emergencyCall:
 			i = new Intent(getApplicationContext(), PhoneCall.class);
+			startActivity(i);
 			break;
 		case R.id.exit:
 			this.finish();//try activityname.finish instead of this
