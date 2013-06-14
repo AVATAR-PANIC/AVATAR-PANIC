@@ -23,6 +23,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
@@ -394,147 +395,14 @@ public class CameraView extends Activity implements Callback {
 			{
 				canvas.drawBitmap(disconneceted, mSurfaceView.getWidth()/7, 0, null);  //TODO Change values to something reasonable
 			}
+			Paint paint = new Paint();
+			paint.setColor(Color.WHITE);
+			canvas.drawText("Latitude: " + myLocation.getLatitude(), 1, 10, paint); 
+			canvas.drawText("Longitude: " + myLocation.getLongitude(), 1, 20, paint); 
+			canvas.drawText("Altitude: " + myLocation.getAltitude(), 1, 30, paint); 
 			
 	}
 
-	/**
-	 * onPoint() returns a boolean telling the user if they are within 20 meters of the requested 20 meters.
-	 * 
-	*/
-	protected boolean onPoint(MarkerPlus marker){   //TODO Implement + test this method
-		boolean onTopOfPoint = false;
-		Location gpLocation = new Location(LocationManager.NETWORK_PROVIDER);
-		gpLocation.setLatitude(marker.getLatitude());
-		gpLocation.setLongitude(marker.getLongitude());
-		gpLocation.setAltitude(marker.getAltitude());
-		if(myLocation.distanceTo(gpLocation)<20)
-		{
-			onTopOfPoint = true;
-		}
-		return onTopOfPoint;	
-	}
-	
-		//draws a point relative to the tablet's perspective.
-		
-	public void drawPoint(MarkerPlus marker, Canvas canvas){
-		
-		
-		//For determining which icon to draw
-		Bitmap pointIcon;
-		
-		if(marker.getName().equals("EMERGENCY")){
-			pointIcon = BitmapFactory.decodeResource(getResources(),
-					R.drawable.emergency);
-		}else{
-			pointIcon = BitmapFactory.decodeResource(getResources(),
-					R.drawable.ic_launcher);
-		}
-		
-		// for (java.util.Map.Entry<GeoPoint, DataObject> entry :
-		// repo.getCollectionOfDataEntries()){
-		// for(GeoPoint testPoint: pointArray){
-		double myAlt = myLocation.getAltitude();
-		Location gpLocation = new Location(LocationManager.NETWORK_PROVIDER);
-		gpLocation.setLatitude(marker.getLatitude());
-		gpLocation.setLongitude(marker.getLongitude());
-		gpLocation.setAltitude(marker.getAltitude());
-		String name = marker.getName();
-
-		// All of these angles are in Radians.
-		double gpBearing = myLocation.bearingTo(gpLocation) * Math.PI
-				/ 180.0;
-		double gpAlt = gpLocation.getAltitude();
-		Paint paint = new Paint();
-		double myPitchA = Math.atan((myAlt - gpAlt)
-				/ myLocation.distanceTo(gpLocation));
-		double dist = myLocation.distanceTo(gpLocation);
-		//Log.i("Augmented Reality", "myAltitude = " + myAlt + " gpLocation Altitude = " + gpAlt);
-		// System.out.println((Math.tan(gpBearing - myBearing) * 640 /
-		// Math.tan(Math.PI / 6.0) + 640) + " "
-		// + (Math.tan(myPitchA - myPitch) * 400 / Math.tan(Math.PI / 6.0) +
-		// 400));
-		// System.out.println(gpBearing + " " + myBearing);
-		// if(gpBearing <= myBearing + 26 || gpBearing >= myBearing - 26)
-		// if(myPitchA <= 20 + myPitch && myPitchA >= -20 + myPitch)
-
-		// This checks where the point is in relation to the tablets
-		// location and only draws it in the correct place.
-		if (myLocation.getLatitude() < gpLocation.getLatitude()) {
-			if (myBearing >= 0) {
-				if ((float) (Math.tan(gpBearing - myBearing)
-						* (mSurfaceView.getWidth() / 2)
-						/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-						.getWidth() / 2)) > fragWidth) {
-
-					canvas.drawBitmap(
-							pointIcon,
-							(float) (Math.tan(gpBearing - myBearing)
-									* (mSurfaceView.getWidth() / 2)
-									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-									.getWidth() / 2)),
-							(float) (Math.tan(myPitchA - myPitch + Math.PI
-									/ 2.0)
-									* (mSurfaceView.getHeight() / 2)
-									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-									.getHeight() / 2)), null);
-					canvas.drawText( name + ": " + dist,
-							(float) (Math.tan(gpBearing - myBearing)
-									* (mSurfaceView.getWidth() / 2)
-									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-									.getWidth() / 2)),
-							(float) (Math.tan(myPitchA - myPitch + Math.PI/ 2.0)
-									* (mSurfaceView.getHeight() / 2)
-									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-									.getHeight() / 2)), paint);
-				}
-			}
-		} else if (myLocation.getLatitude() > gpLocation.getLatitude()) {
-			if (myBearing <= 0) {
-
-				if ((float) (Math.tan(gpBearing - myBearing)
-						* (mSurfaceView.getWidth() / 2)
-						/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-						.getWidth() / 2)) > fragWidth) {
-
-					canvas.drawBitmap(
-							pointIcon,
-							(float) (Math.tan(gpBearing - myBearing)
-									* (mSurfaceView.getWidth() / 2)
-									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-									.getWidth() / 2)),
-							(float) (Math.tan(myPitchA - myPitch)
-									* (mSurfaceView.getHeight() / 2)
-									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-									.getHeight() / 2)), null);
-					canvas.drawText( name + ": " + dist,
-							(float) (Math.tan(gpBearing - myBearing)
-									* (mSurfaceView.getWidth() / 2)
-									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-									.getWidth() / 2)),
-							(float) (Math.tan(myPitchA - myPitch)
-									* (mSurfaceView.getHeight() / 2)
-									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-									.getHeight() / 2)), paint);
-					
-				}
-			}
-		} else {
-			if (myLocation.getLongitude() < gpLocation.getLongitude()) {
-				if (Math.abs(myBearing) > Math.PI / 2) {
-					canvas.drawBitmap(
-							pointIcon,
-							(float) (Math.tan(gpBearing - myBearing)
-									* (mSurfaceView.getWidth() / 2)
-									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-									.getWidth() / 2)),
-							(float) (Math.tan(myPitchA - myPitch)
-									* (mSurfaceView.getHeight() / 2)
-									/ Math.tan(Math.PI / 6.0) + (mSurfaceView
-									.getHeight() / 2)), null);
-				}
-			}
-		}
-	}
 	}
 
 	public void drawGeoPoint(Canvas canvas, GeoPoint overLayPoint) {
