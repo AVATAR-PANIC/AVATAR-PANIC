@@ -266,27 +266,32 @@ public class CameraView extends Activity implements Callback {
 
 	// Stops and releases the camera view when the application is killed
 	public void surfaceDestroyed(SurfaceHolder holder) {
-		mCamera.stopPreview();
-		mPreviewRunning = false;
-		mCamera.release();
+		//mCamera.stopPreview();
+		//mPreviewRunning = false;
+		//mCamera.release();
 
 	}
 	
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
+		mPreviewRunning = false;
 		mCamera.release();
-		mCamera = null;
 	}
 	
 	@Override
 	public void onPause(){
 		super.onPause();
+		mCamera.stopPreview();
+		mCamera.release();
+		//mPreviewRunning = false;
 	}
 	
 	@Override
 	public void onResume(){
 		super.onResume();
+		//mCamera = Camera.open();
+		//mPreviewRunning = true;
 	}
 	
 	public class MyLocationListener implements LocationListener {

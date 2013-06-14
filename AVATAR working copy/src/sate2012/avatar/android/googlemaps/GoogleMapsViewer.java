@@ -133,7 +133,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 		//Bounds are problematic
 		//LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
 		
-		if(markerArray!= null){
+		if(markerArray!= null && map != null){
 			new GoogleMapsClusterMaker(markerArray, this, map.getProjection(), shouldClear).execute("");
 		}
 		
@@ -339,8 +339,10 @@ OnInfoWindowClickListener, OnPreparedListener{
 	 */
 	protected void onDestroy() {
 		super.onDestroy();
-		if (sensorrunning)
+		if (sensorrunning){
 			mySensorManager.unregisterListener(mySensorEventListener);
+			mySensorManager = null;
+		}
 	}
 
 	@Override
@@ -349,6 +351,13 @@ OnInfoWindowClickListener, OnPreparedListener{
 	 */
 	protected void onPause() {
 		super.onPause();
+		
+		if (sensorrunning){
+			mySensorManager.unregisterListener(mySensorEventListener);
+			mySensorManager = null;
+		}
+		
+		map = null;
 	}
 
 	@Override
@@ -357,6 +366,19 @@ OnInfoWindowClickListener, OnPreparedListener{
 	 */
 	protected void onResume() {
 		super.onResume();
+		
+		MapFragment mapfrag = ((MapFragment) getFragmentManager()
+				.findFragmentById(R.id.googlemap));
+		map = mapfrag.getMap();
+		
+		//Set the Maps listeners
+		map.setOnMapLongClickListener(new Listener());
+		map.setInfoWindowAdapter(this);
+		map.setOnCameraChangeListener(this);
+		map.setOnMapClickListener(this);
+		map.setOnMarkerClickListener(this);
+        map.setMyLocationEnabled(true);
+        map.setOnInfoWindowClickListener(this);
 	}
 
 	@Override
@@ -471,6 +493,9 @@ OnInfoWindowClickListener, OnPreparedListener{
 	}
 	
 	public void setMarkerArray(ArrayList<MarkerPlus> array){
+		if(markerArray == null){
+			markerArray = new ArrayList<MarkerPlus>();
+		}
 		this.markerArray = array;
 		//System.out.println("Set the Array!");
 	}
@@ -485,9 +510,13 @@ OnInfoWindowClickListener, OnPreparedListener{
 //		}catch(Exception ex){
 //			ex.printStackTrace();
 //		}
-		if(mp != null){
-			mp.release();
-			mp.stop();
+		try{
+			if(mp != null){
+				mp.release();
+				mp.stop();
+			}
+		}catch(Exception ex){
+			ex.printStackTrace();
 		}
 		mp = new MediaPlayer();
 		try {

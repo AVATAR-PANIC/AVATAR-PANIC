@@ -67,7 +67,7 @@
             android:layout_weight=".1"
             android:background="@drawable/buttonbackground"
             android:onClick="myClickMethod"
-            android:text="Emercengy Call"
+            android:text="Emergency Call"
             android:textColor="@android:color/white" />
 
         <View

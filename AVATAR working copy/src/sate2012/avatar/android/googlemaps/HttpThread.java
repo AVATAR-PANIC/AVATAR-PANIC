@@ -18,6 +18,7 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 
 		private GoogleMapsViewer maps;
 		private CameraView cameraView;
+		private boolean success;
 		
 		public HttpThread(GoogleMapsViewer maps){
 			this.maps = maps;
@@ -97,14 +98,17 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 		
 		@Override
 		public void onPostExecute(ArrayList<MarkerPlus> array){
-			if(maps != null){
-				maps.setMarkerArray(array);
-				maps.drawMarkers(true);
-				maps = null;
-			}else{
-				cameraView.setMarkerArray(array);
-				cameraView = null;
-				
+			
+			if(array!= null){
+				if(maps != null){
+					maps.setMarkerArray(array);
+					maps.drawMarkers(true);
+					maps = null;
+				}else{
+					cameraView.setMarkerArray(array);
+					cameraView = null;
+					
+				}
 			}
 		}
 }
