@@ -35,17 +35,16 @@ public class Photographer extends Activity implements View.OnClickListener {
 
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case (R.id.ibTakePic):
-			Intent i = new Intent(
-					android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-			startActivityForResult(i, cameraData);
-			break;
-		case (R.id.upload_button):
-			Intent data = new Intent();
-			setResult(Activity.RESULT_OK, data);
-			UploadMedia.setImage_filepath(pic.getAbsolutePath());
-			finish();
-			break;
+			case (R.id.ibTakePic):
+				Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+				startActivityForResult(i, cameraData);
+				break;
+			case (R.id.upload_button):
+				Intent data = new Intent();
+				setResult(Activity.RESULT_OK, data);
+				UploadMedia.setImage_filepath(pic.getAbsolutePath());
+				finish();
+				break;
 		}
 	}
 
@@ -53,19 +52,20 @@ public class Photographer extends Activity implements View.OnClickListener {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == cameraData) {
-			Bundle extras = data.getExtras();
-			bmp = (Bitmap) extras.get("data");
-			iv.setImageBitmap(bmp);
-			pic = new File(Environment.getExternalStorageDirectory(),
-					Constants.STORAGE_DIRECTORY + Constants.MEDIA_DIRECTORY
-							+ System.currentTimeMillis() + OUTPUT_FILE);
-			FileOutputStream stream = null;
-			try {
-				stream = new FileOutputStream(pic);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+			if (data != null && data.getExtras() != null) {
+				Bundle extras = data.getExtras();
+				bmp = (Bitmap) extras.get("data");
+				iv.setImageBitmap(bmp);
+				pic = new File(Environment.getExternalStorageDirectory(), Constants.STORAGE_DIRECTORY + Constants.MEDIA_DIRECTORY
+						+ System.currentTimeMillis() + OUTPUT_FILE);
+				FileOutputStream stream = null;
+				try {
+					stream = new FileOutputStream(pic);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
 			}
-			bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
 		}
 	}
 
