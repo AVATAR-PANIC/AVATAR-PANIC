@@ -3,6 +3,7 @@ package sate2012.avatar.android.googlemaps;
 import java.util.ArrayList;
 
 import android.graphics.Point;
+import android.os.AsyncTask;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.Projection;
@@ -16,18 +17,30 @@ import com.google.android.gms.maps.model.LatLngBounds;
  * 
  * If you want to make the radius larger, edit the constant below.
  */
-public class GoogleMapsClusterMaker {
+public class GoogleMapsClusterMaker extends AsyncTask<String, Void, ArrayList<GoogleMapsClusterMarker>> {
 
 	//Temp points to prevent from tampering with the points in the main array
 	public ArrayList<MarkerPlus> tempPoints;
 	//Distance in which the points should cluster
 	private final double MAXDISTANCEPIXELS = 40.0;
 	
+	//AsyncTask Variables (Necessary)
+	private ArrayList<MarkerPlus> points;
+	private GoogleMapsViewer map;
+	private LatLngBounds bounds;
+	private boolean shouldClear;
+	private Projection projection;
+	//Perhaps need to find a way to include the bounds of the map?
+	
 	/**
 	 * Default Constructor
 	 */
-	public GoogleMapsClusterMaker(){
-		
+	public GoogleMapsClusterMaker(ArrayList<MarkerPlus> points, GoogleMapsViewer map, Projection projection, boolean shouldClear){
+		this.points = points;
+		this.map = map;
+		this.bounds = bounds;
+		this.projection = projection;
+		this.shouldClear = shouldClear;
 	}
 	
 	public ArrayList<GoogleMapsClusterMarker> generateClusters(ArrayList<MarkerPlus> points, Projection projection, LatLngBounds bounds){
@@ -129,6 +142,76 @@ public class GoogleMapsClusterMaker {
 		cluster.setPoints(points);
 		
 		return cluster; //Merged Cluster
+	}
+	
+	public ArrayList<GoogleMapsClusterMarker> doInBackground(String... args){
+		
+		double pixelDistance;
+		ArrayList<GoogleMapsClusterMarker> groupClusters = new ArrayList<GoogleMapsClusterMarker>();
+		ArrayList<GoogleMapsClusterMarker> allClusters = new ArrayList<GoogleMapsClusterMarker>();
+		tempPoints = new ArrayList<MarkerPlus>(points); //Prevent tampering with the points, Copy Constructor
+		//double tempMAXDISTANCE =(MAXDISTANCE * Math.pow(.5, zoomLevel));
+		
+		//Put all points within their own groupClusters for comparison
+		for(int i = 0; i < tempPoints.size(); i++){
+			MarkerPlus tempPoint = tempPoints.get(i);
+			if(!tempPoint.getName().equals("EMERGENCY")){
+				groupClusters.add(new GoogleMapsClusterMarker());
+				groupClusters.get(groupClusters.size()-1).addPoint(tempPoint);
+			}
+			else{
+				allClusters.add(new GoogleMapsClusterMarker());
+				allClusters.get(allClusters.size()-1).addPoint(tempPoint);
+			}
+		}
+			
+			//Boolean used to determine if it needs to restart the cluster comparison from 0
+			boolean wasMerged = false;
+			//Loop to compare groupClusters
+			for(int i = 0; i < groupClusters.size()-1; i++){
+				
+				//If there was a merge, restart at 0 to begin comparisons
+				if(wasMerged){
+					i = 0;
+					wasMerged = false;
+				}
+				
+				for(int j = i+1; j < groupClusters.size(); j++){
+					//System.out.println("I: " + i + " | J: " + j);
+					pixelDistance = pixelDistance(groupClusters.get(i), groupClusters.get(j), projection);
+//					System.out.println("Pixel Distance: " + pixelDistance);
+//					System.out.println("Max Distance: " + MAXDISTANCE * Math.pow(.5, zoomLevel));
+//					System.out.println("Point Names 1: " + groupClusters.get(i).getPointNames());
+//					System.out.println("Point Names 2: " + groupClusters.get(j).getPointNames());
+					
+					if(pixelDistance < MAXDISTANCEPIXELS && groupClusters.get(i).equals(groupClusters.get(j)) == false){
+						groupClusters.add(mergegroupClusters(groupClusters.get(i), groupClusters.get(j)));
+						groupClusters.remove(j);
+						groupClusters.remove(i);
+						
+						wasMerged = true;
+
+						
+						//System.out.println("Point added!");
+						
+					}
+					
+				}
+				
+			}
+			
+		for(int i = 0; i < groupClusters.size(); i++){
+			allClusters.add(groupClusters.get(i));
+		}
+		
+		
+		return allClusters;
+	}
+	
+	protected void onPostExecute(ArrayList<GoogleMapsClusterMarker> clusters){
+		
+		map.drawClusters(clusters, shouldClear);
+		
 	}
 	
 }

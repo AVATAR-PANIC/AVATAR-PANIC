@@ -65,7 +65,11 @@ public class VideoPlayer extends Activity {
 			i = new Intent(getApplicationContext(), PhoneCall.class);
 			break;
 		case R.id.exit:
-			System.exit(0);
+			this.finish();//try activityname.finish instead of this
+			Intent intent = new Intent(Intent.ACTION_MAIN);
+			intent.addCategory(Intent.CATEGORY_HOME);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
 			break;
 		}
 	}

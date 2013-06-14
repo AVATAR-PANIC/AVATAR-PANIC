@@ -152,7 +152,11 @@ public class MapsForgeMapViewer extends MapActivity implements
 			findPositionButton(myCurrentLocation);
 			break;
 		case (R.id.Exit):
-			finish();
+			this.finish();//try activityname.finish instead of this
+			Intent intent = new Intent(Intent.ACTION_MAIN);
+			intent.addCategory(Intent.CATEGORY_HOME);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
 			break;
 		case (R.id.Clear_Points_Button):
 			userPointOverlay.clear();
@@ -177,6 +181,7 @@ public class MapsForgeMapViewer extends MapActivity implements
 
 	public void AugmentedRealityView() {
 
+		//this.finish();
 		Intent cameraView_activity = new Intent(getApplicationContext(),
 				CameraView.class);
 		// Starts the activity

@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import sate2012.avatar.android.MapsForgeMapViewer;
 import sate2012.avatar.android.PhoneCall;
@@ -56,7 +58,7 @@ InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickList
 OnInfoWindowClickListener{
 
 	public GoogleMap map;
-	public GoogleMapsClusterMaker clusterMaker;
+	//public GoogleMapsClusterMaker clusterMaker;
 	public Location myLocation = new Location(LocationManager.NETWORK_PROVIDER);
 	public Location myCurrentLocation;
 	private double myAltitude;
@@ -86,8 +88,7 @@ OnInfoWindowClickListener{
 				.findFragmentById(R.id.googlemap));
 		map = mapfrag.getMap();
 		new HttpThread(this).execute("");
-		clusterMaker = new GoogleMapsClusterMaker();
-		
+		final GoogleMapsViewer activity = this;
 		
 		//Set the Maps listeners
 		map.setOnMapLongClickListener(new Listener());
@@ -101,6 +102,22 @@ OnInfoWindowClickListener{
         drawMarkers(true);
 		map.setMapType(mapTypes[0]);
 		lastKnownZoomLevel = map.getCameraPosition().zoom;
+		
+		//Declare the timer
+		Timer httpTimer = new Timer();
+		//Set the schedule function and rate
+		httpTimer.scheduleAtFixedRate(new TimerTask() {
+
+		    @Override
+		    public void run() {
+		        new HttpThread(activity).execute("");
+		    }
+		         
+		},
+		//Set how long before to start calling the TimerTask (in milliseconds)
+		30000,
+		//Set the amount of time between each execution (in milliseconds)
+		30000);
 	}
 	
 	/**
@@ -108,7 +125,22 @@ OnInfoWindowClickListener{
 	 * @param shouldClear : Whether or not it should clear the markers from the map.
 	 */
 	public void drawMarkers(boolean shouldClear){
+
+		
+		//Below is clustering
+		//Bounds are problematic
+		//LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
+		
+		if(markerArray!= null){
+			new GoogleMapsClusterMaker(markerArray, this, map.getProjection(), shouldClear).execute("");
+		}
+		
+	}
 	
+	public void drawClusters(ArrayList<GoogleMapsClusterMarker> clusters, boolean shouldClear){
+		
+		System.out.println("Cluster Complete");
+		
 		if(shouldClear){
 			map.clear();
 		}
@@ -116,25 +148,28 @@ OnInfoWindowClickListener{
 		if(activeMarker != null){
 			activeMarker.showInfoWindow();
 		}
-		LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
 		
+		LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
 		
 		if(markerArray != null){
 			int i = 1;
-			for(GoogleMapsClusterMarker marker: clusterMaker.generateClusters(markerArray, map.getProjection(), bounds)){
+			for(GoogleMapsClusterMarker marker: clusters){
 				//if(bounds.contains(marker.latlng)){
 					if(marker.getPoints().size() > 1){
 						map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames() + " | " + marker.getPoints().size()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 		//				System.out.println("Added Marker! Position: " + new LatLng(marker.latlng.latitude, marker.latlng.longitude).toString());
 		//				System.out.println("Marker Name!: " + marker.getPointNames());
+					}else if(marker.getPoints().get(0).getName().equals("EMERGENCY")){
+						map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()));
 					}else{
 						if(marker.getPoints().size() == 1){
-						map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()));
+						map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 						}
 					}
 				//}
 			}
 		}
+		
 		
 	}
 	
@@ -156,10 +191,11 @@ OnInfoWindowClickListener{
 		Intent i;
 		switch (v.getId()) {
 		case R.id.map:
-			i = new Intent(getApplicationContext(), MapsForgeMapViewer.class);
-			startActivity(i);
+//			i = new Intent(getApplicationContext(), MapsForgeMapViewer.class);
+//			startActivity(i);
 			break;
 		case R.id.augmentedReality:
+			//this.finish();
 			i = new Intent(getApplicationContext(), CameraView.class);
 			startActivity(i);
 			break;
@@ -182,7 +218,11 @@ OnInfoWindowClickListener{
 			i = new Intent(getApplicationContext(), PhoneCall.class);
 			break;
 		case R.id.exit:
-			System.exit(0);
+			this.finish();//try activityname.finish instead of this
+			Intent intent = new Intent(Intent.ACTION_MAIN);
+			intent.addCategory(Intent.CATEGORY_HOME);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
 			break;
 		}
 	}
@@ -204,7 +244,10 @@ OnInfoWindowClickListener{
 						startActivity(playVideo);
 					}
 					if(marker.getSnippet().contains(".mp4")){
-						if(mp != null) mp.stop();
+						if(mp != null){ 
+							//mp.release();
+							mp.stop();
+						}
 						mp = new MediaPlayer();
 						mp.setDataSource(marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ") + 1));
 						mp.prepare();
@@ -222,6 +265,7 @@ OnInfoWindowClickListener{
 	public boolean onMarkerClick(Marker marker){
 		
 		if(mp != null){
+			//mp.release();
 			mp.stop();
 		}
 		
@@ -346,6 +390,7 @@ OnInfoWindowClickListener{
 		TextView title = (TextView) v.findViewById(R.id.marker_title);
 		TextView info = (TextView) v.findViewById(R.id.marker_info);
 		ImageView image = (ImageView) v.findViewById(R.id.marker_image);
+		image.setPadding(0, 0, 5, 0);
 
 		//Determining what is the snippit, what is not.
 		int snippetIndex = marker.getSnippet().length();
@@ -372,6 +417,8 @@ OnInfoWindowClickListener{
 		        	//If image received was not null
 					if(currentImage != null){
 						image.setImageDrawable(new BitmapDrawable(null , currentImage));
+					}else{
+						image.setImageDrawable(new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.loading)));
 					}
 				} catch (Exception e){
 					e.printStackTrace();
@@ -387,7 +434,10 @@ OnInfoWindowClickListener{
 				image.setImageDrawable(new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.videocambuttonbackground)));
 			}
 			else if(marker.getSnippet().contains(".mp4")){
-					image.setImageDrawable(new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.audiobuttonbackground)));
+				image.setImageDrawable(new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.audiobuttonbackground)));
+			}else if(marker.getTitle().equals("EMERGENCY")){
+				image.setImageDrawable(new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.emergency)));
+				
 			}
 		}//If it is a cluster, draw the ic_launcher and add the number of points within the cluster to it for display
 		else{
@@ -398,7 +448,7 @@ OnInfoWindowClickListener{
 			paint.setColor(Color.WHITE);
 			int xOffset = (int) (3*(clusterSize+"").length());
 			canvas.drawText(clusterSize+"", tempImage.getWidth()/2-xOffset, tempImage.getHeight()/2+4, paint);
-			
+
 			image.setImageBitmap(tempImage);
 		}
         //Returning the view containing InfoWindow contents
@@ -421,6 +471,8 @@ OnInfoWindowClickListener{
 			activeMarker = null;
 			drawMarkers(true);
 		}
+		
+		//drawMarkers(true);
 
 	}
 	
