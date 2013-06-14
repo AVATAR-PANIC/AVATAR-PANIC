@@ -32,8 +32,8 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 		protected ArrayList<MarkerPlus> doInBackground(String...args) {
 
 			ArrayList<MarkerPlus> markerArray = new ArrayList<MarkerPlus>();
-			boolean successful = false;
-			while(!successful){
+			int tries = 0;
+			while(tries < 3){
 				try {
 					System.out.println("TRYING TO CONNECT");
 					HttpClient client = new DefaultHttpClient();
@@ -71,7 +71,7 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 								//System.out.println("DATE: " + date);
 							}else if(name.equals("Link")){
 								String link = reader.nextString();
-								data += "Data link: " + link;
+								data += "Data: " + link;
 								//System.out.println("LINK: " + link);
 								//marker.setImage(Drawable.createFromStream(((InputStream)new java.net.URL(link).getContent()), "BLAH"));
 							}
@@ -86,10 +86,10 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 					//HELP!!!
 					reader.endArray();
 					reader.close();
-					successful = true;
+					tries = 3;
 				} catch (Exception e) {
 					e.printStackTrace();
-					successful = false;
+					tries++;
 				}
 			}
 			return markerArray;

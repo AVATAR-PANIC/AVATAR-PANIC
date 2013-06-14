@@ -2,6 +2,7 @@ package sate2012.avatar.android.googlemaps;
 
 import gupta.ashutosh.avatar.R;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -30,6 +31,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnPreparedListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -55,7 +57,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class GoogleMapsViewer extends Activity implements LocationListener,
 InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, 
-OnInfoWindowClickListener{
+OnInfoWindowClickListener, OnPreparedListener{
 
 	public GoogleMap map;
 	//public GoogleMapsClusterMaker clusterMaker;
@@ -245,14 +247,8 @@ OnInfoWindowClickListener{
 						startActivity(playVideo);
 					}
 					if(marker.getSnippet().contains(".mp4")){
-						if(mp != null){ 
-							//mp.release();
-							mp.stop();
-						}
-						mp = new MediaPlayer();
-						mp.setDataSource(marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ") + 1));
-						mp.prepare();
-						mp.start();
+						playSound( marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ") + 1));
+						//new SoundPlayer(this, marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ") + 1)).execute();
 					}
 				}catch(Exception ex){
 					ex.printStackTrace();
@@ -265,10 +261,7 @@ OnInfoWindowClickListener{
 	 */
 	public boolean onMarkerClick(Marker marker){
 		
-		if(mp != null){
-			//mp.release();
-			mp.stop();
-		}
+		stopSound();
 		
 		if(activeMarker != null){
 			if(!activeMarker.getSnippet().equals(marker.getSnippet())){
@@ -480,6 +473,54 @@ OnInfoWindowClickListener{
 	public void setMarkerArray(ArrayList<MarkerPlus> array){
 		this.markerArray = array;
 		//System.out.println("Set the Array!");
+	}
+	
+	//Dealing with sound on the maps
+	public void playSound(String url){
+//		stopSound();
+//		this.mp = mp;
+//		try{
+//			this.mp.prepare();
+//			this.mp.start();
+//		}catch(Exception ex){
+//			ex.printStackTrace();
+//		}
+		if(mp != null){
+			mp.release();
+			mp.stop();
+		}
+		mp = new MediaPlayer();
+		try {
+			mp.setDataSource(url);
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		mp.prepareAsync();
+		mp.setOnPreparedListener(this);
+		
+	}
+	
+	public void onPrepared(MediaPlayer mp){
+		mp.start();
+	}
+	
+	public void stopSound(){
+//		try{
+//			this.mp.stop();
+//			this.mp.release();
+//		}catch(Exception ex){
+//			ex.printStackTrace();
+//		}
 	}
 	
 	

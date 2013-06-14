@@ -88,8 +88,16 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 				LatLng latlng = i.getParcelableExtra("LatLng");
 				
 				UploadMedia.HttpSender httpSender = new UploadMedia.HttpSender();
+				System.out.println(latlng);
+				System.out.println(ptName);
+				if(i.getStringExtra("Filename") != null){
 				httpSender.execute(ptName, latlng.latitude + "",
 						latlng.longitude + "", "0", "http://" + Constants.SERVER_ADDRESS + "/" + i.getStringExtra("Filename"));
+				}else{
+				httpSender.execute(ptName, latlng.latitude + "",
+						latlng.longitude + "", "0", ((EditText) findViewById(R.id.pointDesc)).getText().toString());
+				
+				}
 				System.out.println("POINT UPLOADED");
 				
 				
@@ -106,6 +114,7 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 				button_return.setOnClickListener(this);
 			} catch (Exception e) {
 				System.out.println("EXCEPTION: " + e);
+				e.printStackTrace();
 				setContentView(R.layout.send_failed);
 			}
 			break;
