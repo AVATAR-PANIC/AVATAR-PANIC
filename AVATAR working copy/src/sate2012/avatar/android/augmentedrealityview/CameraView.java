@@ -50,19 +50,20 @@ import android.widget.Toast;
 public class CameraView extends Activity implements Callback {
 	
 	//Use these variables to determine size of side fragment to offset in the PointerView class
-	private int fragWidth;
+	protected int fragWidth;
 	
 
 	// Camera dependent variables
 	private GeoDataRepository repo;
 	private Camera mCamera;
-	private SurfaceView mSurfaceView;
+	protected SurfaceView mSurfaceView;
 	private SurfaceHolder mSurfaceHolder;
 	private PointerView pointerView;// pointer view variable
 	boolean mPreviewRunning;
 	private Canvas myCanvas = new Canvas();
 	private Button backButton;
-	private ArrayList<String> pointNameList = new ArrayList<String>();
+	protected AugRelPointManager pointManager;
+	protected ArrayList<MarkerPlus> drawPointList = new ArrayList<MarkerPlus>();
 	MyLocationListener locationListener = new MyLocationListener();
 	
 	Location myLocation = new Location(LocationManager.NETWORK_PROVIDER);
@@ -73,7 +74,8 @@ public class CameraView extends Activity implements Callback {
 	// testLocation.getLongitude() - 1);
 	// GeoPoint[] pointArray = {testPoint, testPoint2};
 	float[] currentValues = new float[3];
-	private ArrayList<MarkerPlus> markerArray;// = MarkerMaker.makeMarkers();
+	protected ArrayList<MarkerPlus> markerArray;// = MarkerMaker.makeMarkers();
+	
 
 	/**
 	 * This is a lowpass filter. It is used to smooth out the tablets movements.
@@ -119,6 +121,8 @@ public class CameraView extends Activity implements Callback {
 		mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
 				1, 10, mlocListener);
 		myLocation = mlocManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		//Create helper class
+		pointManager = new AugRelPointManager(this);
 
 
 		// Initialize the surface for the camera
@@ -365,25 +369,9 @@ public class CameraView extends Activity implements Callback {
 			// for (java.util.Map.Entry<GeoPoint, DataObject> entry :
 			// repo.getCollectionOfDataEntries()){
 			// for(GeoPoint testPoint: pointArray){
-			int x = 0;
-
-			
-			
-			if(markerArray != null){
-				for(MarkerPlus marker: markerArray){
-		        	if(pointClose(marker))  
-					{
-		        		drawPoint(marker, canvas);
-		        	}
-		        	if(pointNameList.contains(marker.getName()))
-		        	{
-		        		drawPoint(marker, canvas);
-		        	}
-		        	x++;
-		        }
-			}
-			System.out.println(x + " points created.");
+			pointManager.drawPoints(canvas, myBearing, myPitch);
 			drawGUI(canvas);
+			
 	}
 		
 	
@@ -406,19 +394,7 @@ public class CameraView extends Activity implements Callback {
 			{
 				canvas.drawBitmap(disconneceted, mSurfaceView.getWidth()/7, 0, null);  //TODO Change values to something reasonable
 			}
-	}
-
-	protected boolean pointClose(MarkerPlus marker){
-		boolean returnVal = false;
-		if ( ( ( marker.getLatitude() - myLocation.getLatitude() ) > -3 ) && 
-				( ( marker.getLatitude() - myLocation.getLatitude() ) < 3 )){
-			if ( ( ( marker.getLongitude() - myLocation.getLongitude() ) > -3 ) && 
-					( ( marker.getLongitude() - myLocation.getLongitude() ) < 3 )){
-				returnVal = true;
-			}
 			
-		}
-		return returnVal;
 	}
 
 	/**

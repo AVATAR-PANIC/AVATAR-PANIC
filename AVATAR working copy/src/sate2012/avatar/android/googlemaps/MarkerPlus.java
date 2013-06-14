@@ -112,5 +112,10 @@ public class MarkerPlus{
 	public String toString(){
 		return " Title: " + this.name + " Description: " + this.data + " Altitude: " + this.altitude;
 	}
+	
+	public boolean equals(MarkerPlus other){
+		
+		return this.toString().equals(other.toString());
+	}
 }
 
