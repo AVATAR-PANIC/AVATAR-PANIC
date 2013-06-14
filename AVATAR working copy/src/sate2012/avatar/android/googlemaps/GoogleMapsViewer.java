@@ -390,6 +390,7 @@ OnInfoWindowClickListener{
 		TextView title = (TextView) v.findViewById(R.id.marker_title);
 		TextView info = (TextView) v.findViewById(R.id.marker_info);
 		ImageView image = (ImageView) v.findViewById(R.id.marker_image);
+		image.setPadding(0, 0, 5, 0);
 
 		//Determining what is the snippit, what is not.
 		int snippetIndex = marker.getSnippet().length();
@@ -433,7 +434,10 @@ OnInfoWindowClickListener{
 				image.setImageDrawable(new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.videocambuttonbackground)));
 			}
 			else if(marker.getSnippet().contains(".mp4")){
-					image.setImageDrawable(new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.audiobuttonbackground)));
+				image.setImageDrawable(new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.audiobuttonbackground)));
+			}else if(marker.getTitle().equals("EMERGENCY")){
+				image.setImageDrawable(new BitmapDrawable(BitmapFactory.decodeResource(getResources(), R.drawable.emergency)));
+				
 			}
 		}//If it is a cluster, draw the ic_launcher and add the number of points within the cluster to it for display
 		else{
@@ -444,7 +448,7 @@ OnInfoWindowClickListener{
 			paint.setColor(Color.WHITE);
 			int xOffset = (int) (3*(clusterSize+"").length());
 			canvas.drawText(clusterSize+"", tempImage.getWidth()/2-xOffset, tempImage.getHeight()/2+4, paint);
-			
+
 			image.setImageBitmap(tempImage);
 		}
         //Returning the view containing InfoWindow contents
