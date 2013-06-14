@@ -71,7 +71,7 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 								//System.out.println("DATE: " + date);
 							}else if(name.equals("Link")){
 								String link = reader.nextString();
-								data += "Data link: " + link;
+								data += "Data: " + link;
 								//System.out.println("LINK: " + link);
 								//marker.setImage(Drawable.createFromStream(((InputStream)new java.net.URL(link).getContent()), "BLAH"));
 							}

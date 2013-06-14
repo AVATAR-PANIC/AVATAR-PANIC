@@ -109,6 +109,8 @@ public class UploadMedia extends Activity implements OnClickListener {
 			dataType = getResources().getString(R.string.type_comment);
 			i = new Intent(getApplicationContext(), MailSenderActivity.class);
 			i.putExtra("Type", dataType);
+			Intent intent = getIntent();
+			i.putExtra("LatLng", intent.getParcelableExtra("LatLng"));
 			startActivity(i);
 			break;
 		// case (R.id.gpsButton):
@@ -249,6 +251,7 @@ public class UploadMedia extends Activity implements OnClickListener {
 		@Override
 		protected String doInBackground(String... params) {
 			params[0] = params[0].replaceAll(" ", "%20");
+			params[4] = params[4].replaceAll(" ", "%20");
 			try {
 				HttpClient client = new DefaultHttpClient();
 				HttpGet get = new HttpGet(new URI(
