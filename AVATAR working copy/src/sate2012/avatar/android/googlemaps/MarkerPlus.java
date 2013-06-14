@@ -112,6 +112,5 @@ public class MarkerPlus{
 	public String toString(){
 		return " Title: " + this.name + " Description: " + this.data + " Altitude: " + this.altitude;
 	}
-
 }
 

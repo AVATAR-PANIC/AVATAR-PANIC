@@ -371,7 +371,6 @@ public class CameraView extends Activity implements Callback {
 			
 			if(markerArray != null){
 				for(MarkerPlus marker: markerArray){
-					//Log.i("Augmented Reality", "myLongitude is: " + myLocation.getLongitude() + "  myLatitude is: " + myLocation.getLatitude());
 		        	if(pointClose(marker))  
 					{
 		        		drawPoint(marker, canvas);
@@ -386,6 +385,8 @@ public class CameraView extends Activity implements Callback {
 			System.out.println(x + " points created.");
 			drawGUI(canvas);
 	}
+		
+	
 		
 	  //Returns true if the point is within 3 degrees on longitude and latitude.
 	  //assumes myLocation to be the user's location
@@ -474,7 +475,6 @@ public class CameraView extends Activity implements Callback {
 		// location and only draws it in the correct place.
 		if (myLocation.getLatitude() < gpLocation.getLatitude()) {
 			if (myBearing >= 0) {
-
 				if ((float) (Math.tan(gpBearing - myBearing)
 						* (mSurfaceView.getWidth() / 2)
 						/ Math.tan(Math.PI / 6.0) + (mSurfaceView
