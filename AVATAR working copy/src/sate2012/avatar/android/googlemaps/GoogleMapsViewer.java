@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import sate2012.avatar.android.AVATARMainMenuActivity;
 import sate2012.avatar.android.MapsForgeMapViewer;
 import sate2012.avatar.android.PhoneCall;
 import sate2012.avatar.android.UploadMedia;
@@ -94,6 +95,8 @@ OnInfoWindowClickListener, OnPreparedListener{
 	private boolean asyncTaskCancel = false;
 	private MediaPlayer mp;
 	private static View view;
+	
+	public static final int PHONE_CALL = 77;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
