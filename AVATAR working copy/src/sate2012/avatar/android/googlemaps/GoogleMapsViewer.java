@@ -16,6 +16,7 @@ import sate2012.avatar.android.UploadMedia;
 import sate2012.avatar.android.VideoPlayer;
 import sate2012.avatar.android.augmentedrealityview.CameraView;
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -34,8 +35,10 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -55,12 +58,19 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class GoogleMapsViewer extends Activity implements LocationListener,
+/**
+ * 
+ * @author Garrett + Matt
+ * 
+ * Activity that handles the map and the drawing onto the map.
+ * The actual Google Map is a fragment, created inside the XML
+ *
+ */
+public class GoogleMapsViewer extends Fragment implements LocationListener,
 InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, 
 OnInfoWindowClickListener, OnPreparedListener{
 
 	public GoogleMap map;
-	//public GoogleMapsClusterMaker clusterMaker;
 	public Location myLocation = new Location(LocationManager.NETWORK_PROVIDER);
 	public Location myCurrentLocation;
 	private double myAltitude;
@@ -81,11 +91,14 @@ OnInfoWindowClickListener, OnPreparedListener{
 	private boolean asyncTaskCancel = false;
 	private MediaPlayer mp;
 
-
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.googlemap_viewer);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		return inflater.inflate(R.layout.googlemap_viewer, container, false);
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
 		MapFragment mapfrag = ((MapFragment) getFragmentManager()
 				.findFragmentById(R.id.googlemap));
 		map = mapfrag.getMap();
@@ -177,62 +190,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 		
 		
 	}
-	
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.google_maps_viewer, menu);
-		return true;
-	}
-
-	/**
-	 * Method that determines what happens depending on which button was clicked
-	 * 
-	 * @param v
-	 *            : The view
-	 */
-	public void myClickMethod(View v) {
-		Intent i;
-		switch (v.getId()) {
-		case R.id.map:
-//			i = new Intent(getApplicationContext(), MapsForgeMapViewer.class);
-//			startActivity(i);
-			break;
-		case R.id.augmentedReality:
-			//this.finish();
-			i = new Intent(getApplicationContext(), CameraView.class);
-			startActivity(i);
-			break;
-		case R.id.changeType:
-
-			for (int c = 0; c < mapTypes.length; c++) {
-				if (mapTypes[c] == currentMapType) {
-					if (mapTypes.length - 1 != c) {
-						currentMapType = mapTypes[c + 1];
-						map.setMapType(currentMapType);
-					} else {
-						currentMapType = mapTypes[0];
-						map.setMapType(currentMapType);
-					}
-					c = mapTypes.length;
-				}
-			}
-			break;
-		case R.id.emergencyCall:
-			i = new Intent(getApplicationContext(), PhoneCall.class);
-			startActivity(i);
-			break;
-		case R.id.exit:
-			this.finish();//try activityname.finish instead of this
-			Intent intent = new Intent(Intent.ACTION_MAIN);
-			intent.addCategory(Intent.CATEGORY_HOME);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
-			break;
-		}
-	}
-	
 	public void onMapClick(LatLng latlng){
 
 	}
@@ -245,7 +203,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 		if(marker != null){
 				try{
 					if(marker.getSnippet().contains(".f4v")){
-						Intent playVideo = new Intent(getApplicationContext(), VideoPlayer.class);
+						Intent playVideo = new Intent(getActivity().getApplicationContext(), VideoPlayer.class);
 						playVideo.putExtra("video_tag", marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ") + 1));
 						startActivity(playVideo);
 					}
@@ -313,7 +271,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 		@Override
 		public void onMapLongClick(LatLng arg0) {
 			try{
-				Intent senderIntent = new Intent(getApplicationContext(),
+				Intent senderIntent = new Intent(getActivity().getApplicationContext(),
 						UploadMedia.class);
 				senderIntent.putExtra("LatLng", arg0);
 				startActivity(senderIntent);
@@ -337,54 +295,6 @@ OnInfoWindowClickListener, OnPreparedListener{
 	};
 
 	@Override
-	/**
-	 * onDestroy stops or "destroys" the program when this actions is called.
-	 */
-	protected void onDestroy() {
-		super.onDestroy();
-		if (sensorrunning){
-			mySensorManager.unregisterListener(mySensorEventListener);
-			mySensorManager = null;
-		}
-	}
-
-	@Override
-	/**
-	 * onPause pauses the application and saves the data in the savedInstances Bundle. 
-	 */
-	protected void onPause() {
-		super.onPause();
-		
-		if (sensorrunning){
-			mySensorManager.unregisterListener(mySensorEventListener);
-			mySensorManager = null;
-		}
-		
-		map = null;
-	}
-
-	@Override
-	/**
-	 * onResume sets the actions that the application runs through when starting the application from pause.
-	 */
-	protected void onResume() {
-		super.onResume();
-		
-		MapFragment mapfrag = ((MapFragment) getFragmentManager()
-				.findFragmentById(R.id.googlemap));
-		map = mapfrag.getMap();
-		
-		//Set the Maps listeners
-		map.setOnMapLongClickListener(new Listener());
-		map.setInfoWindowAdapter(this);
-		map.setOnCameraChangeListener(this);
-		map.setOnMapClickListener(this);
-		map.setOnMarkerClickListener(this);
-        map.setMyLocationEnabled(true);
-        map.setOnInfoWindowClickListener(this);
-	}
-
-	@Override
 	public void onProviderDisabled(String arg0) {
 
 	}
@@ -403,7 +313,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 
 	@Override
 	public View getInfoContents(Marker marker) {
-		View v = getLayoutInflater().inflate(R.layout.marker_contents, null);
+		View v = getActivity().getLayoutInflater().inflate(R.layout.marker_contents, null);
 
 		// Getting reference to the TextView to set title
 		TextView title = (TextView) v.findViewById(R.id.marker_title);

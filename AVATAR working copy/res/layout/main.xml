@@ -1,47 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/background"
-    android:orientation="vertical" >
-    
-    <View 
-        android:layout_width = "match_parent"
-        android:layout_height = "0px"
-        android:layout_weight = ".1"
-        />
+    android:orientation="horizontal" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="0px"
-        android:layout_weight = ".5"
-        android:layout_gravity="center"
-        android:background="@drawable/logo" />
-
-    <View 
-        android:layout_width = "match_parent"
-        android:layout_height = "0px"
-        android:layout_weight = ".1"
-        />
     
-    <Button
-        android:id="@+id/uploadB"
-        android:layout_width="wrap_content"
-        android:layout_height="0px"
-        android:layout_weight = ".5"
-        android:layout_gravity="center"
-        android:background="@drawable/buttonbackground"
-        android:text="@string/start"
-        android:textColor="@android:color/white"
-        android:textSize="40dp" />
-    
-    <View 
-        android:layout_width = "match_parent"
-        android:layout_height = "0px"
-        android:layout_weight = ".1"
-        />
+    <fragment
+        android:id="@+id/frag1"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        class="sate2012.avatar.android.Frag"
+        tools:layout="@layout/menu_frag" />
 
+    <fragment
+        android:id="@+id/map1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        class="sate2012.avatar.android.googlemaps.GoogleMapsViewer"
+        tools:layout="@layout/googlemap_viewer" />
+    
+    
+    
     <!-- These features have not been implemented yet
     <Button
         android:id="@+id/mapB"
