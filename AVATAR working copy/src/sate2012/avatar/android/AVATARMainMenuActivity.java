@@ -1,11 +1,14 @@
 package sate2012.avatar.android;
 
+import sate2012.avatar.android.augmentedrealityview.CameraView;
 import sate2012.avatar.android.googlemaps.GoogleMapsViewer;
 import gupta.ashutosh.avatar.R;
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.app.FragmentManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -40,6 +43,12 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 		 * settingB = (Button) findViewById(R.id.settingB);
 		 * settingB.setOnClickListener(this);
 		 */
+		
+		FragmentManager fragMgr = getFragmentManager();
+		
+		FragmentTransaction xact = fragMgr.beginTransaction();
+		xact.add(R.id.container, new GoogleMapsViewer(), "MAP");
+		xact.commit();
 	}
 
 	/**
@@ -49,13 +58,48 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 	 * @param View
 	 *            v - the button clicked
 	 */
-	public void onClick(View v) {
+	public void myClickMethod(View v) {
+		Intent i;
+		FragmentManager fragMgr;
+		FragmentTransaction xact;
 		switch (v.getId()) {
-		// case (R.id.uploadB):
-		default:
-			Intent intent = new Intent(getApplicationContext(),
-					GoogleMapsViewer.class);
+		case R.id.map:
+			//this.finish();
+			fragMgr = getFragmentManager();
+			
+			xact = fragMgr.beginTransaction();
+			if(fragMgr.findFragmentByTag("MAP") != null){
+				xact.replace(R.id.container, fragMgr.findFragmentByTag("MAP"), "MAP");
+			}else{
+				xact.replace(R.id.container, new GoogleMapsViewer(), "MAP");
+			}
+				xact.addToBackStack(null);
+			xact.commit();
+			break;
+		case R.id.augmentedReality:
+			fragMgr = getFragmentManager();
+			xact = fragMgr.beginTransaction();
+			//if(null == fragMgr.findFragmentByTag("CAMERA")){
+				xact.replace(R.id.container, new CameraView());
+			//}
+				xact.addToBackStack(null);
+			xact.commit();
+		case R.id.emergencyCall:
+			i = new Intent(getApplicationContext(), PhoneCall.class);
+			break;
+		case R.id.exit:
+			this.finish();//try activityname.finish instead of this
+			Intent intent = new Intent(Intent.ACTION_MAIN);
+			intent.addCategory(Intent.CATEGORY_HOME);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
+			break;
 		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		//When button was clicked.
+		
 	}
 }

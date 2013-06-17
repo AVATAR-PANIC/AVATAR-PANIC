@@ -18,6 +18,7 @@ import sate2012.avatar.android.googlemaps.GoogleMapsViewer;
 import sate2012.avatar.android.googlemaps.HttpThread;
 import sate2012.avatar.android.googlemaps.MarkerPlus;
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -38,17 +39,19 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class CameraView extends Activity implements Callback {
+public class CameraView extends Fragment implements Callback {
 	
 	//Use these variables to determine size of side fragment to offset in the PointerView class
 	protected int fragWidth;
@@ -103,21 +106,26 @@ public class CameraView extends Activity implements Callback {
 		}
 		return output;
 	}
+	
+	@Override 
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		return inflater.inflate(R.layout.camera_view, container, false);
+	}
+	
 
 	/**
 	 * This is the onCreate method. It is called by the OS to create the
 	 * application.
 	 */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.camera_view);
+	public void onStart() {
+		super.onStart();
 		
 		new HttpThread(this).execute();
 		// Initializes the button
-		backButton = (Button) findViewById(R.id.to_main_activity);
+		backButton = (Button) getActivity().findViewById(R.id.to_main_activity);
 		makeGeoDataRepository();
-		LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		LocationManager mlocManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 		LocationListener mlocListener = new MyLocationListener();   //TODO
 		mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
 				1, 10, mlocListener);
@@ -127,7 +135,7 @@ public class CameraView extends Activity implements Callback {
 
 
 		// Initialize the surface for the camera
-		mSurfaceView = (SurfaceView) findViewById(R.id.surface_camera);
+		mSurfaceView = (SurfaceView) getActivity().findViewById(R.id.surface_camera);
 		mSurfaceHolder = mSurfaceView.getHolder();
 		mSurfaceHolder.addCallback(this);
 		mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
@@ -140,12 +148,12 @@ public class CameraView extends Activity implements Callback {
 		LayoutParams layoutParamsDrawing = new LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		// add the pointer view
-		this.addContentView(pointerView, layoutParamsDrawing);
+		getActivity().addContentView(pointerView, layoutParamsDrawing);
 		pointerView.setPadding(300, pointerView.getPaddingTop(),
 				pointerView.getPaddingRight(), pointerView.getPaddingBottom());
 
 		// Set up the sensors
-		final SensorManager SENSORMANAGER = (SensorManager) getSystemService(SENSOR_SERVICE);
+		final SensorManager SENSORMANAGER = (SensorManager) getActivity().getSystemService(getActivity().SENSOR_SERVICE);
 		final Sensor ROTATION = SENSORMANAGER
 				.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
 		SensorEventListener listener = new SensorEventListener() {
@@ -198,17 +206,11 @@ public class CameraView extends Activity implements Callback {
 		backButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				// Creates activity intent
-				Intent main_activity = new Intent(getApplicationContext(),
-						GoogleMapsViewer.class);
-				startActivity(main_activity);
+				//Intent main_activity = new Intent(getApplicationContext(),
+						//GoogleMapsViewer.class);
+				//startActivity(main_activity);
 			}
 		});
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_camera_view, menu);
-		return true;
 	}
 
 	/**
@@ -305,14 +307,14 @@ public class CameraView extends Activity implements Callback {
 		@Override
 		public void onProviderDisabled(String provider) {
 			// TODO Auto-generated method stub
-			Toast.makeText(getApplicationContext(), "GPS Disabled",
+			Toast.makeText(getActivity().getApplicationContext(), "GPS Disabled",
 					Toast.LENGTH_LONG).show();
 		}
 
 		@Override
 		public void onProviderEnabled(String provider) {
 			// TODO Auto-generated method stub
-			Toast.makeText(getApplicationContext(), "GPS Enabled",
+			Toast.makeText(getActivity().getApplicationContext(), "GPS Enabled",
 					Toast.LENGTH_LONG).show();
 		}
 
@@ -391,7 +393,7 @@ public class CameraView extends Activity implements Callback {
 				R.drawable.connectedimagesmall);
 			Bitmap disconneceted = BitmapFactory.decodeResource(getResources(),
 					R.drawable.disconnectedimagesmall);
-			ConnectivityManager connManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+			ConnectivityManager connManager = (ConnectivityManager) getActivity().getSystemService(getActivity().CONNECTIVITY_SERVICE);
 			NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 			if (mWifi.isConnected()) {
 				canvas.drawBitmap(connected, mSurfaceView.getWidth()/7,0, null);
@@ -413,27 +415,6 @@ public class CameraView extends Activity implements Callback {
 	public void drawGeoPoint(Canvas canvas, GeoPoint overLayPoint) {
 		canvas.drawBitmap(null, overLayPoint.getLongitudeE6(),
 				overLayPoint.getLongitudeE6(), null);
-	}
-
-	public void myClickMethod(View v) {
-		Intent i;
-		switch (v.getId()) {
-		case R.id.map:
-			//this.finish();
-			i = new Intent(getApplicationContext(), GoogleMapsViewer.class);
-			startActivity(i);
-			break;
-		case R.id.emergencyCall:
-			i = new Intent(getApplicationContext(), PhoneCall.class);
-			break;
-		case R.id.exit:
-			this.finish();//try activityname.finish instead of this
-			Intent intent = new Intent(Intent.ACTION_MAIN);
-			intent.addCategory(Intent.CATEGORY_HOME);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
-			break;
-		}
 	}
 
 	public Canvas getMyCanvas() {
