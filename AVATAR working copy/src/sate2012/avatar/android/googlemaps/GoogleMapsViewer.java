@@ -35,6 +35,7 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -90,10 +91,24 @@ OnInfoWindowClickListener, OnPreparedListener{
 	private boolean gettingURL = false;
 	private boolean asyncTaskCancel = false;
 	private MediaPlayer mp;
+	private static View view;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		return inflater.inflate(R.layout.googlemap_viewer, container, false);
+		super.onCreateView(inflater, container, savedInstanceState);
+
+		if(view != null){
+			ViewGroup parent = (ViewGroup) view.getParent();
+			if(parent != null){
+				parent.removeView(view);
+			}
+		}
+		try{
+			view = inflater.inflate(R.layout.googlemap_viewer, container, false);
+		}catch(InflateException e){
+			
+		}
+		return view;
 	}
 	
 	@Override
@@ -133,6 +148,20 @@ OnInfoWindowClickListener, OnPreparedListener{
 		30000,
 		//Set the amount of time between each execution (in milliseconds)
 		30000);
+	}
+	
+	@Override
+	public void onPause(){
+		super.onPause();
+	}
+	
+	public void onResume(){
+		super.onPause();
+	}
+	
+	@Override
+	public void onDetach(){
+		super.onDetach();
 	}
 	
 	/**
