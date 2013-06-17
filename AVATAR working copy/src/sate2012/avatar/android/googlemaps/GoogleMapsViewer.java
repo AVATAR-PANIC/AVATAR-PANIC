@@ -141,34 +141,37 @@ OnInfoWindowClickListener, OnPreparedListener{
 	
 	public void drawClusters(ArrayList<GoogleMapsClusterMarker> clusters, boolean shouldClear){
 		
-		System.out.println("Cluster Complete");
+		//System.out.println("Cluster Complete");
 		
-		if(shouldClear){
-			map.clear();
-		}
-		//If the map was cleared and this wasn't hear, it would stop showing the info window.
-		if(activeMarker != null){
-			activeMarker.showInfoWindow();
-		}
-		
-		LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
-		
-		if(markerArray != null){
-			int i = 1;
-			for(GoogleMapsClusterMarker marker: clusters){
-				//if(bounds.contains(marker.latlng)){
-					if(marker.getPoints().size() > 1){
-						map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames() + " | " + marker.getPoints().size()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-		//				System.out.println("Added Marker! Position: " + new LatLng(marker.latlng.latitude, marker.latlng.longitude).toString());
-		//				System.out.println("Marker Name!: " + marker.getPointNames());
-					}else if(marker.getPoints().get(0).getName().equals("EMERGENCY")){
-						map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()));
-					}else{
-						if(marker.getPoints().size() == 1){
-						map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+		if(map != null){
+			
+			if(shouldClear){
+					map.clear();
+			}
+			//If the map was cleared and this wasn't hear, it would stop showing the info window.
+			if(activeMarker != null){
+				activeMarker.showInfoWindow();
+			}
+			
+			LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
+			
+			if(markerArray != null && map != null){
+				int i = 1;
+				for(GoogleMapsClusterMarker marker: clusters){
+					//if(bounds.contains(marker.latlng)){
+						if(marker.getPoints().size() > 1){
+							map.addMarker(new MarkerOptions().position(marker.latlng).title("Cluster: " + i++).snippet(marker.getPointNames() + " | " + marker.getPoints().size()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+			//				System.out.println("Added Marker! Position: " + new LatLng(marker.latlng.latitude, marker.latlng.longitude).toString());
+			//				System.out.println("Marker Name!: " + marker.getPointNames());
+						}else if(marker.getPoints().get(0).getName().equals("EMERGENCY")){
+							map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()));
+						}else{
+							if(marker.getPoints().size() == 1){
+							map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+							}
 						}
-					}
-				//}
+					//}
+				}
 			}
 		}
 		
@@ -466,6 +469,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 			canvas.drawText(clusterSize+"", tempImage.getWidth()/2-xOffset, tempImage.getHeight()/2+4, paint);
 
 			image.setImageBitmap(tempImage);
+			clusterImage.recycle();
 		}
         //Returning the view containing InfoWindow contents
         return v;
@@ -590,6 +594,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 					//System.out.println("CANCEL 1");
 					asyncTaskCancel = false;
 					gettingURL = false;
+					currentImage = null;
 					this.cancel(true);
 				}
 				//System.out.println("Getting URL!");
@@ -626,6 +631,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 				    	//System.out.println("CANCEL 2");
 				    	asyncTaskCancel = false;
 				    	gettingURL = false;
+				    	currentImage = null;
 				    	x = null;
 				    	this.cancel(true);
 				    }
