@@ -26,9 +26,11 @@ import android.location.LocationManager;
 class AugRelPointManager {
 
 	final CameraView outer;
+	protected ArrayList<MarkerPlus> onPoints;
 	
 	public AugRelPointManager(CameraView outer) {
 		this.outer = outer;
+		onPoints = new ArrayList<MarkerPlus>();
 	}
 	
 	public void clearPoints(){
@@ -69,14 +71,42 @@ class AugRelPointManager {
 		this.setClosePoints(16000);
 	}
 	
+	private void drawOnPoint(Canvas canvas, int number, int total, MarkerPlus markerPlus){
+		Bitmap closePointIcon = BitmapFactory.decodeResource(outer.getResources(),
+				R.drawable.ic_launcher);
+		canvas.drawBitmap(closePointIcon, 
+				outer.mSurfaceView.getWidth()/2 - (total/2 - number) * closePointIcon.getScaledWidth(canvas),
+				outer.mSurfaceView.getHeight()-closePointIcon.getScaledWidth(canvas), null);
+		
+		
+		
+	}
+	
 	public void drawPoints(Canvas canvas, float myBearing, float myPitch)
 	{
+		onPoints.clear();
 		if(outer.drawPointList.isEmpty()){
 			this.setClosePoints();
 		}
 		for(MarkerPlus markerPlus: outer.drawPointList){
-			drawPoint(markerPlus,canvas,myBearing,myPitch);
-
+			Location gpLocation = new Location(LocationManager.NETWORK_PROVIDER);
+			gpLocation.setLatitude(markerPlus.getLatitude());
+			gpLocation.setLongitude(markerPlus.getLongitude());
+			gpLocation.setAltitude(markerPlus.getAltitude());
+			if(outer.myLocation.distanceTo(gpLocation)<50)
+			{
+				drawPoint(markerPlus,canvas,myBearing,myPitch);
+			}
+			else
+			{
+				onPoints.add(markerPlus);
+			}
+		}
+		int total = onPoints.size();
+		int number = 0;
+		for(MarkerPlus markerPlus: this.onPoints){
+			this.drawOnPoint(canvas, number, total, markerPlus);
+			number++;
 		}
 	}
 	
@@ -109,8 +139,6 @@ class AugRelPointManager {
 		double myPitchA = Math.atan((myAlt - gpAlt)
 				/ outer.myLocation.distanceTo(gpLocation));
 		double dist = outer.myLocation.distanceTo(gpLocation);
-	
-		
 		// This checks where the point is in relation to the tablets
 		// location and only draws it in the correct place.
 		if (outer.myLocation.getLatitude() < gpLocation.getLatitude()) {
