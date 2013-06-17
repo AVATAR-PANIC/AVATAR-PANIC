@@ -18,7 +18,7 @@ public class UploadFTP extends AsyncTask<String, String, String> {
 		String filename = "T" + time;
 		try {
 			ftpClient.connect(InetAddress.getByName(Constants.SERVER_ADDRESS));
-			ftpClient.login("Sean", "");
+			ftpClient.login("AVATAR_app", "");
 			Looper.prepare();
 			//if (ftpClient.getReplyString().contains("250")) {
 				Handler progressHandler = new Handler();
