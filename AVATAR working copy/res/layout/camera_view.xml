@@ -6,14 +6,6 @@
     android:orientation="horizontal"
     tools:context=".CameraView" >
 
-    <fragment
-        android:id="@+id/frag1"
-        android:layout_width="300dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        class="sate2012.avatar.android.Frag"
-        tools:layout="@layout/menu_frag" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
