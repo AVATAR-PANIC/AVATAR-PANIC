@@ -391,24 +391,35 @@ public class CameraView extends Fragment implements Callback {
 		
 	protected void drawGUI(Canvas canvas) {
 			// TODO Auto-generated method stub
-			Bitmap connected = BitmapFactory.decodeResource(getResources(),
+			/*Bitmap connected = BitmapFactory.decodeResource(getResources(),
 				R.drawable.connectedimagesmall);
 			Bitmap disconneceted = BitmapFactory.decodeResource(getResources(),
-					R.drawable.disconnectedimagesmall);
+					R.drawable.disconnectedimagesmall);*/  //currently unused
 			ConnectivityManager connManager = (ConnectivityManager) getActivity().getSystemService(getActivity().CONNECTIVITY_SERVICE);
 			NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-			if (mWifi.isConnected()) {
+			/*if (mWifi.isConnected()) {
 				canvas.drawBitmap(connected, mSurfaceView.getWidth()/7,0, null);
 			}
 			else
 			{
 				canvas.drawBitmap(disconneceted, mSurfaceView.getWidth()/7, 0, null);  //TODO Change values to something reasonable
+			}*/   //currently unused
+			Paint white = new Paint();
+			white.setColor(Color.WHITE);
+			Paint red = new Paint(); 
+			red.setColor(Color.RED);
+			canvas.drawText("Latitude: " + myLocation.getLatitude(), 1, 10, white);  //TODO- Change all of these to be relative to the screen size.
+			canvas.drawText("Longitude: " + myLocation.getLongitude(), 1, 20, white); 
+			canvas.drawText("Altitude: " + myLocation.getAltitude(), 1, 30, white);
+			if (mWifi.isConnected()) {
+				canvas.drawText("Server Status: Connected", 1, 40, white); 
 			}
-			Paint paint = new Paint();
-			paint.setColor(Color.WHITE);
-			canvas.drawText("Latitude: " + myLocation.getLatitude(), 1, 10, paint); 
-			canvas.drawText("Longitude: " + myLocation.getLongitude(), 1, 20, paint); 
-			canvas.drawText("Altitude: " + myLocation.getAltitude(), 1, 30, paint); 
+			else
+			{
+				canvas.drawText("Server Status:", 1, 40, white);
+				canvas.drawText("Disconnected", 1, 50, red);
+			}
+			
 			
 	}
 
