@@ -2,6 +2,7 @@ package sate2012.avatar.android;
 
 import gupta.ashutosh.avatar.R;
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,32 +10,40 @@ import android.os.Bundle;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 
-public class PhoneCall extends Activity implements OnClickListener {
+public class PhoneCall extends Fragment implements OnClickListener {
 
-	final Context context = this;
+	final Context context = getActivity();
 	private Button policeB;
 	private Button fireB;
 	private Button parentsB;
 
-	public void onCreate(Bundle savedInstanceState) {
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		super.onCreateView(inflater, container, savedInstanceState);
+		return inflater.inflate(R.layout.phone_call, container, false);
+	}
+	
+	@Override
+	public void onStart() {
 
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.phone_call);
+		super.onStart();
 
 		// add PhoneStateListener
 		PhoneCallListener phoneListener = new PhoneCallListener();
-		TelephonyManager telephonyManager = (TelephonyManager) this
+		TelephonyManager telephonyManager = (TelephonyManager) getActivity()
 				.getSystemService(Context.TELEPHONY_SERVICE);
 		telephonyManager.listen(phoneListener,
 				PhoneStateListener.LISTEN_CALL_STATE);
 
-		policeB = (Button) findViewById(R.id.police);
-		fireB = (Button) findViewById(R.id.fire);
-		parentsB = (Button) findViewById(R.id.parents);
+		policeB = (Button) getActivity().findViewById(R.id.police);
+		fireB = (Button) getActivity().findViewById(R.id.fire);
+		parentsB = (Button) getActivity().findViewById(R.id.parents);
 
 		policeB.setOnClickListener(this);
 		fireB.setOnClickListener(this);
@@ -95,9 +104,9 @@ public class PhoneCall extends Activity implements OnClickListener {
 					Log.i(LOG_TAG, "restart app");
 
 					// restart app
-					Intent i = getBaseContext().getPackageManager()
+					Intent i = getActivity().getBaseContext().getPackageManager()
 							.getLaunchIntentForPackage(
-									getBaseContext().getPackageName());
+									getActivity().getBaseContext().getPackageName());
 					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(i);
 

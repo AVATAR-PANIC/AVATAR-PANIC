@@ -65,6 +65,7 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 		switch (v.getId()) {
 		case R.id.map:
 			//this.finish();
+			
 			fragMgr = getFragmentManager();
 			
 			xact = fragMgr.beginTransaction();
@@ -73,19 +74,33 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			}else{
 				xact.replace(R.id.container, new GoogleMapsViewer(), "MAP");
 			}
-				xact.addToBackStack(null);
+				//xact.addToBackStack(null);
 			xact.commit();
 			break;
 		case R.id.augmentedReality:
 			fragMgr = getFragmentManager();
 			xact = fragMgr.beginTransaction();
-			//if(null == fragMgr.findFragmentByTag("CAMERA")){
-				xact.replace(R.id.container, new CameraView());
-			//}
-				xact.addToBackStack(null);
+			if(fragMgr.findFragmentByTag("AUGMENTED_REALITY") != null){
+				xact.replace(R.id.container, fragMgr.findFragmentByTag("AUGMENTED_REALITY"), "AUGMENTED_REALITY");
+			}else{
+				xact.replace(R.id.container, new CameraView(), "AUGMENTED_REALITY");
+			}
+				//xact.addToBackStack(null);
 			xact.commit();
+			break;
 		case R.id.emergencyCall:
-			i = new Intent(getApplicationContext(), PhoneCall.class);
+			
+			fragMgr = getFragmentManager();
+			xact = fragMgr.beginTransaction();
+			if(fragMgr.findFragmentByTag("PHONE_CALL") != null){
+				xact.replace(R.id.container, fragMgr.findFragmentByTag("PHONE_CALL"), "PHONE_CALL");
+			}else{
+				xact.replace(R.id.container, new PhoneCall(), "PHONE_CALL");
+			}
+				//xact.addToBackStack(null);
+			xact.commit();
+			
+			//i = new Intent(getApplicationContext(), PhoneCall.class);
 			break;
 		case R.id.exit:
 			this.finish();//try activityname.finish instead of this
