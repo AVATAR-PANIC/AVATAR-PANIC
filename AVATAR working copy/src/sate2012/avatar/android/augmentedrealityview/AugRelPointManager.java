@@ -26,9 +26,13 @@ import android.location.LocationManager;
 class AugRelPointManager {
 
 	final CameraView outer;
+	protected ArrayList<MarkerPlus> onPoints;
+	Paint paint;
 	
 	public AugRelPointManager(CameraView outer) {
 		this.outer = outer;
+		onPoints = new ArrayList<MarkerPlus>();
+		paint = new Paint();
 	}
 	
 	public void clearPoints(){
@@ -69,14 +73,43 @@ class AugRelPointManager {
 		this.setClosePoints(16000);
 	}
 	
+	private void drawOnPoint(Canvas canvas, int number, int total, MarkerPlus markerPlus){
+		String name = markerPlus.getName();
+		Bitmap closePointIcon = BitmapFactory.decodeResource(outer.getResources(),
+				R.drawable.ic_launcher);
+		canvas.drawBitmap(closePointIcon, 
+				outer.mSurfaceView.getWidth()/2 - (total/2 - number) * closePointIcon.getScaledWidth(canvas),
+				outer.mSurfaceView.getHeight()-closePointIcon.getScaledWidth(canvas), null);
+		canvas.drawText( name + ": <10 meters",
+				outer.mSurfaceView.getWidth()/2 - (total/2 - number) * closePointIcon.getScaledWidth(canvas),
+				outer.mSurfaceView.getHeight()-closePointIcon.getScaledWidth(canvas)-10, paint);
+	}
+	
 	public void drawPoints(Canvas canvas, float myBearing, float myPitch)
 	{
+		onPoints.clear();
 		if(outer.drawPointList.isEmpty()){
 			this.setClosePoints();
 		}
 		for(MarkerPlus markerPlus: outer.drawPointList){
-			drawPoint(markerPlus,canvas,myBearing,myPitch);
-
+			Location gpLocation = new Location(LocationManager.NETWORK_PROVIDER);
+			gpLocation.setLatitude(markerPlus.getLatitude());
+			gpLocation.setLongitude(markerPlus.getLongitude());
+			gpLocation.setAltitude(markerPlus.getAltitude());
+			if(outer.myLocation.distanceTo(gpLocation)>10)
+			{
+				drawPoint(markerPlus,canvas,myBearing,myPitch);
+			}
+			else
+			{
+				onPoints.add(markerPlus);
+			}
+		}
+		int total = onPoints.size();
+		int number = 0;
+		for(MarkerPlus markerPlus: this.onPoints){
+			this.drawOnPoint(canvas, number, total, markerPlus);
+			number++;
 		}
 	}
 	
@@ -105,12 +138,9 @@ class AugRelPointManager {
 		double gpBearing = outer.myLocation.bearingTo(gpLocation) * Math.PI
 				/ 180.0;
 		double gpAlt = gpLocation.getAltitude();
-		Paint paint = new Paint();
 		double myPitchA = Math.atan((myAlt - gpAlt)
 				/ outer.myLocation.distanceTo(gpLocation));
 		double dist = outer.myLocation.distanceTo(gpLocation);
-	
-		
 		// This checks where the point is in relation to the tablets
 		// location and only draws it in the correct place.
 		if (outer.myLocation.getLatitude() < gpLocation.getLatitude()) {
@@ -140,6 +170,15 @@ class AugRelPointManager {
 									* (outer.mSurfaceView.getHeight() / 2)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
 									.getHeight() / 2)), paint);
+					canvas.drawText("" + dist,
+							(float) (Math.tan(gpBearing - myBearing)
+									* (outer.mSurfaceView.getWidth() / 2)
+									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
+									.getWidth() / 2)),
+							(float) (Math.tan(myPitchA - myPitch + Math.PI/ 2.0)
+									* (outer.mSurfaceView.getHeight() / 2)
+									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
+									.getHeight() / 2)) + pointIcon.getScaledHeight(canvas) + 10, paint);
 				}
 			}
 		} else if (outer.myLocation.getLatitude() > gpLocation.getLatitude()) {
@@ -160,7 +199,7 @@ class AugRelPointManager {
 									* (outer.mSurfaceView.getHeight() / 2)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
 									.getHeight() / 2)), null);
-					canvas.drawText( name + ": " + dist,
+					canvas.drawText( name,
 							(float) (Math.tan(gpBearing - myBearing)
 									* (outer.mSurfaceView.getWidth() / 2)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
@@ -169,7 +208,15 @@ class AugRelPointManager {
 									* (outer.mSurfaceView.getHeight() / 2)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
 									.getHeight() / 2)), paint);
-					
+					canvas.drawText( dist + "",
+							(float) (Math.tan(gpBearing - myBearing)
+									* (outer.mSurfaceView.getWidth() / 2)
+									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
+									.getWidth() / 2)) ,
+							(float) (Math.tan(myPitchA - myPitch)
+									* (outer.mSurfaceView.getHeight() / 2)
+									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
+									.getHeight() / 2)) + pointIcon.getScaledHeight(canvas) + 10, paint);
 				}
 			}
 		} else {
@@ -185,6 +232,26 @@ class AugRelPointManager {
 									* (outer.mSurfaceView.getHeight() / 2)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
 									.getHeight() / 2)), null);
+					canvas.drawText(
+							name,
+							(float) (Math.tan(gpBearing - myBearing)
+									* (outer.mSurfaceView.getWidth() / 2)
+									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
+									.getWidth() / 2)),
+							(float) (Math.tan(myPitchA - myPitch)
+									* (outer.mSurfaceView.getHeight() / 2)
+									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
+									.getHeight() / 2)), paint);
+					canvas.drawText(
+							dist + "",
+							(float) (Math.tan(gpBearing - myBearing)
+									* (outer.mSurfaceView.getWidth() / 2)
+									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
+									.getWidth() / 2)),
+							(float) (Math.tan(myPitchA - myPitch)
+									* (outer.mSurfaceView.getHeight() / 2)
+									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
+									.getHeight() / 2)) + pointIcon.getScaledHeight(canvas) + 10, paint);
 				}
 			}
 		}
