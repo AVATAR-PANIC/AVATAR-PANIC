@@ -17,6 +17,8 @@ import sate2012.avatar.android.VideoPlayer;
 import sate2012.avatar.android.augmentedrealityview.CameraView;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -156,7 +158,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 	}
 	
 	public void onResume(){
-		super.onPause();
+		super.onResume();
 	}
 	
 	@Override
@@ -190,7 +192,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 			if(shouldClear){
 					map.clear();
 			}
-			//If the map was cleared and this wasn't hear, it would stop showing the info window.
+			//If the map was cleared and this wasn't here, it would stop showing the info window.
 			if(activeMarker != null){
 				activeMarker.showInfoWindow();
 			}
@@ -232,9 +234,22 @@ OnInfoWindowClickListener, OnPreparedListener{
 		if(marker != null){
 				try{
 					if(marker.getSnippet().contains(".f4v")){
-						Intent playVideo = new Intent(getActivity().getApplicationContext(), VideoPlayer.class);
-						playVideo.putExtra("video_tag", marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ") + 1));
-						startActivity(playVideo);
+						Bundle data = new Bundle();
+						data.putString("video_tag", marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ") + 1));
+						VideoPlayer videoPlayer = new VideoPlayer();
+						videoPlayer.setArguments(data);
+						
+						FragmentManager fragMgr = getFragmentManager();
+						
+						FragmentTransaction xact = fragMgr.beginTransaction();
+						
+						if(fragMgr.findFragmentByTag("VIDEO_PLAYER") != null){
+							xact.replace(R.id.container, fragMgr.findFragmentByTag("VIDEO_PLAYER"), "VIDEO_PLAYER");
+						}else{
+							xact.replace(R.id.container, videoPlayer, "VIDEO_PLAYER");
+						}
+							xact.addToBackStack(null);
+						xact.commit();
 					}
 					if(marker.getSnippet().contains(".mp4")){
 						playSound( marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ") + 1));
@@ -250,8 +265,6 @@ OnInfoWindowClickListener, OnPreparedListener{
 	 * Important for knowing if it should start loading another image, or continue with the image it is loading.
 	 */
 	public boolean onMarkerClick(Marker marker){
-		
-		stopSound();
 		
 		if(activeMarker != null){
 			if(!activeMarker.getSnippet().equals(marker.getSnippet())){
@@ -342,7 +355,9 @@ OnInfoWindowClickListener, OnPreparedListener{
 
 	@Override
 	public View getInfoContents(Marker marker) {
-		View v = getActivity().getLayoutInflater().inflate(R.layout.marker_contents, null);
+		View v = null;
+		try{
+		v = getActivity().getLayoutInflater().inflate(R.layout.marker_contents, null);
 
 		// Getting reference to the TextView to set title
 		TextView title = (TextView) v.findViewById(R.id.marker_title);
@@ -410,6 +425,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 			image.setImageBitmap(tempImage);
 			clusterImage.recycle();
 		}
+		}catch(Exception ex){}
         //Returning the view containing InfoWindow contents
         return v;
 
@@ -445,14 +461,6 @@ OnInfoWindowClickListener, OnPreparedListener{
 	
 	//Dealing with sound on the maps
 	public void playSound(String url){
-//		stopSound();
-//		this.mp = mp;
-//		try{
-//			this.mp.prepare();
-//			this.mp.start();
-//		}catch(Exception ex){
-//			ex.printStackTrace();
-//		}
 		try{
 			if(mp != null){
 				mp.release();
@@ -484,15 +492,6 @@ OnInfoWindowClickListener, OnPreparedListener{
 	
 	public void onPrepared(MediaPlayer mp){
 		mp.start();
-	}
-	
-	public void stopSound(){
-//		try{
-//			this.mp.stop();
-//			this.mp.release();
-//		}catch(Exception ex){
-//			ex.printStackTrace();
-//		}
 	}
 	
 	
