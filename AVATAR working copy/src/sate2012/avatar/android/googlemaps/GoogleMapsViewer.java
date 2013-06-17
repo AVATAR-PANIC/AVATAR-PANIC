@@ -79,7 +79,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 	private double myAltitude;
 	private double myLatitude;
 	private double myLongitude;
-	private float lastKnownZoomLevel;
+	private static float lastKnownZoomLevel;
 	private static SensorManager mySensorManager;
 	private boolean sensorrunning;
 	private boolean hasMapCentered = false;
@@ -191,10 +191,12 @@ OnInfoWindowClickListener, OnPreparedListener{
 			
 			if(shouldClear){
 					map.clear();
+					System.out.println("Map Cleared");
 			}
 			//If the map was cleared and this wasn't here, it would stop showing the info window.
 			if(activeMarker != null){
 				activeMarker.showInfoWindow();
+				System.out.println("Showing Window!");
 			}
 			
 			LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
@@ -230,7 +232,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 	 * Does not work atm.
 	 */
 	public void onInfoWindowClick(Marker marker){
-		System.out.println("Clicked!");
+		System.out.println("CLICKED!");
 		if(marker != null){
 				try{
 					if(marker.getSnippet().contains(".f4v")){
