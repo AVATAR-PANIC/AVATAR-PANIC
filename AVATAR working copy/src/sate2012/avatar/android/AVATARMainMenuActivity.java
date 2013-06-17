@@ -74,7 +74,7 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			}else{
 				xact.replace(R.id.container, new GoogleMapsViewer(), "MAP");
 			}
-				xact.addToBackStack(null);
+				//xact.addToBackStack(null);
 			xact.commit();
 			break;
 		case R.id.augmentedReality:
@@ -85,7 +85,7 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			}else{
 				xact.replace(R.id.container, new CameraView(), "AUGMENTED_REALITY");
 			}
-				xact.addToBackStack(null);
+				//xact.addToBackStack(null);
 			xact.commit();
 			break;
 		case R.id.emergencyCall:
@@ -97,7 +97,7 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			}else{
 				xact.replace(R.id.container, new PhoneCall(), "PHONE_CALL");
 			}
-				xact.addToBackStack(null);
+				//xact.addToBackStack(null);
 			xact.commit();
 			
 			//i = new Intent(getApplicationContext(), PhoneCall.class);
