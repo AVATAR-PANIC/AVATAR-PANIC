@@ -51,6 +51,7 @@ public class UploadMedia extends Activity implements OnClickListener {
 	private static String image_filepath;
 	public static Context thisContext;
 	public static String ptName;
+	public static boolean isEmergency = false;
 
 	/**
 	 * Called when the activity is first created.
@@ -121,7 +122,8 @@ public class UploadMedia extends Activity implements OnClickListener {
 		// break;
 		case (R.id.emergency):
 			dataType = getResources().getString(R.string.type_emergency);
-			i = new Intent(getApplicationContext(), PhoneCall.class);
+			//i = new Intent(getApplicationContext(), PhoneCall.class);
+			//i = null;
 			
 			Intent emergencyIntent = getIntent();
 
@@ -129,9 +131,10 @@ public class UploadMedia extends Activity implements OnClickListener {
 			HttpSender connect = new HttpSender();
 			connect.execute("EMERGENCY", latlng.latitude + "",
 					latlng.longitude + "", "0", "EMERGENCY");
-			
-			i.putExtra("Type", dataType);
-			startActivity(i);
+			UploadMedia.isEmergency = true;
+			finish();
+			//i.putExtra("Type", dataType);
+			//startActivity(i);
 			break;
 		}
 	}

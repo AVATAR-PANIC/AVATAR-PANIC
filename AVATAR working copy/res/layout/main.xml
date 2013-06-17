@@ -7,13 +7,11 @@
     android:orientation="horizontal" >
 
     
-    <fragment
-        android:id="@+id/frag1"
+    <FrameLayout
+        android:id="@+id/menu"
         android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        class="sate2012.avatar.android.Frag"
-        tools:layout="@layout/menu_frag" />
+        android:layout_weight="1" />
 
     <FrameLayout
         android:id="@+id/container"

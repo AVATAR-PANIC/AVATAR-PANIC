@@ -48,6 +48,8 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 		
 		FragmentTransaction xact = fragMgr.beginTransaction();
 		xact.add(R.id.container, new GoogleMapsViewer(), "MAP");
+		
+		xact.add(R.id.menu, new Frag(), "MENU");
 		xact.commit();
 	}
 
@@ -93,11 +95,11 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			fragMgr = getFragmentManager();
 			xact = fragMgr.beginTransaction();
 			if(fragMgr.findFragmentByTag("PHONE_CALL") != null){
-				xact.replace(R.id.container, fragMgr.findFragmentByTag("PHONE_CALL"), "PHONE_CALL");
+				xact.replace(R.id.menu, fragMgr.findFragmentByTag("PHONE_CALL"), "PHONE_CALL");
 			}else{
-				xact.replace(R.id.container, new PhoneCall(), "PHONE_CALL");
+				xact.replace(R.id.menu, new PhoneCall(), "PHONE_CALL");
 			}
-				//xact.addToBackStack(null);
+				xact.addToBackStack(null);
 			xact.commit();
 			
 			//i = new Intent(getApplicationContext(), PhoneCall.class);
@@ -116,5 +118,31 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 	public void onClick(View v) {
 		//When button was clicked.
 		
+	}
+	
+	public void emergencyCall(){
+		FragmentManager fragMgr;
+		FragmentTransaction xact;
+		
+		fragMgr = getFragmentManager();
+		xact = fragMgr.beginTransaction();
+		if(fragMgr.findFragmentByTag("PHONE_CALL") != null){
+			xact.replace(R.id.menu, fragMgr.findFragmentByTag("PHONE_CALL"), "PHONE_CALL");
+		}else{
+			xact.replace(R.id.menu, new PhoneCall(), "PHONE_CALL");
+			xact.addToBackStack(null);
+		}
+		xact.commit();
+		
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		if(UploadMedia.isEmergency){
+			emergencyCall();
+		}else{
+			
+		}
 	}
 }
