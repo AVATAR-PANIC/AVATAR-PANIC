@@ -20,23 +20,4 @@ public class Frag extends Fragment {
 		return view;
 	}
 
-	public void myClickMethod(View v, Context c) {
-		Intent i;
-		switch (v.getId()) {
-		case R.id.map:
-			i = new Intent(c, GoogleMapsViewer.class);
-			startActivity(i);
-			break;
-		case R.id.augmentedReality:
-			i = new Intent(c, CameraView.class);
-			startActivity(i);
-			break;
-		case R.id.emergencyCall:
-			i = new Intent(c, PhoneCall.class);
-			break;
-		case R.id.exit:
-			System.exit(0);
-			break;
-		}
-	}
 }

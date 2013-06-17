@@ -98,8 +98,8 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 				xact.replace(R.id.menu, fragMgr.findFragmentByTag("PHONE_CALL"), "PHONE_CALL");
 			}else{
 				xact.replace(R.id.menu, new PhoneCall(), "PHONE_CALL");
-			}
 				xact.addToBackStack(null);
+			}
 			xact.commit();
 			
 			//i = new Intent(getApplicationContext(), PhoneCall.class);
@@ -110,6 +110,17 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			intent.addCategory(Intent.CATEGORY_HOME);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
+			break;
+		case R.id.phone_exit_button:
+			fragMgr = getFragmentManager();
+			xact = fragMgr.beginTransaction();
+			if(fragMgr.findFragmentByTag("MENU") != null){
+				xact.replace(R.id.menu,  fragMgr.findFragmentByTag("MENU"), "MENU");
+			}else{
+				xact.replace(R.id.menu, new Frag(), "MENU");
+				xact.addToBackStack(null);
+			}
+			xact.commit();
 			break;
 		}
 	}

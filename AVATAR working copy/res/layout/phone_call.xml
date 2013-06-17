@@ -19,7 +19,7 @@
         android:layout_weight=".3"
         android:background="@drawable/buttonbackground"
         android:text="Call Police"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/white" />
 
     <Button
         android:id="@+id/fire"
@@ -29,7 +29,7 @@
         android:layout_weight=".3"
         android:background="@drawable/buttonbackground"
         android:text="Call Fire Department"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/white" />
 
     <Button
         android:id="@+id/parents"
@@ -39,8 +39,18 @@
         android:layout_weight=".3"
         android:background="@drawable/buttonbackground"
         android:text="Call Parents"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/white" />
 
+    <Button
+        android:id="@+id/phone_exit_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight=".3"
+        android:background="@drawable/buttonbackground"
+        android:text="Exit"
+        android:textColor="@android:color/white"
+        android:onClick="myClickMethod" />
     <View
         android:layout_width="0px"
         android:layout_height="match_parent"
