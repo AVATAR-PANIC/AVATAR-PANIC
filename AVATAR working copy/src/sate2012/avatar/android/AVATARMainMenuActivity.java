@@ -65,6 +65,7 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 		switch (v.getId()) {
 		case R.id.map:
 			//this.finish();
+			
 			fragMgr = getFragmentManager();
 			
 			xact = fragMgr.beginTransaction();

@@ -195,8 +195,12 @@ public class CameraView extends Fragment implements Callback {
 
 				// Redraw the screen
 				pointerView.postInvalidate();
-				fragWidth = getFragmentManager().findFragmentById(R.id.frag1)
-						.getView().getWidth();
+				try{
+					fragWidth = getFragmentManager().findFragmentById(R.id.frag1)
+							.getView().getWidth();
+				}catch(Exception ex){
+					
+				}
 			}
 		};
 		SENSORMANAGER.registerListener(listener, ROTATION,
@@ -268,24 +272,20 @@ public class CameraView extends Fragment implements Callback {
 
 	// Stops and releases the camera view when the application is killed
 	public void surfaceDestroyed(SurfaceHolder holder) {
-		//mCamera.stopPreview();
-		//mPreviewRunning = false;
-		//mCamera.release();
+		mCamera.stopPreview();
+		mPreviewRunning = false;
+		mCamera.release();
 
 	}
 	
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
-		mPreviewRunning = false;
-		mCamera.release();
 	}
 	
 	@Override
 	public void onPause(){
 		super.onPause();
-		mCamera.stopPreview();
-		mCamera.release();
 		//mPreviewRunning = false;
 	}
 	
@@ -372,13 +372,15 @@ public class CameraView extends Fragment implements Callback {
 		@Override
 		protected void onDraw(Canvas canvas) {
 			super.onDraw(canvas);
-			Bitmap pointIcon = BitmapFactory.decodeResource(getResources(),
-					R.drawable.ic_launcher);
-			// for (java.util.Map.Entry<GeoPoint, DataObject> entry :
-			// repo.getCollectionOfDataEntries()){
-			// for(GeoPoint testPoint: pointArray){
-			pointManager.drawPoints(canvas, myBearing, myPitch);
-			drawGUI(canvas);
+			if(mPreviewRunning){
+				Bitmap pointIcon = BitmapFactory.decodeResource(getResources(),
+						R.drawable.ic_launcher);
+				// for (java.util.Map.Entry<GeoPoint, DataObject> entry :
+				// repo.getCollectionOfDataEntries()){
+				// for(GeoPoint testPoint: pointArray){
+				pointManager.drawPoints(canvas, myBearing, myPitch);
+				drawGUI(canvas);
+			}
 			
 	}
 		
