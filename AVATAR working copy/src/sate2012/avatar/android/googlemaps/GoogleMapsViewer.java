@@ -321,8 +321,6 @@ OnInfoWindowClickListener, OnPreparedListener{
 		
 		// System.out.println("HEY");
 		System.out.println("HEY");
-		
-		// TODO Test this
 		this.placeLocation();
 		
 
@@ -357,6 +355,9 @@ OnInfoWindowClickListener, OnPreparedListener{
 			markerArray.add(tempPoint);
 			myMarkerLocation = tempPoint;
 			drawMarkers(true); 
+			UploadMedia.HttpSender httpSender = new UploadMedia.HttpSender();
+			httpSender.execute(tempPoint.getName(), tempPoint.getLatitude() + "",
+					tempPoint.getLongitude() + "", "0", myID + "'s location");
 			
 		}
 	}
