@@ -69,10 +69,6 @@ public class UploadMedia extends Activity implements OnClickListener {
 		audioB.setOnClickListener(this);
 		commentB = (ImageButton) findViewById(R.id.commentButton);
 		commentB.setOnClickListener(this);
-		// button was removed and its function was added to the emergency phone
-		// call
-		// gpsB = (Button) findViewById(R.id.gpsButton);
-		// gpsB.setOnClickListener(this);
 		emergency = (Button) findViewById(R.id.emergency);
 		emergency.setOnClickListener(this);
 
@@ -110,16 +106,8 @@ public class UploadMedia extends Activity implements OnClickListener {
 			i.putExtra("LatLng", intent.getParcelableExtra("LatLng"));
 			startActivity(i);
 			break;
-		// case (R.id.gpsButton):
-		// dataType = getResources().getString(R.string.type_android);
-		// i = new Intent(getApplicationContext(), MailSenderActivity.class);
-		// i.putExtra("Type", dataType);
-		// startActivity(i);
-		// break;
 		case (R.id.emergency):
 			dataType = getResources().getString(R.string.type_emergency);
-			//i = new Intent(getApplicationContext(), PhoneCall.class);
-			//i = null;
 			
 			Intent emergencyIntent = getIntent();
 
@@ -129,8 +117,6 @@ public class UploadMedia extends Activity implements OnClickListener {
 					latlng.longitude + "", "0", "EMERGENCY");
 			UploadMedia.isEmergency = true;
 			finish();
-			//i.putExtra("Type", dataType);
-			//startActivity(i);
 			break;
 		}
 	}
@@ -181,33 +167,6 @@ public class UploadMedia extends Activity implements OnClickListener {
 			finish();
 		}
 	}
-
-	// public void onBackPressed(){
-	// LayoutInflater layoutInflater =
-	// (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-	// View popupView = layoutInflater.inflate(R.layout.pop_up, null);
-	// final PopupWindow popupWindow = new PopupWindow(popupView,
-	// LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-	//
-	// Button no = (Button)popupView.findViewById(R.id.no_button);
-	// no.setOnClickListener(new Button.OnClickListener(){
-	//
-	// @Override
-	// public void onClick(View v) {
-	// // TODO Auto-generated method stub
-	// popupWindow.dismiss();
-	// finish();
-	// }});
-	//
-	// Button yes = (Button)popupView.findViewById(R.id.yes_button);
-	// yes.setOnClickListener(new Button.OnClickListener(){
-	//
-	// @Override
-	// public void onClick(View v) {
-	// // TODO Auto-generated method stub
-	// popupWindow.dismiss();
-	// }});
-	// }
 
 	public static void setImage_filepath(String fp) {
 		image_filepath = fp;
