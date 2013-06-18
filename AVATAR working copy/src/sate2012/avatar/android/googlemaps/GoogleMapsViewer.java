@@ -84,10 +84,10 @@ OnInfoWindowClickListener, OnPreparedListener{
 	private static SensorManager mySensorManager;
 	private boolean sensorrunning;
 	private boolean hasMapCentered = false;
-	private int[] mapTypes = { GoogleMap.MAP_TYPE_NORMAL,
+	public static int[] mapTypes = { GoogleMap.MAP_TYPE_NORMAL,
 			GoogleMap.MAP_TYPE_SATELLITE, GoogleMap.MAP_TYPE_HYBRID,
 			GoogleMap.MAP_TYPE_TERRAIN };
-	private int currentMapType = mapTypes[0];
+	public int currentMapType = GoogleMapsViewer.mapTypes[0];
 	private ArrayList<MarkerPlus> markerArray = new ArrayList<MarkerPlus>();// = MarkerMaker.makeMarkers();
 	private Marker activeMarker = null;
 	private Bitmap currentImage = null;
@@ -135,7 +135,7 @@ OnInfoWindowClickListener, OnPreparedListener{
         map.setOnInfoWindowClickListener(this);
         
         drawMarkers(true);
-		map.setMapType(mapTypes[0]);
+		map.setMapType(GoogleMapsViewer.mapTypes[0]);
 		lastKnownZoomLevel = map.getCameraPosition().zoom;
 		
 		//Declare the timer
@@ -497,6 +497,10 @@ OnInfoWindowClickListener, OnPreparedListener{
 	
 	public void onPrepared(MediaPlayer mp){
 		mp.start();
+	}
+	
+	public GoogleMap getMap(){
+		return map;
 	}
 	
 	

@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.app.FragmentManager;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -49,7 +51,7 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 		FragmentTransaction xact = fragMgr.beginTransaction();
 		xact.add(R.id.container, new GoogleMapsViewer(), "MAP");
 		
-		xact.add(R.id.menu, new Frag(), "MENU");
+		xact.add(R.id.menu, new Frag(R.layout.map_menu_frag), "MENU");
 		xact.commit();
 	}
 
@@ -76,7 +78,12 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			}else{
 				xact.replace(R.id.container, new GoogleMapsViewer(), "MAP");
 			}
-				//xact.addToBackStack(null);
+			if(fragMgr.findFragmentByTag("MAP_MENU") != null){
+				xact.replace(R.id.menu, fragMgr.findFragmentByTag("MAP_MENU"), "MAP_MENU");
+			}else{
+				xact.replace(R.id.menu, new Frag(R.layout.map_menu_frag), "MAP_MENU");
+				xact.addToBackStack(null);
+			}
 			xact.commit();
 			break;
 		case R.id.augmentedReality:
@@ -86,6 +93,12 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 				xact.replace(R.id.container, fragMgr.findFragmentByTag("AUGMENTED_REALITY"), "AUGMENTED_REALITY");
 			}else{
 				xact.replace(R.id.container, new CameraView(), "AUGMENTED_REALITY");
+			}
+			if(fragMgr.findFragmentByTag("AUG_MENU") != null){
+				xact.replace(R.id.menu, fragMgr.findFragmentByTag("AUG_MENU"));
+			}else{
+				xact.replace(R.id.menu, new Frag(R.layout.augmented_reality_menu_frag), "AUG_MENU");
+				xact.addToBackStack(null);
 			}
 				//xact.addToBackStack(null);
 			xact.commit();
@@ -114,14 +127,34 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 		case R.id.phone_exit_button:
 			fragMgr = getFragmentManager();
 			xact = fragMgr.beginTransaction();
-			if(fragMgr.findFragmentByTag("MENU") != null){
-				xact.replace(R.id.menu,  fragMgr.findFragmentByTag("MENU"), "MENU");
-			}else{
-				xact.replace(R.id.menu, new Frag(), "MENU");
-				xact.addToBackStack(null);
-			}
+			fragMgr.popBackStack();
 			xact.commit();
 			break;
+		
+			
+			
+			
+		//All Non fragment changing buttons. IE change map type
+		case R.id.changeType:
+			fragMgr = getFragmentManager();
+			
+			int[] mapTypeArray = GoogleMapsViewer.mapTypes;
+			GoogleMapsViewer viewer = ((GoogleMapsViewer)fragMgr.findFragmentByTag("MAP"));
+			
+			mapTypeLoop:
+			for(int a = 0; a < mapTypeArray.length; a++){
+				if(mapTypeArray[a] == viewer.currentMapType){
+					if(a == 3){
+						viewer.getMap().setMapType(GoogleMapsViewer.mapTypes[0]);
+						viewer.currentMapType = GoogleMapsViewer.mapTypes[0];
+						break mapTypeLoop;
+					}else{
+						viewer.getMap().setMapType(GoogleMapsViewer.mapTypes[a+1]);
+						viewer.currentMapType = GoogleMapsViewer.mapTypes[a+1];
+						break mapTypeLoop;
+					}
+				}
+			}
 		}
 	}
 

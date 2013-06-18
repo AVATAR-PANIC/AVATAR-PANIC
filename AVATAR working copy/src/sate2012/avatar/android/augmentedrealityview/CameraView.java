@@ -149,7 +149,7 @@ public class CameraView extends Fragment implements Callback {
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		// add the pointer view
 		getActivity().addContentView(pointerView, layoutParamsDrawing);
-		pointerView.setPadding(300, pointerView.getPaddingTop(),
+		pointerView.setPadding(0, pointerView.getPaddingTop(),
 				pointerView.getPaddingRight(), pointerView.getPaddingBottom());
 
 		// Set up the sensors
@@ -164,42 +164,46 @@ public class CameraView extends Fragment implements Callback {
 			}
 
 			public void onSensorChanged(SensorEvent event) {
-				// Initialize the values needed to store sensor data
-				float[] values = new float[3];
-				float[] angleChange = new float[3];
-				// Do the calculations to determine orientation
-				// currentValues = lowPass(event.values.clone(), currentValues);
-				SensorManager.getRotationMatrixFromVector(rot, event.values);
-				SensorManager.getOrientation(rot, values);
-
-				/*
-				 * System.out.println(" "); System.out.println(Math.atan2(R[7],
-				 * R[8])); System.out.println(Math.atan2(R[6], Math.sqrt(R[7] *
-				 * R[7] + R[8] * R[8]))); System.out.println(Math.atan2(R[3],
-				 * R[0])); System.out.println(" ");
-				 */
-				// This is an output to check the data.
-				// System.out.println(event.values[0] + " " + event.values[1] +
-				// " " + event.values[2]);
-				// TODO: For whoever works with this app next, Use the above
-				// print statements to see exactly how the values of the
-				// Rotation vector change and see if you can figure out how to
-				// better use them to solve the problem.
-
-				// Update the bearing and pitch of the pointer view to keep the
-				// points in the right place.
-				pointerView
-						.updateBearing((float) -(Math.atan2(rot[3], rot[0])));
-				pointerView
-						.updatePitch((float) -(Math.atan2(rot[7], rot[8]) - (Math.PI / 2)));
-
-				// Redraw the screen
-				pointerView.postInvalidate();
-				try{
-					fragWidth = getFragmentManager().findFragmentById(R.id.frag1)
-							.getView().getWidth();
-				}catch(Exception ex){
+				
+				if(mPreviewRunning){
 					
+					// Initialize the values needed to store sensor data
+					float[] values = new float[3];
+					float[] angleChange = new float[3];
+					// Do the calculations to determine orientation
+					// currentValues = lowPass(event.values.clone(), currentValues);
+					SensorManager.getRotationMatrixFromVector(rot, event.values);
+					SensorManager.getOrientation(rot, values);
+	
+					/*
+					 * System.out.println(" "); System.out.println(Math.atan2(R[7],
+					 * R[8])); System.out.println(Math.atan2(R[6], Math.sqrt(R[7] *
+					 * R[7] + R[8] * R[8]))); System.out.println(Math.atan2(R[3],
+					 * R[0])); System.out.println(" ");
+					 */
+					// This is an output to check the data.
+					// System.out.println(event.values[0] + " " + event.values[1] +
+					// " " + event.values[2]);
+					// TODO: For whoever works with this app next, Use the above
+					// print statements to see exactly how the values of the
+					// Rotation vector change and see if you can figure out how to
+					// better use them to solve the problem.
+	
+					// Update the bearing and pitch of the pointer view to keep the
+					// points in the right place.
+					pointerView
+							.updateBearing((float) -(Math.atan2(rot[3], rot[0])));
+					pointerView
+							.updatePitch((float) -(Math.atan2(rot[7], rot[8]) - (Math.PI / 2)));
+	
+					// Redraw the screen
+					pointerView.postInvalidate();
+					try{
+						fragWidth = getFragmentManager().findFragmentById(R.id.frag1)
+								.getView().getWidth();
+					}catch(Exception ex){
+						
+					}
 				}
 			}
 		};
@@ -262,7 +266,7 @@ public class CameraView extends Fragment implements Callback {
 		}
 		mCamera.startPreview();
 		mPreviewRunning = true;
-		pointerView.invalidate();
+		pointerView.postInvalidate();
 	}
 
 	// Initial creation of the camera when the view is started
@@ -275,7 +279,6 @@ public class CameraView extends Fragment implements Callback {
 		mCamera.stopPreview();
 		mPreviewRunning = false;
 		mCamera.release();
-
 	}
 	
 	@Override
@@ -286,14 +289,20 @@ public class CameraView extends Fragment implements Callback {
 	@Override
 	public void onPause(){
 		super.onPause();
-		//mPreviewRunning = false;
+		mPreviewRunning = false;
+	}
+	
+	@Override
+	public void onStop(){
+		super.onStop();
+		mPreviewRunning = false;
 	}
 	
 	@Override
 	public void onResume(){
 		super.onResume();
 		//mCamera = Camera.open();
-		//mPreviewRunning = true;
+		mPreviewRunning = true;
 	}
 	
 	public class MyLocationListener implements LocationListener {
@@ -380,6 +389,8 @@ public class CameraView extends Fragment implements Callback {
 				// for(GeoPoint testPoint: pointArray){
 				pointManager.drawPoints(canvas, myBearing, myPitch);
 				drawGUI(canvas);
+			}else{
+				canvas = new Canvas();
 			}
 			
 	}
