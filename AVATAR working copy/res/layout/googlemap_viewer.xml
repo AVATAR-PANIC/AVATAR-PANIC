@@ -1,15 +1,24 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GoogleMapsViewer" 
-    android:orientation="horizontal">
+    tools:context=".GoogleMapsViewer"
+    >
 
+    <ImageView
+        android:id="@+id/key"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/pointkey"
+        android:contentDescription="Point Key"
+    />
+    
     <fragment 
           android:id="@+id/googlemap"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:name="com.google.android.gms.maps.MapFragment" />
-
     
-</LinearLayout>
+</RelativeLayout>
