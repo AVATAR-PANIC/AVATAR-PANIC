@@ -52,6 +52,7 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.JsonReader;
+import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -78,7 +79,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * 
- * @author Garrett + Matt
+ * @author Garrett + Matt + Craig
  * 
  * Activity that handles the map and the drawing onto the map.
  * The actual Google Map is a fragment, created inside the XML
@@ -159,6 +160,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 		//Declare the timer
 		Timer httpTimer = new Timer();
 		//Set the schedule function and rate
+		this.placeLocation();
 		httpTimer.scheduleAtFixedRate(new TimerTask() {
 
 		    @Override
@@ -171,6 +173,9 @@ OnInfoWindowClickListener, OnPreparedListener{
 		30000,
 		//Set the amount of time between each execution (in milliseconds)
 		30000);
+		
+		this.placeLocation();
+		
 	}
 	
 	@Override
@@ -308,35 +313,19 @@ OnInfoWindowClickListener, OnPreparedListener{
 	 */
 	public void onLocationChanged(Location loc) {
 
-		myLatitude = loc.getLatitude();
-		myLongitude = loc.getLongitude();
-		myAltitude = loc.getAltitude();
-
 		// Debugging Tools
 		// String TAG = "Testing: ";
 		//
 		// Log.d(TAG, "Latitude: " + String.valueOf(myLatitude));
 		// Log.d(TAG, "Longitude: " + String.valueOf(myLongitude));
 		// Log.d(TAG, "Altitude: " + String.valueOf(myAltitude));
-		/*map.addMarker(new MarkerOptions().position(new LatLng(myLatitude,
-		myLongitude)));
+		
 		// System.out.println("HEY");
+		System.out.println("HEY");
 		
 		// TODO Test this
-		String myID = android.provider.Settings.Secure.ANDROID_ID;
-		MarkerPlus tempPoint = new MarkerPlus(myLatitude, myLongitude, myAltitude);
-		if(myMarkerLocation != null)
-		{
-			markerArray.remove(myMarkerLocation);
-			myMarkerLocation.getDate();
-			String deleteMe = "blarg";
-			pointDeleter.execute(deleteMe);
-		}
-		tempPoint.setName(myID + " location");
-		tempPoint.setInfo("User Location Point");
-		markerArray.add(tempPoint);
-		myMarkerLocation = tempPoint;
-		drawMarkers(true); */
+		this.placeLocation();
+		
 
 		if (!hasMapCentered) {
 			map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition
@@ -344,6 +333,32 @@ OnInfoWindowClickListener, OnPreparedListener{
 							myLocation.getLongitude()),
 							map.getMaxZoomLevel() / 3)));
 			hasMapCentered = true;
+		}
+	}
+	
+	public void placeLocation(){
+		Log.i("TestLocationPoint", "CALLED");
+		Location loc = map.getMyLocation();
+		if(loc != null){
+			myLatitude = loc.getLatitude();
+			myLongitude = loc.getLongitude();
+			myAltitude = loc.getAltitude();
+			
+			String myID = android.provider.Settings.Secure.ANDROID_ID;
+			MarkerPlus tempPoint = new MarkerPlus(myLatitude, myLongitude, myAltitude);
+			if(myMarkerLocation != null)
+			{
+				markerArray.remove(myMarkerLocation);
+				//pointDeleter.execute(myMarkerLocation.getDate());
+			}
+			tempPoint.setName(myID + "'s location");
+			tempPoint.setInfo("User Location Point");
+			map.addMarker(new MarkerOptions().position(new LatLng(myLatitude,
+					myLongitude)));
+			markerArray.add(tempPoint);
+			myMarkerLocation = tempPoint;
+			drawMarkers(true); 
+			
 		}
 	}
 	
@@ -364,6 +379,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 			tempPoint.setInfo("User Submitted Point");
 			markerArray.add(tempPoint);
 			drawMarkers(true);
+			placeLocation();
 		}
 	}
 
