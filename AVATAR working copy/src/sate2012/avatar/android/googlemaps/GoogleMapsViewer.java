@@ -4,13 +4,26 @@ import gupta.ashutosh.avatar.R;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
 import sate2012.avatar.android.AVATARMainMenuActivity;
+import sate2012.avatar.android.Constants;
 import sate2012.avatar.android.MapsForgeMapViewer;
 import sate2012.avatar.android.PhoneCall;
 import sate2012.avatar.android.UploadMedia;
@@ -38,6 +51,7 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.JsonReader;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -95,6 +109,8 @@ OnInfoWindowClickListener, OnPreparedListener{
 	private boolean asyncTaskCancel = false;
 	private MediaPlayer mp;
 	private static View view;
+	private MarkerPlus myMarkerLocation;
+	private PointDeleter pointDeleter;
 	
 	public static final int PHONE_CALL = 77;
 
@@ -137,6 +153,8 @@ OnInfoWindowClickListener, OnPreparedListener{
         drawMarkers(true);
 		map.setMapType(mapTypes[0]);
 		lastKnownZoomLevel = map.getCameraPosition().zoom;
+		// TODO
+		pointDeleter = new PointDeleter();
 		
 		//Declare the timer
 		Timer httpTimer = new Timer();
@@ -300,9 +318,25 @@ OnInfoWindowClickListener, OnPreparedListener{
 		// Log.d(TAG, "Latitude: " + String.valueOf(myLatitude));
 		// Log.d(TAG, "Longitude: " + String.valueOf(myLongitude));
 		// Log.d(TAG, "Altitude: " + String.valueOf(myAltitude));
-		// map.addMarker(new MarkerOptions().position(new LatLng(myLatitude,
-		// myLongitude)));
+		/*map.addMarker(new MarkerOptions().position(new LatLng(myLatitude,
+		myLongitude)));
 		// System.out.println("HEY");
+		
+		// TODO Test this
+		String myID = android.provider.Settings.Secure.ANDROID_ID;
+		MarkerPlus tempPoint = new MarkerPlus(myLatitude, myLongitude, myAltitude);
+		if(myMarkerLocation != null)
+		{
+			markerArray.remove(myMarkerLocation);
+			myMarkerLocation.getDate();
+			String deleteMe = "blarg";
+			pointDeleter.execute(deleteMe);
+		}
+		tempPoint.setName(myID + " location");
+		tempPoint.setInfo("User Location Point");
+		markerArray.add(tempPoint);
+		myMarkerLocation = tempPoint;
+		drawMarkers(true); */
 
 		if (!hasMapCentered) {
 			map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition
@@ -627,5 +661,33 @@ OnInfoWindowClickListener, OnPreparedListener{
 		}
 			
 	}
+	
+	private class PointDeleter extends AsyncTask<String, Void, Boolean>{
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+			Boolean deleted = new Boolean(false);
+			// TODO Auto-generated method stub
+			int tries = 0;
+			while(tries < 3){
+				try {
+					List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+					nameValuePairs.add(new BasicNameValuePair("date", params[0]));
+					System.out.println("TRYING TO CONNECT");
+					HttpClient client = new DefaultHttpClient();
+					HttpPost post = new HttpPost(new URI("http://" + Constants.SERVER_ADDRESS + "/deletePoint.php"));
+					post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+					client.execute(post);
+					//HELP!!!
+					tries = 3;
+				} catch (Exception e) {
+					e.printStackTrace();
+					tries++;
+				}
+			}
+			return deleted;
+		}
+	}
+	
 
 }

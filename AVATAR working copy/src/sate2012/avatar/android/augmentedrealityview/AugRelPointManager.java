@@ -12,6 +12,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.location.Location;
 import android.location.LocationManager;
+import android.util.Log;
 
 /**
  * AugRelPointManager (Augmented Reality Point Manager)
@@ -80,7 +81,7 @@ class AugRelPointManager {
 		canvas.drawBitmap(closePointIcon, 
 				outer.mSurfaceView.getWidth()/2 - (total/2 - number) * closePointIcon.getScaledWidth(canvas),
 				outer.mSurfaceView.getHeight()-closePointIcon.getScaledWidth(canvas), null);
-		canvas.drawText( name + ": <10 meters",
+		canvas.drawText( "Arrived at:" + name,
 				outer.mSurfaceView.getWidth()/2 - (total/2 - number) * closePointIcon.getScaledWidth(canvas),
 				outer.mSurfaceView.getHeight()-closePointIcon.getScaledWidth(canvas)-10, paint);
 	}
@@ -92,6 +93,7 @@ class AugRelPointManager {
 			this.setClosePoints();
 		}
 		for(MarkerPlus markerPlus: outer.drawPointList){
+			Log.i("TestForDate",markerPlus.getDate()+"END");
 			Location gpLocation = new Location(LocationManager.NETWORK_PROVIDER);
 			gpLocation.setLatitude(markerPlus.getLatitude());
 			gpLocation.setLongitude(markerPlus.getLongitude());

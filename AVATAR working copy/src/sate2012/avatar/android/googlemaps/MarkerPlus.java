@@ -54,6 +54,9 @@ public class MarkerPlus{
 	public void setMarkerOptions(MarkerOptions markerOptions) {
 		this.markerOptions = markerOptions;
 	}
+	public String getDate(){
+		return this.data.substring(13, this.data.indexOf("\r"));
+	}
 	public String getInfo() {
 		return data;
 	}
