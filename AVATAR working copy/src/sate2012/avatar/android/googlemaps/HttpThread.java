@@ -14,21 +14,41 @@ import sate2012.avatar.android.augmentedrealityview.CameraView;
 import android.os.AsyncTask;
 import android.util.JsonReader;
 
+/**
+ * 
+ * @author ? + Tweaking by Garrett Emrick emrickgarrett@gmail.com
+ * 
+ * Reworked this thread to be asynchronous and to continue establishing connections.
+ * Will now use methods in both camera view and the Google Maps Viewer to update
+ * the points, as to not make those applications wait on them.
+ *
+ */
 public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 
 		private GoogleMapsViewer maps;
 		private CameraView cameraView;
 		private boolean success;
 		
+		/**
+		 * Constructor. Use this for the GoogleMapsViewer
+		 * @param maps : The GoogleMapsViewer
+		 */
 		public HttpThread(GoogleMapsViewer maps){
 			this.maps = maps;
 		}
 		
+		/**
+		 * Constructor. Use this for the CameraView
+		 * @param view : The CameraView
+		 */
 		public HttpThread(CameraView view){
 			this.cameraView = view;
 		}
 		
 		
+		/**
+		 * Asynchronous task, runs in background. Gets the connection for the application to the server
+		 */
 		@Override
 		protected ArrayList<MarkerPlus> doInBackground(String...args) {
 
@@ -98,6 +118,10 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 			return markerArray;
 		}
 		
+		/**
+		 * Called after the doInBackground is complete.
+		 * Puts the markers where they need to go.
+		 */
 		@Override
 		public void onPostExecute(ArrayList<MarkerPlus> array){
 			

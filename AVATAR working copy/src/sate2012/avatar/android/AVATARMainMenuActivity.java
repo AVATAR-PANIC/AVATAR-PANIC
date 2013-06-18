@@ -162,6 +162,9 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 		
 	}
 	
+	/**
+	 * Used by a method below to set the side menu correctly
+	 */
 	public void emergencyCall(){
 		FragmentManager fragMgr;
 		FragmentTransaction xact;
@@ -178,6 +181,9 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 		
 	}
 	
+	/**
+	 * When the app is resumed, will check media was uploaded and was emergency. If so, it will bring up the right menu.
+	 */
 	@Override
 	public void onResume(){
 		super.onResume();
