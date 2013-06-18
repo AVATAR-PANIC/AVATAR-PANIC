@@ -40,7 +40,7 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 				try {
 					System.out.println("TRYING TO CONNECT");
 					HttpClient client = new DefaultHttpClient();
-					HttpGet get = new HttpGet(new URI("http://" + Constants.SERVER_ADDRESS + "/jsontest.php"));
+					HttpGet get = new HttpGet(new URI("http://" + Constants.SERVER_ADDRESS + "/jsonPoints.php"));
 					HttpResponse response = client.execute(get);
 					JsonReader reader = new JsonReader(new InputStreamReader(response.getEntity().getContent()));
 					

@@ -317,11 +317,13 @@ OnInfoWindowClickListener, OnPreparedListener{
 			}catch(Exception ex){
 				ex.printStackTrace();
 			}
-			MarkerPlus tempPoint = new MarkerPlus(arg0.latitude, arg0.longitude, map.getMyLocation().getAltitude());
-			tempPoint.setName("User Point");
-			tempPoint.setInfo("User Submitted Point");
-			markerArray.add(tempPoint);
-			drawMarkers(true);
+			if(map != null && markerArray != null){
+				MarkerPlus tempPoint = new MarkerPlus(arg0.latitude, arg0.longitude, map.getMyLocation().getAltitude());
+				tempPoint.setName("User Point");
+				tempPoint.setInfo("User Submitted Point");
+				markerArray.add(tempPoint);
+				drawMarkers(true);
+			}
 		}
 	}
 
