@@ -6,6 +6,7 @@ import android.os.Looper;
 import java.io.IOException;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.InetAddress;
 import org.apache.commons.net.ftp.FTPClient;
 
@@ -17,19 +18,20 @@ public class UploadFTP extends AsyncTask<String, String, String> {
 		long time = (System.currentTimeMillis());
 		String filename = "T" + time;
 		try {
-			ftpClient.connect(InetAddress.getByName(Constants.SERVER_ADDRESS));
-			ftpClient.login("AVATAR_app", "");
-			Looper.prepare();
+			ftpClient.connect(InetAddress.getByName("www.virtualdiscoverycenter.net"));
+			ftpClient.login("opensim", "widdlyscuds");
+			ftpClient.changeWorkingDirectory("../../var/www/AVATAR/");
+			//Looper.prepare();
 			//if (ftpClient.getReplyString().contains("250")) {
-				Handler progressHandler = new Handler();
+				//Handler progressHandler = new Handler();
 				ftpClient
 						.setFileType(org.apache.commons.net.ftp.FTP.BINARY_FILE_TYPE);
 				BufferedInputStream buffIn = null;
 				buffIn = new BufferedInputStream(new FileInputStream(params[0]));
 				ftpClient.enterLocalPassiveMode();
-				ProgressInputStream progressInput = new ProgressInputStream(
-						buffIn, progressHandler);
-				ftpClient.storeFile(filename + params[1], progressInput);
+//				ProgressInputStream progressInput = new ProgressInputStream(
+//						buffIn, progressHandler);
+				ftpClient.storeFile(filename + params[1], buffIn);
 				System.out.println("File Sent");
 				System.out.println(filename + params[1]);
 				buffIn.close();
@@ -38,7 +40,9 @@ public class UploadFTP extends AsyncTask<String, String, String> {
 			//}
 		} catch (IOException e) {
 			System.out.println("WHOOPS");
+			e.printStackTrace();
 		}
+		System.out.println("COMPLETE LOOPER");
 		return filename + params[1];
 	}
 }

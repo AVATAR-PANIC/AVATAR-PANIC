@@ -56,9 +56,9 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 															// listener)
 		Intent thisIntent = getIntent();
 		ptType = thisIntent.getStringExtra("Type");
-		ptURL = "ftp://opensim:widdlyscuds@virtualdiscoverycenter.net/../../var/www/avatar/Uploaded/"
+		ptURL = "ftp://opensim:widdlyscuds@virtualdiscoverycenter.net/../../var/www/AVATAR/"
 				+ thisIntent.getStringExtra("Filename");
-		ptURL_noFTP = "virtualdiscoverycenter.net/avatar/Uploaded/"
+		ptURL_noFTP = "virtualdiscoverycenter.net/AVATAR/"
 				+ thisIntent.getStringExtra("Filename");
 		ptName = thisIntent.getStringExtra("Filename");
 		setContentView(R.layout.mail_prep_apv);
@@ -108,7 +108,7 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 						+ item_sep + ptType + item_sep + ptDesc;
 				GMailSender sender = new GMailSender(
 						"sate2012.avatar@gmail.com", "SATE2013AVATARpass");
-				sender.sendMail(subj, body, from, toList);
+				//sender.sendMail(subj, body, from, toList);
 				setContentView(R.layout.sent);
 				button_return = (Button) findViewById(R.id.Return);
 				button_return.setOnClickListener(this);

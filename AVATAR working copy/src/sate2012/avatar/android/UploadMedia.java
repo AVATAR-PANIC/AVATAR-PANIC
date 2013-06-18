@@ -1,8 +1,10 @@
 package sate2012.avatar.android;
 
 import gupta.ashutosh.avatar.R;
+
 import java.io.File;
 import java.net.URI;
+import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpResponse;
@@ -11,24 +13,18 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.view.ViewGroup.LayoutParams;
-import com.google.android.gms.maps.model.*;
+
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * The Upload Menu Allows the user to select different media types to upload to
@@ -258,12 +254,11 @@ public class UploadMedia extends Activity implements OnClickListener {
 			try {
 				HttpClient client = new DefaultHttpClient();
 				HttpGet get = new HttpGet(new URI(
-						"http://" + Constants.SERVER_ADDRESS + "/sqladdrow.php?Name=" + params[0]
+						"http://" + Constants.SERVER_ADDRESS + "/sqlAddRow.php?Name=" + params[0]
 								+ "&Lat=" + params[1] + "&Long=" + params[2]
 								+ "&Alt=" + params[3]
 								+ "&Link=" + params[4]));
 				HttpResponse response = client.execute(get);
-				System.out.println("YAY");
 			} catch (Exception e) {
 				System.out.println("SOMETHING WENT BOOM!");
 				e.printStackTrace();
