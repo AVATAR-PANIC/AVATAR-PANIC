@@ -12,13 +12,26 @@ import android.view.ViewGroup;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
+/**
+ * 
+ * @author Garrett emrickgarrett@gmail.comj
+ * 
+ * Really simple class, plays a video.
+ *
+ */
 public class VideoPlayer extends Fragment {
 	
+	/**
+	 * Method called when the view is created.
+	 */
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		super.onCreateView(inflater, container, savedInstanceState);
 		return inflater.inflate(R.layout.video_player_layout, container, false);
 	}
 	
+	/**
+	 * Method called when the Fragment is started.
+	 */
 	@Override
 	public void onStart(){
 		super.onStart();

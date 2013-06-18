@@ -59,7 +59,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * 
- * @author Garrett + Matt
+ * @author Garrett + Matt emrickgarrett@gmail.com
  * 
  * Activity that handles the map and the drawing onto the map.
  * The actual Google Map is a fragment, created inside the XML
@@ -88,9 +88,10 @@ OnInfoWindowClickListener, OnPreparedListener{
 	private boolean asyncTaskCancel = false;
 	private MediaPlayer mp;
 	private static View view;
-	
-	public static final int PHONE_CALL = 77;
 
+	/**
+	 * When the Fragment View is created, this is called
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		super.onCreateView(inflater, container, savedInstanceState);
@@ -110,6 +111,9 @@ OnInfoWindowClickListener, OnPreparedListener{
 		return view;
 	}
 	
+	/**
+	 * When the fragment is started, this runs.
+	 */
 	@Override
 	public void onStart() {
 		super.onStart();
@@ -133,6 +137,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 		lastKnownZoomLevel = map.getCameraPosition().zoom;
 		
 		//Declare the timer
+		//This timer will run a thread to connect to the server every minute
 		Timer httpTimer = new Timer();
 		//Set the schedule function and rate
 		httpTimer.scheduleAtFixedRate(new TimerTask() {
@@ -164,7 +169,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 	}
 	
 	/**
-	 * Used to draw the markers onto the map, draws from the markerArray
+	 * Calls the markers to be clustered, and then drawn when complete
 	 * @param shouldClear : Whether or not it should clear the markers from the map.
 	 */
 	public void drawMarkers(boolean shouldClear){
@@ -180,6 +185,11 @@ OnInfoWindowClickListener, OnPreparedListener{
 		
 	}
 	
+	/**
+	 * Draws the clusters, called from asynchronous task from above
+	 * @param clusters : Clusters to draw
+	 * @param shouldClear : Whether or not it should clear
+	 */
 	public void drawClusters(ArrayList<GoogleMapsClusterMarker> clusters, boolean shouldClear){
 		
 		//System.out.println("Cluster Complete");
@@ -224,7 +234,8 @@ OnInfoWindowClickListener, OnPreparedListener{
 	}
 	
 	/**
-	 * Does not work atm.
+	 * Listener called when the info window of a marker is clicked
+	 * @param marker : The marker whose info window was clicked.
 	 */
 	public void onInfoWindowClick(Marker marker){
 		System.out.println("CLICKED!");
@@ -305,6 +316,11 @@ OnInfoWindowClickListener, OnPreparedListener{
 		}
 	}
 	
+	/**
+	 * OnLongClickListener that this class uses as a listener
+	 * @author Matthew Weber
+	 *
+	 */
 	class Listener implements OnMapLongClickListener  {
 
 		@Override
@@ -327,6 +343,9 @@ OnInfoWindowClickListener, OnPreparedListener{
 		}
 	}
 
+	/**
+	 * Not really used for anything just yet.
+	 */
 	private SensorEventListener mySensorEventListener = new SensorEventListener() {
 		public void onAccuracyChanged(Sensor sensor, int accuracy) {
 		}
@@ -352,6 +371,14 @@ OnInfoWindowClickListener, OnPreparedListener{
 
 	// Info Window Adapter implemented methods
 
+	
+	/**
+	 * Method that basically creates what is to be displayed in the info window of the Google maps.
+	 * Remember that the map is a static image.
+	 * 
+	 * @param marker : Marker to get the info contents from.
+	 * @return : View that will be displayed in the window
+	 */
 	@Override
 	public View getInfoContents(Marker marker) {
 		View v = null;
@@ -430,6 +457,9 @@ OnInfoWindowClickListener, OnPreparedListener{
 
 	}
 
+	/**
+	 * Not really used for anything atm.
+	 */
 	@Override
 	public View getInfoWindow(Marker marker) {
 		View v = null;// getLayoutInflater().inflate(R.layout.marker_info_window,
@@ -437,6 +467,10 @@ OnInfoWindowClickListener, OnPreparedListener{
 		return v;
 	}
 
+	/**
+	 * Listener method that is called whenever the Camera Position is changed
+	 * @param arg0 : The Camera Position.
+	 */
 	@Override
 	public void onCameraChange(CameraPosition arg0) {
 		
@@ -456,6 +490,10 @@ OnInfoWindowClickListener, OnPreparedListener{
 
 	}
 	
+	/**
+	 * Setter method used to set the markerArray
+	 * @param array : Array to set to the markerArray
+	 */
 	public void setMarkerArray(ArrayList<MarkerPlus> array){
 		if(markerArray == null){
 			markerArray = new ArrayList<MarkerPlus>();
@@ -464,7 +502,10 @@ OnInfoWindowClickListener, OnPreparedListener{
 		//System.out.println("Set the Array!");
 	}
 	
-	//Dealing with sound on the maps
+	/**
+	 * Plays the sound from a url
+	 * @param url : URL where the sound is located
+	 */
 	public void playSound(String url){
 		try{
 			if(mp != null){
@@ -495,10 +536,18 @@ OnInfoWindowClickListener, OnPreparedListener{
 		
 	}
 	
+	/**
+	 * Listener to tell when the MediaPlayer has prepared the sound
+	 * @param mp : The media player that prepared the sound.
+	 */
 	public void onPrepared(MediaPlayer mp){
 		mp.start();
 	}
 	
+	/**
+	 * Getter method for the Google Map
+	 * @return : The Google Map
+	 */
 	public GoogleMap getMap(){
 		return map;
 	}
@@ -531,6 +580,10 @@ OnInfoWindowClickListener, OnPreparedListener{
 			this.map = map;
 		}
 		
+		/**
+		 * Asynchronous task that gets the Image from a URL
+		 * @return : The Bitmap the method got from the URL
+		 */
 		@Override
 		protected Bitmap doInBackground(String...params) {
 			// TODO Auto-generated method stub
