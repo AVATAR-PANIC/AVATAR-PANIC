@@ -372,8 +372,8 @@ OnInfoWindowClickListener, OnPreparedListener{
 			myMarkerLocation = tempPoint;
 			drawMarkers(true); 
 			UploadMedia.HttpSender httpSender = new UploadMedia.HttpSender();
-			httpSender.execute(tempPoint.getName(), tempPoint.getLatitude() + "",
-					tempPoint.getLongitude() + "", "0", myID + "'s location");
+			//httpSender.execute(tempPoint.getName(), tempPoint.getLatitude() + "",
+			//		tempPoint.getLongitude() + "", "0", myID + "'s location");
 			
 		}
 	}
