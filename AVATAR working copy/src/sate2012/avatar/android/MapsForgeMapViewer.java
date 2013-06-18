@@ -35,7 +35,6 @@ public class MapsForgeMapViewer extends MapActivity implements
 		LocationListener, OnClickListener {
 	private static MapView mapView;
 	private GeoPoint myCurrentLocation;
-	private Location loc;
 	// private double locLat;
 	// private double locLon;
 	// private static final int TWO_MINUTES = 1000 * 60 * 2;
@@ -60,8 +59,6 @@ public class MapsForgeMapViewer extends MapActivity implements
 	private Compass myCompassView;
 	// private SensorEventListener mySensorEventListener;
 	private Button getPts;
-	// private LocationDataReceiverAVATAR plotter;
-	private final double FOV = .0025895977;
 	private final double AngleOfView = 178.0;
 	sate2012.avatar.android.augmentedrealityview.CameraView myCameraView = new sate2012.avatar.android.augmentedrealityview.CameraView();
 	sate2012.avatar.android.pointclustering.ClusterMaker geoPointClusterMaker = new sate2012.avatar.android.pointclustering.ClusterMaker();
@@ -359,11 +356,6 @@ public class MapsForgeMapViewer extends MapActivity implements
 			if (gp != null)
 				myCurrentLocation = gp;
 			itemizedOverlay.clear();
-			String LatLong = "Point1 --- "
-					+ loc.getLatitude()
-					+ " --- "
-					+ loc.getLongitude()
-					+ ";~~Point2 --- 40.12345 --- -85.12345;~~Point3 --- 41.54321 --- -83.54321";
 			DataObject data = new DataObject();
 			drawMarker(gp, data);
 			// //drawGeoDataRepositoryPoints();
@@ -394,11 +386,8 @@ public class MapsForgeMapViewer extends MapActivity implements
 	}
 
 	private class PointSetter extends MVItemizedOverlay {
-		Context context;
-
 		public PointSetter(Drawable marker, Context contextIn) {
 			super(marker, contextIn);
-			this.context = contextIn;
 		}
 
 		@Override

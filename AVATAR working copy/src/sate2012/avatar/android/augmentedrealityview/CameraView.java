@@ -423,11 +423,11 @@ public class CameraView extends Fragment implements Callback {
 			canvas.drawText("Longitude: " + myLocation.getLongitude(), 1, 20, white); 
 			canvas.drawText("Altitude: " + myLocation.getAltitude(), 1, 30, white);
 			if (mWifi.isConnected()) {
-				canvas.drawText("Server Status: Connected", 1, 40, white); 
+				canvas.drawText("Internet Status: Connected", 1, 40, white); 
 			}
 			else
 			{
-				canvas.drawText("Server Status:", 1, 40, white);
+				canvas.drawText("Internet Status:", 1, 40, white);
 				canvas.drawText("Disconnected", 1, 50, red);
 			}
 			

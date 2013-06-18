@@ -34,6 +34,8 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 
 			ArrayList<MarkerPlus> markerArray = new ArrayList<MarkerPlus>();
 			int tries = 0;
+			
+			connect:
 			while(tries < 3){
 				try {
 					System.out.println("TRYING TO CONNECT");
@@ -87,7 +89,7 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 					//HELP!!!
 					reader.endArray();
 					reader.close();
-					tries = 3;
+					break connect;
 				} catch (Exception e) {
 					e.printStackTrace();
 					tries++;

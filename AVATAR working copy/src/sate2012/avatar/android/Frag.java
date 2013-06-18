@@ -1,16 +1,13 @@
 package sate2012.avatar.android;
 
-import sate2012.avatar.android.augmentedrealityview.CameraView;
-import sate2012.avatar.android.googlemaps.GoogleMapsViewer;
-import gupta.ashutosh.avatar.R;
-import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.app.Fragment;
-import android.content.Context;
-import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+@SuppressLint("ValidFragment")
 public class Frag extends Fragment {
 
 	private int menu_ID;

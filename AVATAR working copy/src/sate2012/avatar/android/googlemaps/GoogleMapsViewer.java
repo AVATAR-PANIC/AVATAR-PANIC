@@ -10,13 +10,8 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import sate2012.avatar.android.AVATARMainMenuActivity;
-import sate2012.avatar.android.MapsForgeMapViewer;
-import sate2012.avatar.android.PhoneCall;
 import sate2012.avatar.android.UploadMedia;
 import sate2012.avatar.android.VideoPlayer;
-import sate2012.avatar.android.augmentedrealityview.CameraView;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -26,11 +21,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -40,7 +35,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.InflateException;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -55,10 +49,11 @@ import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -81,8 +76,6 @@ OnInfoWindowClickListener, OnPreparedListener{
 	private double myLatitude;
 	private double myLongitude;
 	private static float lastKnownZoomLevel;
-	private static SensorManager mySensorManager;
-	private boolean sensorrunning;
 	private boolean hasMapCentered = false;
 	public static int[] mapTypes = { GoogleMap.MAP_TYPE_NORMAL,
 			GoogleMap.MAP_TYPE_SATELLITE, GoogleMap.MAP_TYPE_HYBRID,
@@ -113,6 +106,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 		}catch(InflateException e){
 			
 		}
+		
 		return view;
 	}
 	
@@ -150,9 +144,9 @@ OnInfoWindowClickListener, OnPreparedListener{
 		         
 		},
 		//Set how long before to start calling the TimerTask (in milliseconds)
-		30000,
+		60000,
 		//Set the amount of time between each execution (in milliseconds)
-		30000);
+		60000);
 	}
 	
 	@Override
@@ -201,8 +195,6 @@ OnInfoWindowClickListener, OnPreparedListener{
 				activeMarker.showInfoWindow();
 				System.out.println("Showing Window!");
 			}
-			
-			LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
 			
 			if(markerArray != null && map != null){
 				int i = 1;
@@ -451,6 +443,12 @@ OnInfoWindowClickListener, OnPreparedListener{
 			activeMarker = null;
 			drawMarkers(true);
 		}
+		
+		
+		Projection projection = map.getProjection();
+		LatLng xLat = projection.fromScreenLocation(new Point(0,0));
+		
+		map.addGroundOverlay(new GroundOverlayOptions().image(BitmapDescriptorFactory.fromResource(R.drawable.pointkey)).position(xLat, 1));
 		
 		//drawMarkers(true);
 
