@@ -17,13 +17,15 @@
         android:layout_height="100dp"
         android:background="@drawable/pointkey"
         android:layout_alignParentLeft="true"
+        android:layout_marginTop="70dp"
         />
     
      <LinearLayout
             android:id="@+id/logoBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true" >
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="60dp" >
 
             <ImageView
                 android:id="@+id/airForceWings"

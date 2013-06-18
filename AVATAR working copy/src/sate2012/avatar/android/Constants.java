@@ -1,5 +1,12 @@
 package sate2012.avatar.android;
 
+/**
+ * 
+ * @author ?
+ * 
+ * Constants for the AVATAR project
+ *
+ */
 public class Constants {
 	public static final String STORAGE_DIRECTORY = "/Blueprint_Storage/";
 	public static final String MEDIA_DIRECTORY = "AVATAR/";
