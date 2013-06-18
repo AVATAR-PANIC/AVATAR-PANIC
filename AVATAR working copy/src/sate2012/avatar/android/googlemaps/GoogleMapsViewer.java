@@ -28,8 +28,6 @@ import sate2012.avatar.android.MapsForgeMapViewer;
 import sate2012.avatar.android.PhoneCall;
 import sate2012.avatar.android.UploadMedia;
 import sate2012.avatar.android.VideoPlayer;
-import sate2012.avatar.android.augmentedrealityview.CameraView;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -39,6 +37,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -70,8 +69,10 @@ import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -99,10 +100,10 @@ OnInfoWindowClickListener, OnPreparedListener{
 	private static SensorManager mySensorManager;
 	private boolean sensorrunning;
 	private boolean hasMapCentered = false;
-	private int[] mapTypes = { GoogleMap.MAP_TYPE_NORMAL,
+	public static int[] mapTypes = { GoogleMap.MAP_TYPE_NORMAL,
 			GoogleMap.MAP_TYPE_SATELLITE, GoogleMap.MAP_TYPE_HYBRID,
 			GoogleMap.MAP_TYPE_TERRAIN };
-	private int currentMapType = mapTypes[0];
+	public int currentMapType = GoogleMapsViewer.mapTypes[0];
 	private ArrayList<MarkerPlus> markerArray = new ArrayList<MarkerPlus>();// = MarkerMaker.makeMarkers();
 	private Marker activeMarker = null;
 	private Bitmap currentImage = null;
@@ -152,7 +153,7 @@ OnInfoWindowClickListener, OnPreparedListener{
         map.setOnInfoWindowClickListener(this);
         
         drawMarkers(true);
-		map.setMapType(mapTypes[0]);
+		map.setMapType(GoogleMapsViewer.mapTypes[0]);
 		lastKnownZoomLevel = map.getCameraPosition().zoom;
 		// TODO
 		pointDeleter = new PointDeleter();
@@ -224,8 +225,6 @@ OnInfoWindowClickListener, OnPreparedListener{
 				activeMarker.showInfoWindow();
 				System.out.println("Showing Window!");
 			}
-			
-			LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
 			
 			if(markerArray != null && map != null){
 				int i = 1;
@@ -380,6 +379,13 @@ OnInfoWindowClickListener, OnPreparedListener{
 			markerArray.add(tempPoint);
 			drawMarkers(true);
 			placeLocation();
+			if(map != null && markerArray != null){
+				MarkerPlus tempPoint1 = new MarkerPlus(arg0.latitude, arg0.longitude, map.getMyLocation().getAltitude());
+				tempPoint1.setName("User Point");
+				tempPoint1.setInfo("User Submitted Point");
+				markerArray.add(tempPoint1);
+				drawMarkers(true);
+			}
 		}
 	}
 
@@ -502,6 +508,12 @@ OnInfoWindowClickListener, OnPreparedListener{
 			drawMarkers(true);
 		}
 		
+		
+		Projection projection = map.getProjection();
+		LatLng xLat = projection.fromScreenLocation(new Point(0,0));
+		
+		map.addGroundOverlay(new GroundOverlayOptions().image(BitmapDescriptorFactory.fromResource(R.drawable.pointkey)).position(xLat, 1));
+		
 		//drawMarkers(true);
 
 	}
@@ -547,6 +559,10 @@ OnInfoWindowClickListener, OnPreparedListener{
 	
 	public void onPrepared(MediaPlayer mp){
 		mp.start();
+	}
+	
+	public GoogleMap getMap(){
+		return map;
 	}
 	
 	

@@ -34,11 +34,13 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 
 			ArrayList<MarkerPlus> markerArray = new ArrayList<MarkerPlus>();
 			int tries = 0;
+			
+			connect:
 			while(tries < 3){
 				try {
 					System.out.println("TRYING TO CONNECT");
 					HttpClient client = new DefaultHttpClient();
-					HttpGet get = new HttpGet(new URI("http://" + Constants.SERVER_ADDRESS + "/jsontest.php"));
+					HttpGet get = new HttpGet(new URI("http://" + Constants.SERVER_ADDRESS + "/jsonPoints.php"));
 					HttpResponse response = client.execute(get);
 					JsonReader reader = new JsonReader(new InputStreamReader(response.getEntity().getContent()));
 					
@@ -87,7 +89,7 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 					//HELP!!!
 					reader.endArray();
 					reader.close();
-					tries = 3;
+					break connect;
 				} catch (Exception e) {
 					e.printStackTrace();
 					tries++;

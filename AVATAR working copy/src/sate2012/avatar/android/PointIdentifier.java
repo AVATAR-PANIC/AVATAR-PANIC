@@ -12,7 +12,6 @@ import android.location.LocationManager;
 
 public class PointIdentifier {
 
-	private LocationDataReceiverAVATAR plotter;
 	private static double x1;
 	private static double x2;
 	private static double x;
@@ -22,8 +21,6 @@ public class PointIdentifier {
 	private static double dist;
 	private static double radius;
 	private static Array[] locationDataArray = new Array[500];
-	private static double i;
-
 	public PointIdentifier() throws Exception {
 		// this method has to be able to identify point groups whether they are
 		// within clusters or a large pasting of points
@@ -59,12 +56,10 @@ public class PointIdentifier {
 		final Map<GeoPoint, DataObject> entriesColl = repo
 				.getCollectionOfDataEntries();
 		for (int i = 0; i < entriesColl.size(); i++) {
-			Entry<? extends GeoPoint, ? extends DataObject> entry = ((ArrayList<Entry<GeoPoint, DataObject>>) entriesColl)
+			((ArrayList<Entry<GeoPoint, DataObject>>) entriesColl)
 					.get(i);
 
-			// first thing, you are going to have to create a new
-			// GeoDataRepository for each cluster.
-			GeoDataRepository pointClusterRepository = new GeoDataRepository();
+			new GeoDataRepository();
 			Location newLocation = new Location(
 					LocationManager.NETWORK_PROVIDER);
 			newLocation.setLatitude(lat);
@@ -112,10 +107,6 @@ public class PointIdentifier {
 			// return d;
 
 		}
-
-		Location currentLocation;
-		Location distanceLocation;
-		double area;
 
 		// set your current location
 

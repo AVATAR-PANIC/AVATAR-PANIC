@@ -48,7 +48,7 @@
         android:layout_gravity="center"
         android:layout_weight=".3"
         android:background="@drawable/buttonbackground"
-        android:text="Exit"
+        android:text="Back"
         android:textColor="@android:color/white"
         android:onClick="myClickMethod" />
     <View
