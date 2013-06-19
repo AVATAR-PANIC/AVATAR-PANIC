@@ -51,6 +51,8 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 		
 		xact.add(R.id.menu, new Frag(R.layout.map_menu_frag), "MENU");
 		xact.commit();
+		
+		new HandleID(this).execute();
 	}
 
 	/**
