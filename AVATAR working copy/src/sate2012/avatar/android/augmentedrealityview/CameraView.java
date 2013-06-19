@@ -51,6 +51,12 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.Toast;
 
+/**
+ * 
+ * @author Matt + old AVATAR team
+ * Fragment used for the augmented reality aspect of the project.
+ *
+ */
 public class CameraView extends Fragment implements Callback {
 	
 	//Use these variables to determine size of side fragment to offset in the PointerView class
@@ -107,6 +113,9 @@ public class CameraView extends Fragment implements Callback {
 		return output;
 	}
 	
+	/**
+	 * Method called when this fragment is created to return the View object.
+	 */
 	@Override 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		return inflater.inflate(R.layout.camera_view, container, false);
@@ -114,8 +123,7 @@ public class CameraView extends Fragment implements Callback {
 	
 
 	/**
-	 * This is the onCreate method. It is called by the OS to create the
-	 * application.
+	 * This is the onStart method. It is called whenever this fragment is started
 	 */
 	@Override
 	public void onStart() {

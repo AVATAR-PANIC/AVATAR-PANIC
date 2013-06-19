@@ -7,6 +7,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+/**
+ * 
+ * @author Matt
+ *
+ *Class used to hold our marker objects information.
+ */
 public class MarkerPlus{
 	
 	private MarkerOptions markerOptions = new MarkerOptions();
@@ -15,11 +21,15 @@ public class MarkerPlus{
 	private double altitude;
 	private Drawable image;
 	
+	/**
+	 * Default Constructor
+	 */
 	public MarkerPlus(){
 		this.markerOptions = new MarkerOptions();
 		markerOptions.position(new LatLng(0, 0));
 	}
 	
+	//Other constructors below.
 	public MarkerPlus(MarkerOptions marker, double altitude, String info) {
 		this.markerOptions = marker;
 		this.data = info;
@@ -111,11 +121,19 @@ public class MarkerPlus{
 		this.image = image;
 	}
 
+	/**
+	 * Overrode the String method to return a more meaningful toString() return. - Garrett
+	 */
 	@Override
 	public String toString(){
 		return " Title: " + this.name + " Description: " + this.data + " Altitude: " + this.altitude;
 	}
 	
+	/**
+	 * Determines if two markers are equal, not really used in this project.
+	 * @param other : The other marker to compare this to.
+	 * @return : The boolean of whether or not they are equal.
+	 */
 	public boolean equals(MarkerPlus other){
 		
 		return this.toString().equals(other.toString());
