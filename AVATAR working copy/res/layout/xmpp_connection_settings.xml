@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView android:id="@+id/xmpp_connection_settings_scroll_view" 
+ 	android:layout_width="fill_parent" 
+    android:layout_height="fill_parent" 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/black">
+                
+	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    	android:orientation="vertical"
+        android:scrollbars="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView android:id="@+id/xmpp_connection_settings_host_port_text"
+        	android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:textColor="@color/white"
+            android:text="Host/Port:"
+            android:minWidth="70dp"/>
+                  
+        <EditText android:id="@+id/xmpp_connection_settings_host"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/xmpp_connection_settings_host_port_text"
+            android:layout_toLeftOf="@+id/xmpp_connection_settings_port"
+            android:layout_alignBottom="@+id/xmpp_connection_settings_port"
+            android:singleLine="true"
+            android:textSize="16sp"
+            android:minWidth="10dp"
+            android:inputType="textUri"
+            android:hint="Server Name / URL"
+            android:scrollHorizontally="true"/>
+                  
+        <EditText android:id="@+id/xmpp_connection_settings_port"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:singleLine="true"
+            android:textSize="16sp"
+            android:hint="5222"
+            android:inputType="number"
+            android:scrollHorizontally="true"/>
+                  
+        <TextView android:id="@+id/xmpp_connection_settings_room_text"
+        	android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/xmpp_connection_settings_host"
+            android:textColor="@color/white"
+            android:text="Room:"
+            android:minWidth="70dp"/>
+                  
+        <EditText android:id="@+id/xmpp_connection_settings_room"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/xmpp_connection_settings_host"
+            android:layout_toRightOf="@+id/xmpp_connection_settings_room_text"
+            android:singleLine="true"
+            android:textSize="16sp"
+            android:minWidth="250dp"
+            android:inputType="textUri"
+            android:hint="sandbox"
+            android:scrollHorizontally="true"/>
+                  
+        <TextView android:id="@+id/xmpp_connection_settings_userid_text"
+        	android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/xmpp_connection_settings_room"
+            android:textColor="@color/white"
+            android:text="Userid:"
+            android:minWidth="70dp"/>
+                  
+        <EditText android:id="@+id/xmpp_connection_settings_userid"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/xmpp_connection_settings_room"
+            android:layout_toRightOf="@+id/xmpp_connection_settings_userid_text"
+            android:singleLine="true"
+            android:textSize="16sp"
+            android:minWidth="250dp"
+            android:inputType="textUri"
+            android:hint="Cannot contain _ or @"
+            android:scrollHorizontally="true"/>                 
+                  
+        <TextView android:id="@+id/xmpp_connection_settings_password_text"
+        	android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/xmpp_connection_settings_userid"
+            android:textColor="@color/white"
+            android:text="Password:"
+            android:minWidth="70dp"/>
+                  
+        <EditText android:id="@+id/xmpp_connection_settings_password"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/xmpp_connection_settings_userid"
+            android:layout_toRightOf="@+id/xmpp_connection_settings_password_text"
+            android:singleLine="true"
+            android:textSize="16sp"
+            android:minWidth="250dp"
+            android:hint="Password"
+            android:password="true"
+            android:scrollHorizontally="true"/>
+    
+    	<Button android:id="@+id/xmpp_connection_settings_ok"
+            android:layout_width="100dp"
+            android:layout_height="48dp"
+            android:layout_below="@+id/xmpp_connection_settings_password"
+            android:text="Login"
+            android:gravity="center_vertical"/>
+            
+        <Button android:id="@+id/xmpp_connection_settings_register"
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:layout_below="@+id/xmpp_connection_settings_password"
+            android:layout_toRightOf="@+id/xmpp_connection_settings_ok"
+            android:text="Register"
+            android:gravity="center_vertical"/>
+            
+    	<Button android:id="@+id/xmpp_connection_settings_cancel"
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:layout_below="@+id/xmpp_connection_settings_password"
+            android:layout_toRightOf="@+id/xmpp_connection_settings_register"
+            android:text="Cancel"/>
+            
+        <ProgressBar android:id="@+id/xmpp_connection_settings_progress_bar_login" 
+        	android:layout_width="36dp" 
+        	android:layout_height="36dp" 
+        	android:layout_toLeftOf="@+id/xmpp_connection_settings_register" 
+        	android:layout_alignTop="@+id/xmpp_connection_settings_register" 
+        	android:layout_alignBottom="@+id/xmpp_connection_settings_register"
+        	android:layout_marginTop="3dp"
+        	android:layout_marginRight="5dp"
+        	android:layout_marginBottom="7dp"
+        	android:visibility="gone"
+        	style="@android:style/Widget.ProgressBar.Inverse"/>
+        	
+    	<ProgressBar android:id="@+id/xmpp_connection_settings_progress_bar_register" 
+    		android:layout_width="36dp" 
+        	android:layout_height="36dp"  
+    		android:layout_toLeftOf="@+id/xmpp_connection_settings_cancel"  
+    		android:layout_alignTop="@+id/xmpp_connection_settings_cancel" 
+    		android:layout_alignBottom="@+id/xmpp_connection_settings_cancel"
+    		android:layout_marginTop="3dp"
+        	android:layout_marginRight="5dp"
+        	android:layout_marginBottom="7dp"
+        	android:visibility="gone"
+        	style="@android:style/Widget.ProgressBar.Inverse"/>
+            
+	</RelativeLayout>
+
+</ScrollView>

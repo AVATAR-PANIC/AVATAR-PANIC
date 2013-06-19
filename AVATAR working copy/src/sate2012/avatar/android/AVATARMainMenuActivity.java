@@ -1,5 +1,7 @@
 package sate2012.avatar.android;
 
+import com.guardian_angel.uav_tracker.MainActivity;
+
 import sate2012.avatar.android.augmentedrealityview.CameraView;
 import sate2012.avatar.android.googlemaps.GoogleMapsViewer;
 import tricorder.tecedge.opening_menu;
@@ -135,6 +137,9 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 		//All implentations of other projects, Create them as activities for now.
 		case R.id.tricorder:
 			startActivity(new Intent(this, opening_menu.class));
+			break;
+		case R.id.guardian_angel:
+			startActivity(new Intent(this, MainActivity.class));
 			break;
 			
 			

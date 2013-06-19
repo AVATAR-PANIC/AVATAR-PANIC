@@ -8,7 +8,7 @@
         android:id="@+id/map"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:apiKey="0w9KTjon65cWcJgI0crMJGbMsgIZEWUWlwlquog"
+        android:apiKey="AIzaSyCxAfbwQJc5DxdwTJvf2nHyAC0d5hWQhv8"
         android:clickable="true"
         android:enabled="true" />
 

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/main_background"
+    android:orientation="vertical" >
+
+    <ImageButton
+        android:id="@+id/main_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="49dp"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/main_button"
+        android:contentDescription="Start button for application"/>
+    
+    <ImageButton 
+        android:id="@+id/to_map_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/world3"
+        android:contentDescription="Map view button"/>
+
+    <RadioGroup
+        android:id="@+id/connected_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/main_button"
+        android:layout_marginTop="36dp"
+        android:checkedButton="@+id/connected_group"
+        android:orientation="horizontal" >
+    </RadioGroup>
+
+</RelativeLayout>

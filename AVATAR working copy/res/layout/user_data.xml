@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/user_background"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/loudness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Volume"
+                android:textColor="@color/white"
+                android:textSize="25dip" />
+
+            <RadioGroup
+                android:id="@+id/radioVolume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/silent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Silent"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/quiet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Quiet"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/loud"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Loud"
+                    android:textColor="@color/white" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Size"
+                android:textColor="@color/white"
+                android:textSize="25dip" />
+
+            <RadioGroup
+                android:id="@+id/radioSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Small"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Medium"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/large"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Large"
+                    android:textColor="@color/white" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/distance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Distance (meters)"
+                android:textColor="@color/white"
+                android:textSize="25dip" />
+
+            <RadioGroup
+                android:id="@+id/radioDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/ten"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Half a football field"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/fifty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A football field"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/onehundred"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Two football fields"
+                    android:textColor="@color/white" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/landmark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Landmark near UAV"
+                android:textColor="@color/white"
+                android:textSize="25dip" />
+
+            <EditText
+                android:id="@+id/landmarkanswer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/hint" >
+            </EditText>
+
+            <Button
+                android:id="@+id/done_button"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/done" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

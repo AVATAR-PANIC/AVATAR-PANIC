@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <com.google.android.maps.MapView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/map_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:apiKey="0PcjW5foxW8fd6xXDQpeG03dPqUQ6DEgUOjwrKQ"
+        android:clickable="true"
+        android:state_enabled="true" >
+    </com.google.android.maps.MapView>
+
+
+    
+    		<ImageView 
+    		    
+    		    android:id="@+id/compass"
+    		    android:src="@drawable/compass"
+    		    android:layout_width="70dp"
+    		    android:layout_height="70dp"
+    		    android:layout_alignParentTop="true"
+    		    android:layout_alignParentLeft="true"
+    		    
+    		    />
+    
+    
+         <Button
+             android:id="@+id/Plot"
+             android:layout_width="85dp"
+             android:layout_height="75dp"
+             android:layout_toLeftOf="@+id/Send"
+             android:layout_alignParentTop="true"
+             android:text="Plot" />
+
+             <Button
+             android:id="@+id/Clear"
+             android:layout_width="85dp"
+             android:layout_height="75dp"
+             android:layout_toRightOf="@+id/compass"
+             android:layout_alignParentTop="true" 
+             android:text="Clear" />
+             
+             
+             
+             
+              <Button
+             android:id="@+id/Send"
+             android:layout_width="85dp"
+             android:layout_height="75dp"
+ 			 android:layout_alignParentRight="true"
+             android:layout_alignParentTop="true"         
+             android:text="Send" />
+              
+               
+             
+
+              
+              
+              <TextView 
+                  android:id="@+id/text"
+                  android:layout_width="wrap_content"
+                  android:layout_height="70dp"
+                  android:layout_toRightOf="@+id/Clear"
+                  android:layout_toLeftOf="@+id/Plot"
+                  android:layout_alignParentTop="true"
+                  />
+         
+</RelativeLayout>

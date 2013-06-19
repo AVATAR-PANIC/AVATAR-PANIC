@@ -77,8 +77,8 @@
         <item>36000000</item>
     </string-array>
 
-    <!--<string name="thermometer">@layout/sensor_page_thermometer</string>
-    <string name="co2">@layout/sensor_page_wind</string> -->
+    <string name="thermometer">@layout/sensor_page_thermometer</string>
+    <string name="co2">@layout/sensor_page_wind</string>
     <string name="legendt">Legend</string>
 
     <color name="background">#272727</color>
@@ -157,4 +157,20 @@
     </string-array>
 
     
+     <!--  GUARDIAN ANGEL STRINGS -->
+     
+    <string name="cardinal_north">N</string>
+    <string name="cardinal_east">E</string>
+    <string name="cardinal_south">S</string>
+    <string name="cardinal_west">W</string>
+    <string name="app_name">UAV-T</string>
+    <string name="start">START</string>
+    <string name="back">BACK</string>
+    <string name="stop">STOP</string>
+    <string name="done">DONE</string>
+    <string name="volume">Volume:</string>
+    <string name="size">Size:</string>
+    <string name="hint">Type answer here</string>
+    <color name="navy">#000080</color>
+     
     </resources>
