@@ -7,7 +7,10 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
-
+/*
+ * Not used in current version
+ * Previously used for MapsForgeViewer
+ */
 public class Compass extends View {
 	private float direction = 0;
 	private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);

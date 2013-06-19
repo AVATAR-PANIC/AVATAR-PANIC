@@ -3,6 +3,11 @@ package sate2012.avatar.android;
 import org.mapsforge.android.maps.GeoPoint;
 import org.mapsforge.android.maps.OverlayItem;
 
+/*
+ * Not used in current version
+ * Previously used for MapsForgeViewer
+ */
+
 public class DataObjectItem extends OverlayItem {
 	private DataObject data;
 	private GeoPoint point;

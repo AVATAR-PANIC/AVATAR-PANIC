@@ -3,6 +3,11 @@ package sate2012.avatar.android;
 import java.io.File;
 import java.net.URL;
 
+/*
+ * Not used in current version
+ * Previously used for MapsForgeViewer
+ */
+
 public class DataObject {
 	@Override
 	public String toString() {

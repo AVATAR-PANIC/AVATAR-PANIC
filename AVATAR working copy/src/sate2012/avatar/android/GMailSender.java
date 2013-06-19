@@ -15,6 +15,11 @@ import java.io.OutputStream;
 import java.security.Security;
 import java.util.Properties;
 
+/*
+ * Not used in current version
+ * Previously used for MapsForgeViewer
+ */
+
 public class GMailSender extends javax.mail.Authenticator {
 	private String mailhost;
 	private String user;

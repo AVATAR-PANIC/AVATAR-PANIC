@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import org.mapsforge.android.maps.GeoPoint;
 
+/*
+ * Not used in current version
+ * Previously used for MapsForgeViewer
+ */
+
 public class GeoDataRepository {
 	private static final char endl = Character.LINE_SEPARATOR;
 	private final Map<GeoPoint, Collection<DataObject>> objectCollectionsByPoint;

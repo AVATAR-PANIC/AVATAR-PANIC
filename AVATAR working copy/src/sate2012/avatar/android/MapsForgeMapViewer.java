@@ -31,6 +31,11 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
+/*
+ * Not used in current version
+ * Previously used for MapsForgeViewer
+ */
+
 public class MapsForgeMapViewer extends MapActivity implements
 		LocationListener, OnClickListener {
 	private static MapView mapView;
