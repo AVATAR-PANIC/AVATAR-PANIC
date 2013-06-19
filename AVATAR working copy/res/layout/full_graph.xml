@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/tricorder.tecedge"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <tricorder.tecedge.Graph
+            android:id="@+id/fullgraph"
+            android:layout_width="1000dp"
+            android:layout_height="1000dp" />
+        
+        <!--  
+            custom:full="true"
+            custom:type="full" -->
+    </FrameLayout>
+
+</HorizontalScrollView>

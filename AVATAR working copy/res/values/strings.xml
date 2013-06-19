@@ -57,4 +57,104 @@
     <string name="title_activity_google_maps_viewer">GoogleMapsViewer</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    
+
+     <!-- Options Menu -->
+    <string name="secure_connect">Connect a device - Secure</string>
+    <string name="insecure_connect">Connect a device - Insecure</string>
+    <string name="discoverable">Make discoverable</string>
+    <string name="sensor_prompt">Choose a Sensor</string>
+    <string name="time_prompt">Choose a Time</string>
+
+    <string-array name="listArray">
+        <item>&quot;1 minute&quot;</item>
+        <item>&quot;10 minutes&quot;</item>
+        <item>&quot;1 hour&quot;</item>
+    </string-array>
+    <string-array name="listValues">
+        <item>60000</item>
+        <item>600000</item>
+        <item>36000000</item>
+    </string-array>
+
+    <!--<string name="thermometer">@layout/sensor_page_thermometer</string>
+    <string name="co2">@layout/sensor_page_wind</string> -->
+    <string name="legendt">Legend</string>
+
+    <color name="background">#272727</color>
+
+    <string name="sensorfilter">Choose Sensors:</string>
+    <string name="sensor1">Temperature </string>
+    <string name="sensor2">Sensor 2 </string>
+    <string name="sensor3">Luminosity </string>
+    <string name="sensor4">Methane </string>
+    <string name="sensor5">Barometric Pressure </string>
+    <string name="sensor6">Carbon Monoxide </string>
+    <string name="sensor7">Carbon Dioxide </string>
+    <string name="sensor8">Humidity</string>
+    <string name="sensor9">Radiation</string>
+    <string name="sensorlast">Images</string>
+    <string name="sensorall">All Sensors</string>
+
+    <string-array name="databaseinfo">
+        <item>&quot;wbi-icc.com&quot;</item>
+        <item>&quot;p26t2to0_Student&quot;</item>
+        <item>&quot;Summer2012&quot;</item>
+        <item>&quot;p26t2to0_Student&quot;</item>
+    </string-array>
+
+    <!-- BluetoothChat -->
+    <string name="send">Send</string>
+    <string name="stream">Stream</string>
+    <string name="wind_on">Read Wind</string>
+    <string name="wind_off">Stop Wind</string>
+    <string name="not_connected">You are not connected to a device</string>
+    <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Chat.</string>
+    <string name="title_connecting">connecting...</string>
+    <string name="title_not_connected">not connected</string>
+
+    <!-- DeviceListActivity -->
+    <string name="scanning">scanning for devices...</string>
+    <string name="select_device">select a device to connect</string>
+    <string name="none_paired">No devices have been paired</string>
+    <string name="none_found">No devices found</string>
+    <string name="title_paired_devices">Paired Devices</string>
+    <string name="title_other_devices">Other Available Devices</string>
+    <string name="button_scan">Scan for devices</string>
+
+    <string-array name="sensor_list">
+        <item>Select Sensor</item>
+        <item>Thermometer</item>
+        <item>Luminosity</item>
+        <item>Wind</item>
+        <item>Barometric Pressure</item>
+        <item>Humidity</item>
+        <item>Radiation</item>
+        <item>Carbon Monoxide</item>
+        <item>Carbon Dioxide</item>
+        <item>Methane</item>
+        <item>Propane</item>
+        <item>Alcohol Gas</item>
+        <item>IR Thermometer</item>
+        <item>Infared Break Beam</item>
+        <item>Motion</item>
+        <item>Ultrasonic</item>
+        <item>Heart Beat</item>
+        <item>Temperature (BP Sensor)</item>
+        <item>Stop</item>
+    </string-array>
+    
+     <string-array name="time_list">
+        <item>(Default) 1 Second</item>
+        <item>5 Seconds</item>
+        <item>30 Seconds</item>
+        <item>1 Minute</item>
+        <item>5 Minutes</item>
+        <item>10 Minutes</item>
+        <item>30 Minutes</item>
+        <item>1 Hour</item>
+        <item>0.5 Seconds</item>
+    </string-array>
+
+    
     </resources>

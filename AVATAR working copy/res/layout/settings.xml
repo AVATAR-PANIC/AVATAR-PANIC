@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="Update" >
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="autoupload"
+            android:summary="Upload Sensor Data Automatically"
+            android:title="Upload Automatically" 
+            android:layout_height= "wrap_content"
+            android:layout_width= "match_parent">
+            </CheckBoxPreference>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Data Viewing" >
+
+        <PreferenceScreen
+            android:key="timerange"
+            android:summary="Choose the Time Range of Data"
+            android:title="Time Range Filter" >
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:key="TypePrefScreen"
+            android:summary="Choose the Sensors to Display"
+            android:title="Sensor Type Filter" >
+
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="allType"
+                android:summary="Select All"
+                android:title="All" />
+
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="tempType"
+                android:summary="Temperature Data"
+                android:title="Temperature" />
+
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="windType"
+                android:summary="Wind Data"
+                android:title="Wind" />
+
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="COType"
+                android:summary="Carbon Monoxide Data"
+                android:title="Carbon Monoxide" />
+
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="CO2Type"
+                android:summary="Carbon Dioxide Data"
+                android:title="Carbon Dioxide" />
+
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="humidityType"
+                android:summary="Humidty Data"
+                android:title="Humidity" />
+
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="radiationType"
+                android:summary="Radiation Data"
+                android:title="Radiation" />
+
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="methaneType"
+                android:summary="Methane Data"
+                android:title="Methane" />
+
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="pressureType"
+                android:summary="Pressure Data"
+                android:title="Pressure" />
+
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="luminosityType"
+                android:summary="Luminosity Data"
+                android:title="Luminosity" />
+
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="imgType"
+                android:summary="Image Data"
+                android:title="Image" />
+        </PreferenceScreen>
+
+        <PreferenceScreen
+            android:key="Map Display"
+            android:summary="Check to Enable"
+            android:title="Secondary Map Features" >
+
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="compass"
+                android:summary="Enable Compass"
+                android:title="Compass" />
+
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="SatelliteView"
+                android:summary="Enable Satellite View"
+                android:title="Satellite View" />
+
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="ZoomButtons"
+                android:summary="Enable Zoom buttons"
+                android:title="Zoom Buttons" />
+        </PreferenceScreen>
+
+        <Preference
+            android:key="legend"
+            android:summary="View Legend"
+            android:title="Legend" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
