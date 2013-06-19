@@ -2,6 +2,7 @@ package sate2012.avatar.android;
 
 import sate2012.avatar.android.augmentedrealityview.CameraView;
 import sate2012.avatar.android.googlemaps.GoogleMapsViewer;
+import tricorder.tecedge.opening_menu;
 import gupta.ashutosh.avatar.R;
 import android.app.Activity;
 import android.app.FragmentTransaction;
@@ -130,8 +131,11 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			fragMgr.popBackStack();
 			xact.commit();
 			break;
-		
 			
+		//All implentations of other projects, Create them as activities for now.
+		case R.id.tricorder:
+			startActivity(new Intent(this, opening_menu.class));
+			break;
 			
 			
 		//All Non fragment changing buttons. IE change map type

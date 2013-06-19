@@ -1,5 +1,6 @@
 package sate2012.avatar.android;
 
+import gupta.ashutosh.avatar.R;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -26,6 +27,10 @@ public class Frag extends Fragment {
 	 */
 	public Frag(int menu_ID){
 		this.menu_ID = menu_ID;
+	}
+	
+	public Frag(){
+		this.menu_ID = R.layout.map_menu_frag;
 	}
 	
 	/**
