@@ -53,6 +53,7 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 		xact.commit();
 		
 		//new HandleID(this).execute();
+		
 	}
 
 	/**
