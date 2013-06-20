@@ -202,8 +202,7 @@ public class MainActivity extends Activity implements
 		switch (item.getItemId()) {
 		// Allows the user to set the XMPP connection to a designated server
 		case R.id.text1:
-			PopupWindow popup = new PopupWindow();
-			popup.showAtLocation(findViewById(R.layout.xmpp_connection_settings), Gravity.CENTER, 0, 0);
+			showDialog(XMPPConnectionDialog);
 			break;
 		// Gives the user step by step directions for using the application.
 		case R.id.text2:
