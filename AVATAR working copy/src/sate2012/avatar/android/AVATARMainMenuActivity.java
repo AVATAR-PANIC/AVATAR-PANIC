@@ -88,12 +88,6 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			}else{
 				xact.replace(R.id.container, new GoogleMapsViewer(), "MAP");
 			}
-			if(fragMgr.findFragmentByTag("MAP_MENU") != null){
-				xact.replace(R.id.menu, fragMgr.findFragmentByTag("MAP_MENU"), "MAP_MENU");
-			}else{
-				xact.replace(R.id.menu, new Frag(R.layout.map_menu_frag), "MAP_MENU");
-				xact.addToBackStack(null);
-			}
 			xact.commit();
 			break;
 		case R.id.augmentedReality:
@@ -178,7 +172,20 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			}
 			xact.commit();
 			break;
+		case R.id.avatar:
+			//this.finish();
 			
+			fragMgr = getFragmentManager();
+			
+			xact = fragMgr.beginTransaction();
+			if(fragMgr.findFragmentByTag("MAP") != null){
+				xact.replace(R.id.container, fragMgr.findFragmentByTag("MAP"), "MAP");
+			}else{
+				xact.replace(R.id.container, new GoogleMapsViewer(), "MAP");
+				xact.addToBackStack(null);
+			}
+			xact.commit();
+			break;
 			
 		//All Non fragment changing buttons. IE change map type
 		case R.id.changeType:

@@ -23,6 +23,7 @@
             android:background="@drawable/buttonbackground"
             android:onClick="myClickMethod"
             android:text="Augmented Reality"
+            android:textSize="16sp"
             android:textColor="@android:color/white" />
 
         <View
@@ -38,6 +39,7 @@
             android:background="@drawable/buttonbackground"
             android:onClick="myClickMethod"
             android:text="Change Map Type"
+            android:textSize="16sp"
             android:textColor="@android:color/white" />
 
         <View
@@ -53,8 +55,25 @@
             android:background="@drawable/buttonbackground"
             android:onClick="myClickMethod"
             android:text="Emergency Call"
+            android:textSize="16sp"
             android:textColor="@android:color/white" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight=".05" />
+        
+        <Button
+            android:id="@+id/avatar"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight=".1"
+            android:background="@drawable/buttonbackground"
+            android:onClick="myClickMethod"
+            android:text="AVATAR"
+            android:textSize="16sp"
+            android:textColor="@android:color/white" />
+        
         <View
             android:layout_width="match_parent"
             android:layout_height="0px"
@@ -68,6 +87,7 @@
             android:background="@drawable/buttonbackground"
             android:onClick="myClickMethod"
             android:text="Tricorder"
+            android:textSize="16sp"
             android:textColor="@android:color/white" />
 
         <View
@@ -83,6 +103,7 @@
             android:background="@drawable/buttonbackground"
             android:onClick="myClickMethod"
             android:text="Guardian Angel"
+            android:textSize="16sp"
             android:textColor="@android:color/white" />
         
         <View
@@ -98,6 +119,7 @@
             android:background="@drawable/buttonbackground"
             android:onClick="myClickMethod"
             android:text="Exit App"
+            android:textSize="16sp"
             android:textColor="@android:color/white" />
 
         <View

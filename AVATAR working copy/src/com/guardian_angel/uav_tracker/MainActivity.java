@@ -139,6 +139,17 @@ public class MainActivity extends Fragment implements
 			ranOnce = true;
 		}
 		getActivity().showDialog(XMPPConnectionDialog);
+		
+		FragmentManager fragMgr = getActivity().getFragmentManager();
+		FragmentTransaction xact = fragMgr.beginTransaction();
+		
+		if(fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP") != null){
+			xact.replace(R.id.container, fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP"), "GUARDIAN_ANGEL_MAP");
+		}else{
+			xact.replace(R.id.container, new GuardianAngelGoogleMapsViewer(), "GUARDIAN_ANGEL_MAP");
+			xact.addToBackStack(null);
+		}
+		xact.commit();
 
 		// Set a listener for the start button of the application
 //		start.setOnClickListener(new OnClickListener() {
@@ -504,17 +515,7 @@ public class MainActivity extends Fragment implements
 						ex.printStackTrace();
 					}
 				}
-			
-				FragmentManager fragMgr = getActivity().getFragmentManager();
-				FragmentTransaction xact = fragMgr.beginTransaction();
-				
-				if(fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP") != null){
-					xact.replace(R.id.container, fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP"), "GUARDIAN_ANGEL_MAP");
-				}else{
-					xact.replace(R.id.container, new GuardianAngelGoogleMapsViewer(), "GUARDIAN_ANGEL_MAP");
-					xact.addToBackStack(null);
-				}
-				xact.commit();
+
 			}
 		}).start();
 	}
