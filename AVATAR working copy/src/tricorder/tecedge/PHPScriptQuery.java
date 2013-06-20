@@ -16,6 +16,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
+import sate2012.avatar.android.googlemaps.TricorderMarkerPlus;
+
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.OverlayItem;
 
@@ -161,10 +163,10 @@ public class PHPScriptQuery {
 		return resultArr;
 	}
 
-	public ArrayList<OverlayItem> getMapData(String condition) {
+	public ArrayList<TricorderMarkerPlus> getMapData(String condition) {
 
-		ArrayList<OverlayItem> list = new ArrayList<OverlayItem>();
-		OverlayItem over;
+		ArrayList<TricorderMarkerPlus> list = new ArrayList<TricorderMarkerPlus>();
+		TricorderMarkerPlus over;
 
 		ArrayList<String> typeArr = parse(execute("SELECT sensor_type FROM sensors1"
 				+ condition + ";"));
@@ -182,13 +184,12 @@ public class PHPScriptQuery {
 		for (int i = 0; i < typeArr.size(); i++) {
 			String type = typeArr.get(i);
 			String data = dataArr.get(i);
-			float lat = Float.parseFloat(latArr.get(i));
-			float longitude = Float.parseFloat(longArr.get(i));
+			double lat = Double.parseDouble(latArr.get(i));
+			double longitude = Double.parseDouble(longArr.get(i));
 			String phone_ID = phoneArr.get(i);
 			String date = dateArr.get(i);
 			String info = date + "\n" + phone_ID + "\n" + data;
-			over = new OverlayItem(new GeoPoint((int) (lat * 1E6),
-					(int) (longitude * 1E6)), type, info);
+			over = new TricorderMarkerPlus(lat,longitude,info,type,date,phone_ID);
 			list.add(over);
 		}
 		return list;

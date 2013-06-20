@@ -91,9 +91,9 @@ public class DeviceListActivity extends Activity {
 		pairedListView.setOnItemClickListener(mDeviceClickListener);
 
 		// Find and set up the ListView for newly discovered devices
-		ListView newDevicesListView = (ListView) findViewById(R.id.new_devices);
-		newDevicesListView.setAdapter(mNewDevicesArrayAdapter);
-		newDevicesListView.setOnItemClickListener(mDeviceClickListener);
+		//ListView newDevicesListView = (ListView) findViewById(R.id.new_devices);
+		//newDevicesListView.setAdapter(mNewDevicesArrayAdapter);
+		//newDevicesListView.setOnItemClickListener(mDeviceClickListener);
 
 		// Register for broadcasts when a device is discovered
 		IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
@@ -148,7 +148,7 @@ public class DeviceListActivity extends Activity {
 		setTitle(R.string.scanning);
 
 		// Turn on sub-title for new devices
-		findViewById(R.id.title_new_devices).setVisibility(View.VISIBLE);
+		//findViewById(R.id.title_new_devices).setVisibility(View.VISIBLE);
 
 		// If we're already discovering, stop it
 		if (mBtAdapter.isDiscovering()) {

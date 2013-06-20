@@ -272,7 +272,7 @@ public class Mapm extends MapActivity {
 			} else {
 				condition = where + sqltime;
 			}
-			serverData = database.getMapData(condition);
+			//serverData = database.getMapData(condition);
 			return null;
 		}
 

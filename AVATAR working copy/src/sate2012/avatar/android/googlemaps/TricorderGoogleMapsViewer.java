@@ -119,8 +119,10 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 		
         database = new PHPScriptQuery();
         new DownloadFilesTask().execute();
-        
-        drawMarkers();
+		
+	}
+	
+	public void addData(ArrayList<TricorderMarkerPlus> currentData){
 		
 	}
 	
@@ -194,7 +196,7 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 
 	public class DownloadFilesTask extends AsyncTask<Context, Integer, Integer> {
 
-		private ArrayList<OverlayItem> serverData;
+		private ArrayList<TricorderMarkerPlus> serverData;
 
 		@Override
 		protected Integer doInBackground(Context... params) {
@@ -229,7 +231,7 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 
 		@Override
 		protected void onPostExecute(Integer result) {
-			mapViewer.drawMarkers();
+			addData(serverData);
 			System.out.println("Downloaded Data!");
 			super.onPostExecute(result);
 		}

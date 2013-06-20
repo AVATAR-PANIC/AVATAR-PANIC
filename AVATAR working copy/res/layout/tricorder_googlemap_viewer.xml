@@ -52,4 +52,35 @@
                 android:background="@drawable/afrl_logo_transparent" />
         </LinearLayout>
         
+     <LinearLayout
+         android:id="@+id/tri_map_settings"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentRight="true"
+         android:layout_alignParentBottom="true"
+         android:layout_marginRight="60dp" >
+         
+         <ImageView
+             android:id="@+id/tri_menu_settings"
+             android:layout_width="50dp"
+             android:layout_height="50dp"
+             android:background="@drawable/menusettings"
+             android:onClick="tricorderClickListener" />
+         
+         <ImageView
+             android:id="@+id/tri_menu_upload"
+             android:layout_width="50dp"
+             android:layout_height="50dp"
+             android:background="@drawable/menuupload"
+             android:onClick="tricorderClickListener" />
+         
+         <ImageView
+             android:id="@+id/tri_menu_refresh"
+             android:layout_width="50dp"
+             android:layout_height="50dp"
+             android:background="@drawable/menurefresh"
+             android:onClick="tricorderClickListener" />
+         
+     </LinearLayout>
+        
 </RelativeLayout>

@@ -11,8 +11,11 @@ public class TricorderMarkerPlus extends MarkerPlus {
 	private String name;
 	private String data;
 	private double altitude;
-	private Drawable image;
+	private int imageID;
+	private String info;
 	private String type;
+	private String date;
+	private String phone_ID;
 	
 	/**
 	 * Default Constructor
@@ -51,14 +54,70 @@ public class TricorderMarkerPlus extends MarkerPlus {
 		this.data = info;
 	}
 	
-	public TricorderMarkerPlus(MarkerOptions markerOptions, double latitude, double longitude, double altitude, String info, String type, int imageID){
-		this.markerOptions = markerOptions;
+	public TricorderMarkerPlus(double latitude, double longitude, String info, String type, String date, String phone_ID){
+		this.markerOptions = new MarkerOptions();
 		this.markerOptions.position(new LatLng(latitude, longitude));
-		this.altitude = altitude;
 		this.data = info;
 		this.type = type;
-	    
-		
+		this.date = date;
+		this.phone_ID = phone_ID;
 	}
+
+	public MarkerOptions getMarkerOptions() {
+		return markerOptions;
+	}
+
+	public void setMarkerOptions(MarkerOptions markerOptions) {
+		this.markerOptions = markerOptions;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
+
+	public double getAltitude() {
+		return altitude;
+	}
+
+	public void setAltitude(double altitude) {
+		this.altitude = altitude;
+	}
+
+	public int getImageID() {
+		return imageID;
+	}
+
+	public void setImageID(int imageID) {
+		this.imageID = imageID;
+	}
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+	
 	
 }
