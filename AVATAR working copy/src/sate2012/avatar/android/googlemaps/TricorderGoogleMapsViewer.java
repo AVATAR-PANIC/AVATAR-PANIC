@@ -99,7 +99,7 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 	public void onStart() {
 		super.onStart();
 		MapFragment mapfrag = ((MapFragment) getFragmentManager()
-				.findFragmentById(R.id.googlemap));
+				.findFragmentById(R.id.tricorder_googlemap));
 		map = mapfrag.getMap();
 		markers = new ArrayList<TricorderMarkerPlus>();
 		
@@ -247,6 +247,16 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 	public View getInfoWindow(Marker marker) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
 	}
 	
 	public void tricorderOnClick(View v){
