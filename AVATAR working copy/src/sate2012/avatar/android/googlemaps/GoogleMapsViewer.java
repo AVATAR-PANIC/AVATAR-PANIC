@@ -455,7 +455,9 @@ OnInfoWindowClickListener, OnPreparedListener{
 
 		// Getting reference to the TextView to set title
 		TextView title = (TextView) v.findViewById(R.id.marker_title);
+		title.setTextColor(Color.BLACK);
 		TextView info = (TextView) v.findViewById(R.id.marker_info);
+		info.setTextColor(Color.BLACK);
 		ImageView image = (ImageView) v.findViewById(R.id.marker_image);
 		image.setPadding(0, 0, 5, 0);
 
