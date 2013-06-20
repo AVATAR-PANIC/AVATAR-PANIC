@@ -7,11 +7,8 @@ package com.guardian_angel.uav_tracker;
 
 import gupta.ashutosh.avatar.R;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
@@ -21,30 +18,27 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 
-import android.app.Activity;
+import sate2012.avatar.android.googlemaps.GuardianAngelGoogleMapsViewer;
+
 import android.app.Dialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
-import android.graphics.Color;
-import android.graphics.LightingColorFilter;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.PopupWindow;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 /**
@@ -58,7 +52,7 @@ import android.widget.Toast;
  */
 
 
-public class MainActivity extends Activity implements
+public class MainActivity extends Fragment implements
 		android.view.View.OnClickListener, Serializable {
 	/**
 	 * 
@@ -96,14 +90,26 @@ public class MainActivity extends Activity implements
 	private boolean fromQuickStart = true;
 	private boolean ranOnce = false;
 
+	
+	/**
+	 * When the Fragment View is created, this is called
+	 */
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		super.onCreateView(inflater, container, savedInstanceState);
+		View view = inflater.inflate(R.layout.guardian_angel_main, container, false);
+		
+		return view;
+	}
+	
 	/** Called when the activity is first created. */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.guardian_angel_main);
+	public void onStart() {
+		super.onStart();
+		//setContentView(R.layout.guardian_angel_main);
 
 		// Setup the XMPPConnectionDialog interface elements
-		dialog = new Dialog(this);
+		dialog = new Dialog(getActivity());
 		dialog.setContentView(R.layout.xmpp_connection_settings);
 		dialog.getWindow().setLayout(LayoutParams.FILL_PARENT,
 				LayoutParams.WRAP_CONTENT);
@@ -111,14 +117,14 @@ public class MainActivity extends Activity implements
 
 		// Create the display with appropriate buttons
 		progressHandler = new Handler();
-		start = (ImageButton) findViewById(R.id.main_button);
-		toMap = (ImageButton) findViewById(R.id.to_map_activity);
+		//start = (ImageButton) getActivity().findViewById(R.id.main_button);
+		//toMap = (ImageButton) getActivity().findViewById(R.id.to_map_activity);
 
 		// Grab the context for the application and the ID of the device the app
 		// is running on for future use
-		mainContext = this.getApplicationContext();
+		mainContext = getActivity().getApplicationContext();
 		deviceID = android.provider.Settings.Secure.getString(
-				getContentResolver(),
+				getActivity().getContentResolver(),
 				android.provider.Settings.Secure.ANDROID_ID);
 
 		// Check to see if this is the first time the application is starting
@@ -132,97 +138,98 @@ public class MainActivity extends Activity implements
 			// whenever the user returns to the Main Activity page
 			ranOnce = true;
 		}
+		getActivity().showDialog(XMPPConnectionDialog);
 
 		// Set a listener for the start button of the application
-		start.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-
-				// This check is to ensure a null pointer is not obtained from
-				// the Map class when a user attempts to send data without a
-				// connection
-				if (NotificationService.connection.isConnected()) {
-					Intent nextScreen = new Intent(mainContext, Map.class);
-					// This is used to signify if the Map class should allow the
-					// user to plot points or simply view the map
-					nextScreen.putExtra("viewOnly", false);
-					nextScreen.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(nextScreen);
-
-					// Alert the user if they currently don't have an XMPP
-					// connection
-				} else {
-					Toast.makeText(
-							getApplicationContext(),
-							"You must connect to the XMPP server before starting!",
-							Toast.LENGTH_SHORT).show();
-				}
-			}
-		});
-
-		// This listener is used to send the user to the Map class as a view
-		// only, without the ability to plot and send data
-		toMap.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-				// A check is needed to guarantee the user has an XMPP
-				// connection so that the Map class will not throw a null
-				// pointer
-				if (NotificationService.connection.isConnected()) {
-					Intent nextScreen = new Intent(mainContext, Map.class);
-					// Set the map to only allow for viewing of it, meaning the
-					// user will not be able to plot guesses and send data.
-					nextScreen.putExtra("viewOnly", true);
-					startActivity(nextScreen);
-
-					// Alert the user in case they don't have an XMPP connection
-				} else {
-					Toast.makeText(
-							getApplicationContext(),
-							"You must connect to the XMPP server before starting!",
-							Toast.LENGTH_SHORT).show();
-				}
-			}
-		});
-
+//		start.setOnClickListener(new OnClickListener() {
+//			public void onClick(View v) {
+//
+//				// This check is to ensure a null pointer is not obtained from
+//				// the Map class when a user attempts to send data without a
+//				// connection
+//				if (NotificationService.connection.isConnected()) {
+//					Intent nextScreen = new Intent(mainContext, Map.class);
+//					// This is used to signify if the Map class should allow the
+//					// user to plot points or simply view the map
+//					nextScreen.putExtra("viewOnly", false);
+//					nextScreen.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//					startActivity(nextScreen);
+//
+//					// Alert the user if they currently don't have an XMPP
+//					// connection
+//				} else {
+//					Toast.makeText(
+//							getActivity().getApplicationContext(),
+//							"You must connect to the XMPP server before starting!",
+//							Toast.LENGTH_SHORT).show();
+//				}
+//			}
+//		});
+//
+//		// This listener is used to send the user to the Map class as a view
+//		// only, without the ability to plot and send data
+//		toMap.setOnClickListener(new OnClickListener() {
+//
+//			public void onClick(View v) {
+//				// A check is needed to guarantee the user has an XMPP
+//				// connection so that the Map class will not throw a null
+//				// pointer
+//				if (NotificationService.connection.isConnected()) {
+//					Intent nextScreen = new Intent(mainContext, Map.class);
+//					// Set the map to only allow for viewing of it, meaning the
+//					// user will not be able to plot guesses and send data.
+//					nextScreen.putExtra("viewOnly", true);
+//					startActivity(nextScreen);
+//
+//					// Alert the user in case they don't have an XMPP connection
+//				} else {
+//					Toast.makeText(
+//							getActivity().getApplicationContext(),
+//							"You must connect to the XMPP server before starting!",
+//							Toast.LENGTH_SHORT).show();
+//				}
+//			}
+//		});
+//
 	}
-
-	/*
-	 * Creates a menu to be displayed when the settings button is touched.
-	 */
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu, menu);
-		return true;
-	}
-
-	/* Tells the menu buttons what to do. */
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		// Allows the user to set the XMPP connection to a designated server
-		case R.id.text1:
-			showDialog(XMPPConnectionDialog);
-			break;
-		// Gives the user step by step directions for using the application.
-		case R.id.text2:
-			Intent nextScreen = new Intent(getApplicationContext(),
-					GAdirections.class);
-			startActivity(nextScreen);
-			break;
-		// Attempts to kill the application so that the user can exit it without
-		// the Notification Service running in the background.
-		case R.id.text3:
-			Intent exitSplash = new Intent(getApplicationContext(),
-					Splash.class);
-			exitSplash.putExtra("exit", true);
-			stopService(new Intent(getBaseContext(), NotificationService.class));
-			startActivity(exitSplash);
-			finish();
-
-		}
-		return true;
-	}
+//
+//	/*
+//	 * Creates a menu to be displayed when the settings button is touched.
+//	 */
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		MenuInflater inflater = getMenuInflater();
+//		inflater.inflate(R.menu.menu, menu);
+//		return true;
+//	}
+//
+//	/* Tells the menu buttons what to do. */
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		switch (item.getItemId()) {
+//		// Allows the user to set the XMPP connection to a designated server
+//		case R.id.text1:
+//			showDialog(XMPPConnectionDialog);
+//			break;
+//		// Gives the user step by step directions for using the application.
+//		case R.id.text2:
+//			Intent nextScreen = new Intent(getApplicationContext(),
+//					GAdirections.class);
+//			startActivity(nextScreen);
+//			break;
+//		// Attempts to kill the application so that the user can exit it without
+//		// the Notification Service running in the background.
+//		case R.id.text3:
+//			Intent exitSplash = new Intent(getApplicationContext(),
+//					Splash.class);
+//			exitSplash.putExtra("exit", true);
+//			stopService(new Intent(getBaseContext(), NotificationService.class));
+//			startActivity(exitSplash);
+//			finish();
+//
+//		}
+//		return true;
+//	}
 
 	/*
 	 * Reads in the directions that will be displayed. The directions are stored
@@ -250,8 +257,7 @@ public class MainActivity extends Activity implements
 	}
 
 	// Create the XMPP Connection Dialog box
-	@Override
-	protected Dialog onCreateDialog(int id) {
+	public Dialog onCreateDialog(int id) {
 		// Setup the XMPPConnectionDialog interface elements
 		dialog.setContentView(R.layout.xmpp_connection_settings);
 		dialog.getWindow().setLayout(LayoutParams.FILL_PARENT,
@@ -283,7 +289,7 @@ public class MainActivity extends Activity implements
 			// Called when the Cancel button is pressed
 
 			public void onClick(View v) {
-				removeDialog(XMPPConnectionDialog);
+				getActivity().removeDialog(XMPPConnectionDialog);
 			}
 		});
 		// Set the back function listener
@@ -291,7 +297,7 @@ public class MainActivity extends Activity implements
 			// Called when the Back button is pressed
 
 			public void onCancel(DialogInterface dialog) {
-				removeDialog(XMPPConnectionDialog);
+				getActivity().removeDialog(XMPPConnectionDialog);
 			}
 		});
 
@@ -411,7 +417,7 @@ public class MainActivity extends Activity implements
 								host)) {
 							continueConnection = false;
 							updateUI("Connected.", 2);
-							removeDialog(XMPPConnectionDialog);
+							getActivity().removeDialog(XMPPConnectionDialog);
 						}
 					}
 				} catch (Exception ex) {
@@ -485,7 +491,7 @@ public class MainActivity extends Activity implements
 								updateUI("Connection Successful.", 0);
 								saveFiles();
 								openSaveData();
-								startService(new Intent(getBaseContext(),
+								getActivity().startService(new Intent(getActivity().getBaseContext(),
 										NotificationService.class));
 								fromQuickStart = false;
 								
@@ -498,6 +504,17 @@ public class MainActivity extends Activity implements
 						ex.printStackTrace();
 					}
 				}
+			
+				FragmentManager fragMgr = getActivity().getFragmentManager();
+				FragmentTransaction xact = fragMgr.beginTransaction();
+				
+				if(fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP") != null){
+					xact.replace(R.id.container, fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP"), "GUARDIAN_ANGEL_MAP");
+				}else{
+					xact.replace(R.id.container, new GuardianAngelGoogleMapsViewer(), "GUARDIAN_ANGEL_MAP");
+					xact.addToBackStack(null);
+				}
+				xact.commit();
 			}
 		}).start();
 	}
@@ -607,7 +624,7 @@ public class MainActivity extends Activity implements
 				}
 
 				// Output the toast
-				Toast.makeText(getApplicationContext(), toastText,
+				Toast.makeText(getActivity().getApplicationContext(), toastText,
 						Toast.LENGTH_SHORT).show();
 			}
 		});
@@ -627,7 +644,7 @@ public class MainActivity extends Activity implements
 		try {
 			// Read the stored host data
 			inputBuffer = new char[255];
-			fis = this.openFileInput("host_file");
+			fis = getActivity().openFileInput("host_file");
 			isr = new InputStreamReader(fis);
 			isr.read(inputBuffer);
 			fileData = new String(inputBuffer);
@@ -638,7 +655,7 @@ public class MainActivity extends Activity implements
 
 			// Read the stored port data
 			inputBuffer = new char[255];
-			fis = this.openFileInput("port_file");
+			fis = getActivity().openFileInput("port_file");
 			isr = new InputStreamReader(fis);
 			isr.read(inputBuffer);
 			fileData = new String(inputBuffer);
@@ -649,7 +666,7 @@ public class MainActivity extends Activity implements
 
 			// Read the stored room data
 			inputBuffer = new char[255];
-			fis = this.openFileInput("room_file");
+			fis = getActivity().openFileInput("room_file");
 			isr = new InputStreamReader(fis);
 			isr.read(inputBuffer);
 			fileData = new String(inputBuffer);
@@ -660,7 +677,7 @@ public class MainActivity extends Activity implements
 
 			// Read the stored username data
 			inputBuffer = new char[255];
-			fis = this.openFileInput("username_file");
+			fis = getActivity().openFileInput("username_file");
 			isr = new InputStreamReader(fis);
 			isr.read(inputBuffer);
 			fileData = new String(inputBuffer);
@@ -672,7 +689,7 @@ public class MainActivity extends Activity implements
 			// Read the stored password data
 			// Please note that password data is currently unencrypted
 			inputBuffer = new char[255];
-			fis = this.openFileInput("password_file");
+			fis = getActivity().openFileInput("password_file");
 			isr = new InputStreamReader(fis);
 			isr.read(inputBuffer);
 			fileData = new String(inputBuffer);
@@ -695,7 +712,7 @@ public class MainActivity extends Activity implements
 
 		try {
 			// Save the current host data
-			fos = this.openFileOutput("host_file", Context.MODE_PRIVATE);
+			fos = getActivity().openFileOutput("host_file", Context.MODE_PRIVATE);
 			osw = new OutputStreamWriter(fos);
 			osw.write(host);
 			osw.flush();
@@ -703,7 +720,7 @@ public class MainActivity extends Activity implements
 			fos.close();
 
 			// Save the current port data
-			fos = this.openFileOutput("port_file", Context.MODE_PRIVATE);
+			fos = getActivity().openFileOutput("port_file", Context.MODE_PRIVATE);
 			osw = new OutputStreamWriter(fos);
 			osw.write(port);
 			osw.flush();
@@ -711,7 +728,7 @@ public class MainActivity extends Activity implements
 			fos.close();
 
 			// Save the current room data
-			fos = this.openFileOutput("room_file", Context.MODE_PRIVATE);
+			fos = getActivity().openFileOutput("room_file", Context.MODE_PRIVATE);
 			osw = new OutputStreamWriter(fos);
 			String[] temp = room.split("@");
 			osw.write(temp[0]);
@@ -720,7 +737,7 @@ public class MainActivity extends Activity implements
 			fos.close();
 
 			// Save the current username data
-			fos = this.openFileOutput("username_file", Context.MODE_PRIVATE);
+			fos = getActivity().openFileOutput("username_file", Context.MODE_PRIVATE);
 			osw = new OutputStreamWriter(fos);
 			String[] temp2 = userid.split("@");
 			osw.write(temp2[0]);
@@ -729,7 +746,7 @@ public class MainActivity extends Activity implements
 			fos.close();
 
 			// Save the current password data
-			fos = this.openFileOutput("password_file", Context.MODE_PRIVATE);
+			fos = getActivity().openFileOutput("password_file", Context.MODE_PRIVATE);
 			osw = new OutputStreamWriter(fos);
 			osw.write(password);
 			osw.flush();
