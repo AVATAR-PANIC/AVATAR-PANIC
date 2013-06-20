@@ -4,6 +4,7 @@ import com.guardian_angel.uav_tracker.MainActivity;
 
 import sate2012.avatar.android.augmentedrealityview.CameraView;
 import sate2012.avatar.android.googlemaps.GoogleMapsViewer;
+import sate2012.avatar.android.googlemaps.GuardianAngelGoogleMapsViewer;
 import sate2012.avatar.android.googlemaps.TricorderGoogleMapsViewer;
 import tricorder.tecedge.opening_menu;
 import gupta.ashutosh.avatar.R;
@@ -155,7 +156,17 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			
 			break;
 		case R.id.guardian_angel:
-			startActivity(new Intent(this, MainActivity.class));
+			fragMgr = getFragmentManager();
+			xact = fragMgr.beginTransaction();
+			if(fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP") != null){
+				xact.replace(R.id.container, fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP"), "GUARDIAN_ANGEL_MAP");
+			}else{
+				xact.replace(R.id.container, new GuardianAngelGoogleMapsViewer(), "GUARDIAN_ANGEL_MAP");
+				xact.addToBackStack(null);
+			}
+			xact.commit();
+			//startActivity(new Intent(this, MainActivity.class));
+			//Currently want to draw the fragment I'm working on
 			break;
 			
 			
