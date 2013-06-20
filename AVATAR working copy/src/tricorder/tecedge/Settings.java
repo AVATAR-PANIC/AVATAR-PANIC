@@ -4,6 +4,8 @@ import gupta.ashutosh.avatar.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import sate2012.avatar.android.googlemaps.TricorderGoogleMapsViewer;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,7 +31,7 @@ public class Settings extends PreferenceActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Mapm.h.sendEmptyMessage(0);
+		TricorderGoogleMapsViewer.h.sendEmptyMessage(0);
 		addPreferencesFromResource(R.layout.settings);
 		Preference legend = (Preference) findPreference("legend");
 		Preference timerange = (Preference) findPreference("timerange");
@@ -378,9 +380,6 @@ public class Settings extends PreferenceActivity {
 
 	@Override
 	public void onBackPressed() {
-		Intent intent = new Intent(this, Mapm.class);
-		startActivity(intent);
-		Mapm.initializing(initializing);
 		super.onBackPressed();
 	}
 

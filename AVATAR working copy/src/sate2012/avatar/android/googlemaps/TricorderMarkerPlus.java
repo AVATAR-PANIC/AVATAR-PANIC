@@ -1,7 +1,9 @@
 package sate2012.avatar.android.googlemaps;
 
+import gupta.ashutosh.avatar.R;
 import android.graphics.drawable.Drawable;
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -11,7 +13,7 @@ public class TricorderMarkerPlus extends MarkerPlus {
 	private String name;
 	private String data;
 	private double altitude;
-	private int imageID;
+	private int imageID = R.drawable.emergency;
 	private String info;
 	private String type;
 	private String date;
@@ -64,6 +66,7 @@ public class TricorderMarkerPlus extends MarkerPlus {
 	}
 
 	public MarkerOptions getMarkerOptions() {
+		this.markerOptions.title(this.type).snippet(data).icon(BitmapDescriptorFactory.fromResource(imageID));
 		return markerOptions;
 	}
 

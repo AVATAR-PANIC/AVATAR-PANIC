@@ -28,10 +28,14 @@ public class Displaym extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.displaym);
+		try{
 		Bundle extras = getIntent().getExtras();
 		type = extras.getString("Type");
 		data = extras.getString("Data");
 		result = data.split("\n");
+		}catch(Exception ex){
+			
+		}
 
 		// if (type.equalsIgnoreCase("Image")) {
 		initImage();

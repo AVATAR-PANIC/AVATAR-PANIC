@@ -65,21 +65,21 @@
              android:layout_width="50dp"
              android:layout_height="50dp"
              android:background="@drawable/menusettings"
-             android:onClick="tricorderClickListener" />
+             android:onClick="tricorderOnClick" />
          
          <ImageView
              android:id="@+id/tri_menu_upload"
              android:layout_width="50dp"
              android:layout_height="50dp"
              android:background="@drawable/menuupload"
-             android:onClick="tricorderClickListener" />
+             android:onClick="tricorderOnClick" />
          
          <ImageView
              android:id="@+id/tri_menu_refresh"
              android:layout_width="50dp"
              android:layout_height="50dp"
              android:background="@drawable/menurefresh"
-             android:onClick="tricorderClickListener" />
+             android:onClick="tricorderOnClick" />
          
      </LinearLayout>
         

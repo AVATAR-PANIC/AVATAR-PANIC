@@ -1,5 +1,6 @@
 package tricorder.tecedge;
 
+import sate2012.avatar.android.googlemaps.TricorderGoogleMapsViewer;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +11,8 @@ public class Refreshm extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Mapm.h.sendEmptyMessage(0);
-		Intent intent = new Intent(this, Mapm.class);
-		startActivity(intent);
+		TricorderGoogleMapsViewer.h.sendEmptyMessage(0);
+		finish();
 	}
+
 }

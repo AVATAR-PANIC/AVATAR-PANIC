@@ -189,6 +189,12 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 		
 	}
 	
+	public void tricorderOnClick(View v){
+		FragmentManager fragMgr = getFragmentManager();
+		
+		((TricorderGoogleMapsViewer)fragMgr.findFragmentByTag("TRICORDER_MAP")).tricorderOnClick(v);
+	}
+	
 	/**
 	 * Used by a method below to set the side menu correctly
 	 */

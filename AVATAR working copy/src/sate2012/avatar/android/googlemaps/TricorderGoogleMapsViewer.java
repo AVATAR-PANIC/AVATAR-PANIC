@@ -6,11 +6,14 @@ import java.util.List;
 import java.util.Locale;
 
 import gupta.ashutosh.avatar.R;
+import tricorder.tecedge.Mapm;
 import tricorder.tecedge.PHPScriptQuery;
+import tricorder.tecedge.POIm;
 import tricorder.tecedge.Refreshm;
 import tricorder.tecedge.Settings;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.location.Address;
@@ -18,6 +21,7 @@ import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -66,6 +70,7 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 	private static View view;
 	public GoogleMap map;
 	private TricorderGoogleMapsViewer mapViewer;
+	private ArrayList<TricorderMarkerPlus> markers;
 	
 	/**
 	 * When the Fragment View is created, this is called
@@ -96,6 +101,7 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 		MapFragment mapfrag = ((MapFragment) getFragmentManager()
 				.findFragmentById(R.id.googlemap));
 		map = mapfrag.getMap();
+		markers = new ArrayList<TricorderMarkerPlus>();
 		
 		//Set the Maps listeners
 		map.setOnMapLongClickListener(this);
@@ -119,15 +125,86 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 		
         database = new PHPScriptQuery();
         new DownloadFilesTask().execute();
+        
+        h = new Handler() {
+			public void handleMessage(Message msg) {
+				super.handleMessage(msg);
+				switch (msg.what) {
+				case 0:
+					new DownloadFilesTask().execute();
+					break;
+				}
+			}
+		};
 		
 	}
 	
 	public void addData(ArrayList<TricorderMarkerPlus> currentData){
 		
+		if (currentData.size() == 0) {
+			try{
+			Toast.makeText(getActivity(), "Loading Data...Please Wait",
+					Toast.LENGTH_LONG).show();
+			return;
+			}catch(NullPointerException ex){
+				ex.printStackTrace();
+				//I have no idea how it could be null lol.
+			}
+		}
+		
+		for (int i = 0; i < currentData.size(); i++) {
+
+			TricorderMarkerPlus sensorItem = currentData.get(i);
+			String sensorType = sensorItem.getType();
+			//Not sure if this was correct
+			System.out.println(sensorType);
+
+			if (sensorType.equalsIgnoreCase("Temperature")) {
+				sensorItem.setImageID(R.drawable.pintemp);
+				markers.add(sensorItem);
+			} else if (sensorType.equalsIgnoreCase("CO2")) {
+				sensorItem.setImageID(R.drawable.pincotwo);
+				markers.add(sensorItem);
+			} else if (sensorType.equalsIgnoreCase("Methane")) {
+				sensorItem.setImageID(R.drawable.pinmethane);
+				markers.add(sensorItem);
+			} else if (sensorType.equalsIgnoreCase("Barometric Pressure")) {
+				sensorItem.setImageID(R.drawable.pinpressure);
+				markers.add(sensorItem);
+			} else if (sensorType.equalsIgnoreCase("CO")) {
+				sensorItem.setImageID(R.drawable.pinco);
+				markers.add(sensorItem);
+			} else if (sensorType.equalsIgnoreCase("Humidity")) {
+				sensorItem.setImageID(R.drawable.pinhumidity);
+				markers.add(sensorItem);
+			} else if (sensorType.equalsIgnoreCase("Radiation")) {
+				sensorItem.setImageID(R.drawable.pinradiation);
+				markers.add(sensorItem);
+			} else if (sensorType.equalsIgnoreCase("Luminosity")) {
+				sensorItem.setImageID(R.drawable.pinluminosity);
+				markers.add(sensorItem);
+			} else if (sensorType.equalsIgnoreCase("Image")) {
+				sensorItem.setImageID(R.drawable.pinimage);
+				markers.add(sensorItem);
+			} else {
+				sensorItem.setImageID(R.drawable.ic_launcher);
+				markers.add(sensorItem);
+			}
+		}
+		
+		drawMarkers();
+		
 	}
 	
 	public void drawMarkers(){
 		
+		System.out.println("DRAWING MARKERS! YOUR ARRAY SIZE IS: " + markers.size());
+		
+		if(markers.size() != 0){
+			for(int i = 0; i < markers.size(); i ++){
+				map.addMarker(markers.get(i).getMarkerOptions());
+			}
+		}
 	}
 
 	@Override
@@ -170,6 +247,29 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 	public View getInfoWindow(Marker marker) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public void tricorderOnClick(View v){
+		Intent i;
+		System.out.println("CLICK");
+		
+		switch(v.getId()){
+		
+		case R.id.tri_menu_settings:
+			 i = new Intent("tricorder.tecedge.SETTINGS");
+			 startActivity(i);
+			break;
+		case R.id.tri_menu_upload:
+			i = new Intent("tricorder.tecedge.Displaym");
+			startActivity(i);
+			break;
+		case R.id.tri_menu_refresh:
+			i = new Intent("tricorder.tecedge.Refresh");
+			startActivity(i);
+			break;
+		
+		
+		}
 	}
 
 	private String loadPreferences(String key) {
