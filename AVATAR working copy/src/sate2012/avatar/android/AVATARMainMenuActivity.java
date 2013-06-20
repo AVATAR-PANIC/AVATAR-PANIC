@@ -4,6 +4,7 @@ import com.guardian_angel.uav_tracker.MainActivity;
 
 import sate2012.avatar.android.augmentedrealityview.CameraView;
 import sate2012.avatar.android.googlemaps.GoogleMapsViewer;
+import sate2012.avatar.android.googlemaps.TricorderGoogleMapsViewer;
 import tricorder.tecedge.opening_menu;
 import gupta.ashutosh.avatar.R;
 import android.app.Activity;
@@ -12,6 +13,8 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.app.FragmentManager;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -136,7 +139,18 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			
 		//All implentations of other projects, Create them as activities for now.
 		case R.id.tricorder:
-			startActivity(new Intent(this, opening_menu.class));
+			//startActivity(new Intent(this, opening_menu.class));
+			//Currently want to draw the fragment I'm working on
+			fragMgr = getFragmentManager();
+			xact = fragMgr.beginTransaction();
+			if(fragMgr.findFragmentByTag("TRICORDER_MAP") != null){
+				xact.replace(R.id.container, fragMgr.findFragmentByTag("TRICORDER_MAP"), "TRICORDER_MAP");
+			}else{
+				xact.replace(R.id.container, new TricorderGoogleMapsViewer(), "TRICORDER_MAP");
+				xact.addToBackStack(null);
+			}
+			xact.commit();
+			
 			break;
 		case R.id.guardian_angel:
 			startActivity(new Intent(this, MainActivity.class));
@@ -204,4 +218,5 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			
 		}
 	}
+
 }
