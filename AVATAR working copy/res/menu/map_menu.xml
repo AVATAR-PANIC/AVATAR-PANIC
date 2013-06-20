@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/majorCities"
+        android:icon="@drawable/world3"
+        android:title="US Major Cities"/>
+
+</menu>
