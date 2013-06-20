@@ -11,6 +11,7 @@
           android:layout_height="match_parent"
           android:name="com.google.android.gms.maps.MapFragment" />
     
+    <!--
     <ImageView
         android:id="@+id/pointkey"
         android:layout_width="75dp"
@@ -18,7 +19,7 @@
         android:background="@drawable/pointkey"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="70dp"
-        />
+        /> -->
     
      <LinearLayout
             android:id="@+id/logoBar"
