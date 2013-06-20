@@ -88,6 +88,11 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			}else{
 				xact.replace(R.id.container, new GoogleMapsViewer(), "MAP");
 			}
+			if(fragMgr.findFragmentByTag("MENU") != null){
+				xact.replace(R.id.menu, fragMgr.findFragmentByTag("MENU"), "MENU");
+			}else{
+				xact.replace(R.id.menu, new Frag(R.layout.map_menu_frag), "MENU");
+			}
 			xact.commit();
 			break;
 		case R.id.augmentedReality:
@@ -182,8 +187,8 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 				xact.replace(R.id.container, fragMgr.findFragmentByTag("MAP"), "MAP");
 			}else{
 				xact.replace(R.id.container, new GoogleMapsViewer(), "MAP");
-				xact.addToBackStack(null);
 			}
+			xact.replace(R.id.menu, new Frag(R.layout.map_menu_frag), "MENU");
 			xact.commit();
 			break;
 			

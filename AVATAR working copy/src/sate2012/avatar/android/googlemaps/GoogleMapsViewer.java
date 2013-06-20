@@ -80,11 +80,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * 
-<<<<<<< HEAD
- * @author Garrett + Matt + Craig
-=======
  * @author Garrett + Matt emrickgarrett@gmail.com
->>>>>>> branch 'master' of https://github.com/AVATAR-PANIC/AVATAR-PANIC.git
  * 
  * Activity that handles the map and the drawing onto the map.
  * The actual Google Map is a fragment, created inside the XML
