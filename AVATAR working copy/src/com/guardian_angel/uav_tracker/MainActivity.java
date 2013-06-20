@@ -31,6 +31,7 @@ import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -40,6 +41,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -199,7 +201,8 @@ public class MainActivity extends Activity implements
 		switch (item.getItemId()) {
 		// Allows the user to set the XMPP connection to a designated server
 		case R.id.text1:
-			showDialog(XMPPConnectionDialog);
+			PopupWindow popup = new PopupWindow();
+			popup.showAtLocation(findViewById(R.layout.xmpp_connection_settings), Gravity.CENTER, 0, 0);
 			break;
 		// Gives the user step by step directions for using the application.
 		case R.id.text2:
