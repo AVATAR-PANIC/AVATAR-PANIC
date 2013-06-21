@@ -53,4 +53,35 @@
                 android:background="@drawable/afrl_logo_transparent" />
         </LinearLayout>
         
+     <LinearLayout
+         android:id="@+id/guardian_angel_buttons"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentRight="true"
+         android:layout_alignParentBottom="true">
+     
+       <Button
+             android:id="@+id/Plot"
+             android:layout_width="85dp"
+             android:layout_height="75dp"
+             android:text="Plot" />
+
+             <Button
+             android:id="@+id/Clear"
+             android:layout_width="85dp"
+             android:layout_height="75dp"
+             android:text="Clear" />
+
+              <Button
+             android:id="@+id/Send"
+             android:layout_width="85dp"
+             android:layout_height="75dp"      
+             android:text="Send" />
+              
+              <TextView 
+                  android:id="@+id/ga_map_text"
+                  android:layout_width="wrap_content"
+                  android:layout_height="70dp"
+                  />
+        </LinearLayout>
 </RelativeLayout>
