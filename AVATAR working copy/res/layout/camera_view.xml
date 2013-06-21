@@ -27,7 +27,7 @@
         
     </RelativeLayout>
     
-    <Button
+    <!-- <Button
             android:id="@+id/to_main_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,6 +35,6 @@
             android:layout_centerHorizontal="true"
             android:background="@drawable/buttonbackground"
             android:layout_weight="9"
-            android:text="Back" />
+            android:text="Back" /> -->
 
 </LinearLayout>

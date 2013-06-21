@@ -131,7 +131,7 @@ public class CameraView extends Fragment implements Callback {
 		
 		new HttpThread(this).execute();
 		// Initializes the button
-		backButton = (Button) getActivity().findViewById(R.id.to_main_activity);
+//		backButton = (Button) getActivity().findViewById(R.id.to_main_activity);
 		makeGeoDataRepository();
 		LocationManager mlocManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 		LocationListener mlocListener = new MyLocationListener();   //TODO
