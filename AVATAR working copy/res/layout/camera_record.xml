@@ -39,8 +39,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/start_recording"
-        android:contentDescription="startRecording" />
-
+        android:contentDescription="startRecording"/>
     <TextView
         android:id="@+id/heading"
         android:layout_width="wrap_content"

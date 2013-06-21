@@ -81,7 +81,10 @@ class AugRelPointManager {
 		canvas.drawBitmap(closePointIcon, 
 				outer.mSurfaceView.getWidth()/2 - (total/2 - number) * closePointIcon.getScaledWidth(canvas),
 				outer.mSurfaceView.getHeight()-closePointIcon.getScaledWidth(canvas), null);
-		canvas.drawText( "Arrived at:" + name,
+		canvas.drawText( "Arrived at:",
+				outer.mSurfaceView.getWidth()/2 - (total/2 - number) * closePointIcon.getScaledWidth(canvas),
+				outer.mSurfaceView.getHeight()-closePointIcon.getScaledWidth(canvas)-20, paint);
+		canvas.drawText(name,
 				outer.mSurfaceView.getWidth()/2 - (total/2 - number) * closePointIcon.getScaledWidth(canvas),
 				outer.mSurfaceView.getHeight()-closePointIcon.getScaledWidth(canvas)-10, paint);
 	}

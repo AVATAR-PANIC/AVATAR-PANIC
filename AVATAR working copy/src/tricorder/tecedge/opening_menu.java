@@ -62,6 +62,7 @@ public class opening_menu extends Activity {
 		});
 	}
 
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		MenuInflater settings = getMenuInflater();

@@ -32,7 +32,7 @@ public class UploadData extends Activity {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpContext localContext = new BasicHttpContext();
 		HttpPost httpPost = null;
-		httpPost = new HttpPost(url);
+		
 		try {
 			MultipartEntity entity = new MultipartEntity(
 					HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -53,7 +53,7 @@ public class UploadData extends Activity {
 			response = httpClient.execute(httpPost, localContext);
 			Toast.makeText(UploadMedia.thisContext,
 					"Response: '" + response + "'", Toast.LENGTH_LONG).show();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

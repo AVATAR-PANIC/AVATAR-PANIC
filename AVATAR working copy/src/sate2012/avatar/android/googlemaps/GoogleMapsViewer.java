@@ -28,6 +28,7 @@ import sate2012.avatar.android.MapsForgeMapViewer;
 import sate2012.avatar.android.PhoneCall;
 import sate2012.avatar.android.UploadMedia;
 import sate2012.avatar.android.VideoPlayer;
+import sate2012.avatar.android.googlemaps.GoogleMapsViewerImage.PointDeleter;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -80,11 +81,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * 
-<<<<<<< HEAD
- * @author Garrett + Matt + Craig
-=======
- * @author Garrett + Matt emrickgarrett@gmail.com
->>>>>>> branch 'master' of https://github.com/AVATAR-PANIC/AVATAR-PANIC.git
+ * 
+ * @author Garrett + Matt emrickgarrett@gmail.com + Craig
  * 
  * Activity that handles the map and the drawing onto the map.
  * The actual Google Map is a fragment, created inside the XML
@@ -109,15 +107,16 @@ OnInfoWindowClickListener, OnPreparedListener{
 			GoogleMap.MAP_TYPE_TERRAIN };
 	public int currentMapType = GoogleMapsViewer.mapTypes[0];
 	private ArrayList<MarkerPlus> markerArray = new ArrayList<MarkerPlus>();// = MarkerMaker.makeMarkers();
-	private Marker activeMarker = null;
-	private Bitmap currentImage = null;
-	private boolean gettingURL = false;
-	private boolean asyncTaskCancel = false;
+	protected Marker activeMarker = null;
+	protected Bitmap currentImage = null;
+	protected boolean gettingURL = false;
+	protected boolean asyncTaskCancel = false;
 	private MediaPlayer mp;
 	private static View view;
 	private MarkerPlus myMarkerLocation;
 	private PointDeleter pointDeleter;
 	public static final int PHONE_CALL = 77;
+	protected GoogleMapsViewerImage helper;
 
 	/**
 	 * When the Fragment View is created, this is called
@@ -146,6 +145,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 	@Override
 	public void onStart() {
 		super.onStart();
+		helper = new GoogleMapsViewerImage(this);
 		MapFragment mapfrag = ((MapFragment) getFragmentManager()
 				.findFragmentById(R.id.googlemap));
 		map = mapfrag.getMap();
@@ -165,7 +165,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 		map.setMapType(GoogleMapsViewer.mapTypes[0]);
 		lastKnownZoomLevel = map.getCameraPosition().zoom;
 		// TODO
-		pointDeleter = new PointDeleter();
+		pointDeleter = helper.new PointDeleter();
 		
 		//Declare the timer
 		//This timer will run a thread to connect to the server every minute
@@ -366,12 +366,12 @@ OnInfoWindowClickListener, OnPreparedListener{
 			}
 			tempPoint.setName(myID + "'s location");
 			tempPoint.setInfo("User Location Point");
-			map.addMarker(new MarkerOptions().position(new LatLng(myLatitude,
-					myLongitude)));
-			markerArray.add(tempPoint);
+			//map.addMarker(new MarkerOptions().position(new LatLng(myLatitude,
+			//		myLongitude)));
+			//markerArray.add(tempPoint);
 			myMarkerLocation = tempPoint;
 			drawMarkers(true); 
-			UploadMedia.HttpSender httpSender = new UploadMedia.HttpSender();
+			//UploadMedia.HttpSender httpSender = new UploadMedia.HttpSender();
 			//httpSender.execute(tempPoint.getName(), tempPoint.getLatitude() + "",
 			//		tempPoint.getLongitude() + "", "0", myID + "'s location");
 			
@@ -479,6 +479,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 				activeMarker = marker;
 				gettingURL = true;
 				//Start new asynchronous thread to grab the image (Class below)
+				helper.
 		        new ImageGrabber(image, this).execute(marker.getSnippet().substring(marker.getSnippet().lastIndexOf(" ")));
 		        try {
 		        	//If image received was not null
@@ -632,153 +633,6 @@ OnInfoWindowClickListener, OnPreparedListener{
 	 * 
 	 *
 	 */
-	private class ImageGrabber extends AsyncTask<String, Void,  Bitmap>{
-
-		private ImageView imageSlot;
-		private GoogleMapsViewer map;
-		private String url;
-		
-		/**
-		 * Constructor, make sure to put the ImageView where we want the image to display.
-		 * @param imageSlot : The ImageView where we want the image to appear.
-		 * @param map : The map that we want to have the image to appear on (Should be a reference to above class).
-		 */
-		public ImageGrabber(ImageView imageSlot, GoogleMapsViewer map){
-			this.imageSlot = imageSlot;
-			this.map = map;
-		}
-		
-		/**
-		 * Asynchronous task that gets the Image from a URL
-		 * @return : The Bitmap the method got from the URL
-		 */
-		@Override
-		protected Bitmap doInBackground(String...params) {
-			// TODO Auto-generated method stub
-			try {
-				currentImage = null;
-				url = params[0];
-				if(asyncTaskCancel){
-					//System.out.println("CANCEL 1");
-					asyncTaskCancel = false;
-					gettingURL = false;
-					currentImage = null;
-					this.cancel(true);
-				}
-				//System.out.println("Getting URL!");
-				
-				//Get the connection, set it to a bitmap
-				HttpURLConnection connection = (HttpURLConnection) new URL(params[0]).openConnection();
-			    connection.connect();
-			    connection.setConnectTimeout(5000);
-			    connection.setReadTimeout(5000);
-			    InputStream input = connection.getInputStream();
-			    Bitmap x = BitmapFactory.decodeStream(input);
-			    
-			    //Max Image Height and Width
-			    int MAXWIDTH = 150;//= 270;
-			    int MAXHEIGHT = 100;//=150;
-			    
-			    if(x != null){
-				    int imageWidth = x.getWidth();
-				    int imageHeight = x.getHeight();
-				    
-				    //Find out if image dimensions are too large, then sizes it appropriately.
-				    if(imageWidth > MAXWIDTH || imageHeight > MAXHEIGHT){
-				    	
-				    	//Ternary, determines which is larger: image or height?
-				    	double ratio = (imageWidth > imageHeight)? ((float) MAXWIDTH)/imageWidth: ((float) MAXHEIGHT)/imageHeight;
-				    	
-				    	imageWidth =(int) (imageWidth*ratio);
-				    	imageHeight =(int) (imageHeight*ratio);
-				    	
-				    	x = Bitmap.createScaledBitmap(x, imageWidth, imageHeight, false); //Create scaled Bitmap
-				    }
-				    
-				    if(asyncTaskCancel){
-				    	//System.out.println("CANCEL 2");
-				    	asyncTaskCancel = false;
-				    	gettingURL = false;
-				    	currentImage = null;
-				    	x = null;
-				    	this.cancel(true);
-				    }
-				    
-				    //close connections, return the x value. Goes to OnPostExecute() method.
-				    input.close();
-				    connection.disconnect();
-					return x;
-				    }
-			    input.close();
-			    connection.disconnect();
-			    return null;
-			} catch (Exception e){
-				gettingURL = false;
-				e.printStackTrace();
-				return null;
-			}
-		}
-		
-		/**
-		 * Runs after the thread, sets the image and calls the re-draw method if image is correct.
-		 */
-		@Override
-		protected void onPostExecute(Bitmap results){
-			if(asyncTaskCancel && !(activeMarker.getSnippet().substring(activeMarker.getSnippet().lastIndexOf(" ")).equals(url))){
-				//System.out.println("CANCEL 3");
-				asyncTaskCancel = false;
-				gettingURL = false;
-				results = null;
-				currentImage = null;
-				map.drawMarkers(true);
-				this.cancel(true);
-			}else if(!(activeMarker.getSnippet().substring(activeMarker.getSnippet().lastIndexOf(" ")).equals(url))){
-				//System.out.println("CANCEL 5");
-				asyncTaskCancel = false;
-				gettingURL = false;
-				results = null;
-				currentImage = null;
-				map.drawMarkers(true);
-				this.cancel(true);
-			}else{
-				imageSlot.setImageBitmap(results);
-				currentImage = results;
-				map.drawMarkers(true);
-				gettingURL = false;
-				imageSlot = null;
-				map = null;
-			}
-			
-		}
-			
-	}
-	
-	private class PointDeleter extends AsyncTask<String, Void, Boolean>{
-
-		@Override
-		protected Boolean doInBackground(String... params) {
-			Boolean deleted = new Boolean(false);
-			// TODO Auto-generated method stub
-			int tries = 0;
-			while(tries < 3){
-				try {
-					List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-					nameValuePairs.add(new BasicNameValuePair("date", params[0]));
-					System.out.println("TRYING TO CONNECT");
-					HttpClient client = new DefaultHttpClient();
-					HttpPost post = new HttpPost(new URI("http://" + Constants.SERVER_ADDRESS + "/deletePoint.php"));
-					post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-					client.execute(post);
-					//HELP!!!
-					tries = 3;
-				} catch (Exception e) {
-					e.printStackTrace();
-					tries++;
-				}
-			}
-			return deleted;
-		}
-	}
 	
 
 }
