@@ -58,6 +58,10 @@ public class MarkerPlus{
 		this.data = info;
 	}
 	
+	public MarkerPlus(LatLng point) {
+		this(point.latitude, point.longitude);
+	}
+
 	public MarkerOptions getMarkerOptions() {
 		return markerOptions;
 	}

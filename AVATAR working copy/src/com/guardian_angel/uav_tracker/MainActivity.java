@@ -88,7 +88,7 @@ public class MainActivity extends Fragment implements
 	private String savedPassword = "";
 
 	private boolean fromQuickStart = true;
-	private boolean ranOnce = false;
+	private static boolean ranOnce = false;
 
 	
 	/**
@@ -128,7 +128,7 @@ public class MainActivity extends Fragment implements
 				android.provider.Settings.Secure.ANDROID_ID);
 
 		// Check to see if this is the first time the application is starting
-		if (ranOnce == false) {
+		if (MainActivity.ranOnce == false) {
 			// Begin the quick start sequence, which attempts to connect to the
 			// previous XMPP server
 			openSaveData();
@@ -136,7 +136,8 @@ public class MainActivity extends Fragment implements
 
 			// Set this boolean to true so that it will not attempt to reconnect
 			// whenever the user returns to the Main Activity page
-			ranOnce = true;
+			MainActivity.ranOnce = true;
+			
 		}
 		getActivity().showDialog(XMPPConnectionDialog);
 		

@@ -4,5 +4,11 @@
         android:id="@+id/majorCities"
         android:icon="@drawable/world3"
         android:title="US Major Cities"/>
+    
+    <item
+        android:id="@+id/login"
+        android:icon="@drawable/refresh"
+        android:title="Login to a Server"
+        />
 
 </menu>

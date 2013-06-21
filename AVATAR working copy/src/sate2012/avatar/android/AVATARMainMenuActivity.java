@@ -8,8 +8,11 @@ import sate2012.avatar.android.googlemaps.GuardianAngelGoogleMapsViewer;
 import sate2012.avatar.android.googlemaps.TricorderGoogleMapsViewer;
 import tricorder.tecedge.opening_menu;
 import gupta.ashutosh.avatar.R;
+import DialogFragments.MajorCitiesDialogFragment;
+import DialogFragments.PANICDialogFragment;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -115,14 +118,17 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 		case R.id.emergencyCall:
 			
 			fragMgr = getFragmentManager();
-			xact = fragMgr.beginTransaction();
-			if(fragMgr.findFragmentByTag("PHONE_CALL") != null){
-				xact.replace(R.id.menu, fragMgr.findFragmentByTag("PHONE_CALL"), "PHONE_CALL");
-			}else{
-				xact.replace(R.id.menu, new PhoneCall(), "PHONE_CALL");
-				xact.addToBackStack(null);
-			}
-			xact.commit();
+			DialogFragment dialog = new PANICDialogFragment();
+			dialog.show(fragMgr, "PANIC");
+//			fragMgr = getFragmentManager();
+//			xact = fragMgr.beginTransaction();
+//			if(fragMgr.findFragmentByTag("PHONE_CALL") != null){
+//				xact.replace(R.id.menu, fragMgr.findFragmentByTag("PHONE_CALL"), "PHONE_CALL");
+//			}else{
+//				xact.replace(R.id.menu, new PhoneCall(), "PHONE_CALL");
+//				xact.addToBackStack(null);
+//			}
+//			xact.commit();
 			
 			//i = new Intent(getApplicationContext(), PhoneCall.class);
 			break;
@@ -156,26 +162,26 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			
 			break;
 		case R.id.guardian_angel:
-//			fragMgr = getFragmentManager();
-//			xact = fragMgr.beginTransaction();
-//			if(fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP") != null){
-//				xact.replace(R.id.container, fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP"), "GUARDIAN_ANGEL_MAP");
-//			}else{
-//				xact.replace(R.id.container, new GuardianAngelGoogleMapsViewer(), "GUARDIAN_ANGEL_MAP");
-//				xact.addToBackStack(null);
-//			}
-//			xact.commit();
-			//startActivity(new Intent(this, MainActivity.class));
-			//Currently want to draw the fragment I'm working on
 			fragMgr = getFragmentManager();
 			xact = fragMgr.beginTransaction();
-			if(fragMgr.findFragmentByTag("GUARDIAN_ANGEL_SERVER_CONNECT") != null){
-				xact.replace(R.id.container, fragMgr.findFragmentByTag("GUARDIAN_ANGEL_SERVER_CONNECT"), "GUARDIAN_ANGEL_SERVER_CONNECT");
+			if(fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP") != null){
+				xact.replace(R.id.container, fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP"), "GUARDIAN_ANGEL_MAP");
 			}else{
-				xact.replace(R.id.container, new MainActivity(), "GUARDIAN_ANGEL_SERVER_CONNECT");
+				xact.replace(R.id.container, new GuardianAngelGoogleMapsViewer(), "GUARDIAN_ANGEL_MAP");
 				xact.addToBackStack(null);
 			}
 			xact.commit();
+			//startActivity(new Intent(this, MainActivity.class));
+			//Currently want to draw the fragment I'm working on
+//			fragMgr = getFragmentManager();
+//			xact = fragMgr.beginTransaction();
+//			if(fragMgr.findFragmentByTag("GUARDIAN_ANGEL_SERVER_CONNECT") != null){
+//				xact.replace(R.id.container, fragMgr.findFragmentByTag("GUARDIAN_ANGEL_SERVER_CONNECT"), "GUARDIAN_ANGEL_SERVER_CONNECT");
+//			}else{
+//				xact.replace(R.id.container, new MainActivity(), "GUARDIAN_ANGEL_SERVER_CONNECT");
+//				xact.addToBackStack(null);
+//			}
+//			xact.commit();
 			break;
 		case R.id.avatar:
 			//this.finish();
