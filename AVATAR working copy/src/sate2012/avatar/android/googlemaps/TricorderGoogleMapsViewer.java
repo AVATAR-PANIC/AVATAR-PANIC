@@ -2,8 +2,10 @@ package sate2012.avatar.android.googlemaps;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import gupta.ashutosh.avatar.R;
 import tricorder.tecedge.Mapm;
@@ -40,6 +42,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
@@ -141,6 +144,10 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 	
 	public void addData(ArrayList<TricorderMarkerPlus> currentData){
 		
+		//For testing of the Map
+		generateData();
+		drawMarkers();
+		
 		if (currentData.size() == 0) {
 			try{
 			Toast.makeText(getActivity(), "Loading Data...Please Wait",
@@ -205,6 +212,68 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 				map.addMarker(markers.get(i).getMarkerOptions());
 			}
 		}
+	}
+	
+	public void generateData(){
+		Random r = new Random();
+		int size = r.nextInt(20)+1;
+		for(int i = 0; i < size; i++){
+			double lat = -90 + (90 +90) * r.nextDouble();
+			double lon = -180 + (180 + 180) * r.nextDouble();
+			String info = "This is Point number: " + i;
+			String date = new Date().toLocaleString();
+			String phone_ID = i+"";
+			int imageID = R.drawable.ic_launcher;
+			String type = "";
+			
+			switch(r.nextInt(10)+1){
+			case 1:
+				imageID = R.drawable.pinsensor;
+				type = "Sensor";
+				break;
+			case 2:
+				imageID = R.drawable.pincotwo;
+				type = "CO2";
+				break;
+			case 3:
+				imageID = R.drawable.pintemp;
+				type = "Temperature";
+				break;
+			case 4:
+				imageID = R.drawable.pinmethane;
+				type = "Methane";
+				break;
+			case 5:
+				imageID = R.drawable.pinpressure;
+				type = "Barometric Pressure";
+				break;
+			case 6:
+				imageID = R.drawable.pinco;
+				type = "CO";
+				break;
+			case 7:
+				imageID = R.drawable.pinhumidity;
+				type = "Humidity";
+				break;
+			case 8:
+				imageID = R.drawable.pinradiation;
+				type = "Radiation";
+				break;
+			case 9:
+				imageID = R.drawable.pinluminosity;
+				type = "Luminosity";
+				break;
+			case 10:
+				imageID = R.drawable.pinimage;
+				type = "Image";
+				break;
+			
+			}
+			
+			markers.add(new TricorderMarkerPlus(lat, lon, info, type, date, phone_ID, imageID));
+			
+		}
+		
 	}
 
 	@Override
@@ -274,8 +343,9 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 			startActivity(i);
 			break;
 		case R.id.tri_menu_refresh:
-			i = new Intent("tricorder.tecedge.Refresh");
-			startActivity(i);
+			addData(new ArrayList<TricorderMarkerPlus>());
+			//i = new Intent("tricorder.tecedge.Refresh");
+			//startActivity(i);
 			break;
 		
 		

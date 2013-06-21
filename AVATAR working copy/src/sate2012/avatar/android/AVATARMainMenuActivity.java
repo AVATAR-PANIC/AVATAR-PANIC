@@ -9,6 +9,7 @@ import sate2012.avatar.android.googlemaps.TricorderGoogleMapsViewer;
 import tricorder.tecedge.opening_menu;
 import gupta.ashutosh.avatar.R;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -87,11 +88,10 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			}else{
 				xact.replace(R.id.container, new GoogleMapsViewer(), "MAP");
 			}
-			if(fragMgr.findFragmentByTag("MAP_MENU") != null){
-				xact.replace(R.id.menu, fragMgr.findFragmentByTag("MAP_MENU"), "MAP_MENU");
+			if(fragMgr.findFragmentByTag("MENU") != null){
+				xact.replace(R.id.menu, fragMgr.findFragmentByTag("MENU"), "MENU");
 			}else{
-				xact.replace(R.id.menu, new Frag(R.layout.map_menu_frag), "MAP_MENU");
-				xact.addToBackStack(null);
+				xact.replace(R.id.menu, new Frag(R.layout.map_menu_frag), "MENU");
 			}
 			xact.commit();
 			break;
@@ -156,19 +156,41 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			
 			break;
 		case R.id.guardian_angel:
+//			fragMgr = getFragmentManager();
+//			xact = fragMgr.beginTransaction();
+//			if(fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP") != null){
+//				xact.replace(R.id.container, fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP"), "GUARDIAN_ANGEL_MAP");
+//			}else{
+//				xact.replace(R.id.container, new GuardianAngelGoogleMapsViewer(), "GUARDIAN_ANGEL_MAP");
+//				xact.addToBackStack(null);
+//			}
+//			xact.commit();
+			//startActivity(new Intent(this, MainActivity.class));
+			//Currently want to draw the fragment I'm working on
 			fragMgr = getFragmentManager();
 			xact = fragMgr.beginTransaction();
-			if(fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP") != null){
-				xact.replace(R.id.container, fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP"), "GUARDIAN_ANGEL_MAP");
+			if(fragMgr.findFragmentByTag("GUARDIAN_ANGEL_SERVER_CONNECT") != null){
+				xact.replace(R.id.container, fragMgr.findFragmentByTag("GUARDIAN_ANGEL_SERVER_CONNECT"), "GUARDIAN_ANGEL_SERVER_CONNECT");
 			}else{
-				xact.replace(R.id.container, new GuardianAngelGoogleMapsViewer(), "GUARDIAN_ANGEL_MAP");
+				xact.replace(R.id.container, new MainActivity(), "GUARDIAN_ANGEL_SERVER_CONNECT");
 				xact.addToBackStack(null);
 			}
 			xact.commit();
-			//startActivity(new Intent(this, MainActivity.class));
-			//Currently want to draw the fragment I'm working on
 			break;
+		case R.id.avatar:
+			//this.finish();
 			
+			fragMgr = getFragmentManager();
+			
+			xact = fragMgr.beginTransaction();
+			if(fragMgr.findFragmentByTag("MAP") != null){
+				xact.replace(R.id.container, fragMgr.findFragmentByTag("MAP"), "MAP");
+			}else{
+				xact.replace(R.id.container, new GoogleMapsViewer(), "MAP");
+			}
+			xact.replace(R.id.menu, new Frag(R.layout.map_menu_frag), "MENU");
+			xact.commit();
+			break;
 			
 		//All Non fragment changing buttons. IE change map type
 		case R.id.changeType:
@@ -236,6 +258,16 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 		}else{
 			
 		}
+	}
+	
+	@Override
+	public Dialog onCreateDialog(int id) {
+		FragmentManager fragMgr = getFragmentManager();
+		System.out.println("HEY: " + id);
+		Dialog dialog = ((MainActivity)(fragMgr.findFragmentByTag("GUARDIAN_ANGEL_SERVER_CONNECT"))).onCreateDialog(id);
+		dialog.show();
+		
+		return dialog;
 	}
 
 }

@@ -64,6 +64,16 @@ public class TricorderMarkerPlus extends MarkerPlus {
 		this.date = date;
 		this.phone_ID = phone_ID;
 	}
+	
+	public TricorderMarkerPlus(double latitude, double longitude, String info, String type, String date, String phone_ID, int imageID){
+		this.markerOptions = new MarkerOptions();
+		this.markerOptions.position(new LatLng(latitude, longitude));
+		this.data = info;
+		this.type = type;
+		this.date = date;
+		this.phone_ID = phone_ID;
+		this.imageID = imageID;
+	}
 
 	public MarkerOptions getMarkerOptions() {
 		this.markerOptions.title(this.type).snippet(data).icon(BitmapDescriptorFactory.fromResource(imageID));

@@ -351,12 +351,12 @@
         <activity
             android:name="com.guardian_angel.uav_tracker.MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name="com.guardian_angel.uav_tracker.GAdirections"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name="com.guardian_angel.uav_tracker.CameraRecord"
@@ -366,7 +366,7 @@
         <activity
             android:name="com.guardian_angel.uav_tracker.UserData"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="landscape" >
         </activity>
         <activity
             android:name="com.guardian_angel.uav_tracker.Map"

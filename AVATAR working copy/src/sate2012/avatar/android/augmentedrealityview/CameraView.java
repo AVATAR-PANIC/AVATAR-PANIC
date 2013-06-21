@@ -423,22 +423,23 @@ public class CameraView extends Fragment implements Callback {
 			{
 				canvas.drawBitmap(disconneceted, mSurfaceView.getWidth()/7, 0, null);  //TODO Change values to something reasonable
 			}*/   //currently unused
-			Paint white = new Paint();
-			white.setColor(Color.WHITE);
-			Paint red = new Paint(); 
-			red.setColor(Color.RED);
-			canvas.drawText("Latitude: " + myLocation.getLatitude(), 1, 10, white);  //TODO- Change all of these to be relative to the screen size.
-			canvas.drawText("Longitude: " + myLocation.getLongitude(), 1, 20, white); 
-			canvas.drawText("Altitude: " + myLocation.getAltitude(), 1, 30, white);
-			if (mWifi.isConnected()) {
-				canvas.drawText("Internet Status: Connected", 1, 40, white); 
+			if(mPreviewRunning){
+				Paint white = new Paint();
+				white.setColor(Color.WHITE);
+				Paint red = new Paint(); 
+				red.setColor(Color.RED);
+				canvas.drawText("Latitude: " + myLocation.getLatitude(), 1, 10, white);  //TODO- Change all of these to be relative to the screen size.
+				canvas.drawText("Longitude: " + myLocation.getLongitude(), 1, 20, white); 
+				canvas.drawText("Altitude: " + myLocation.getAltitude(), 1, 30, white);
+				if (mWifi.isConnected()) {
+					canvas.drawText("Internet Status: Connected", 1, 40, white); 
+				}
+				else
+				{
+					canvas.drawText("Internet Status:", 1, 40, white);
+					canvas.drawText("Disconnected", 1, 50, red);
+				}
 			}
-			else
-			{
-				canvas.drawText("Internet Status:", 1, 40, white);
-				canvas.drawText("Disconnected", 1, 50, red);
-			}
-			
 			
 	}
 
