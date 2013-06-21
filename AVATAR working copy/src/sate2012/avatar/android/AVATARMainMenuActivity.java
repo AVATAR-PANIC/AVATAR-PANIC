@@ -41,7 +41,7 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		getActionBar().hide();
 		setContentView(R.layout.main);
 //		uploadB = (Button) findViewById(R.id.uploadB);
 //		uploadB.setOnClickListener(this);

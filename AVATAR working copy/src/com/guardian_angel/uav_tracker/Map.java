@@ -407,7 +407,7 @@ public class Map extends MapActivity {
 		inflater.inflate(R.menu.map_menu, menu);
 		return true;
 	}
-	
+	//TODO create Dialog Fragment.
 	/*  
 	 * The menu opens up a dialog that list the US major cities
 	 */
@@ -617,7 +617,7 @@ public class Map extends MapActivity {
 			}
 
 	// Overlay Class for Drawing the Line Connecting the points
-	class MyOverlay extends Overlay {
+	private class MyOverlay extends Overlay {
 
 		int gx1, gx2, gy1, gy2;
 
