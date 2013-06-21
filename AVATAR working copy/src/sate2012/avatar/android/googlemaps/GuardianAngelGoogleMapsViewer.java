@@ -4,19 +4,17 @@ import gupta.ashutosh.avatar.R;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.DialogInterface.OnCancelListener;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.InflateException;
@@ -26,17 +24,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -50,12 +43,13 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
 import com.guardian_angel.uav_tracker.MajorCitiesDialogFragment;
 import com.guardian_angel.uav_tracker.Map.Coordinates;
-import com.guardian_angel.uav_tracker.CameraRecord;
-import com.guardian_angel.uav_tracker.CustomizedOverlay;
 import com.guardian_angel.uav_tracker.NotificationService;
 import com.guardian_angel.uav_tracker.XMPPSender;
 
@@ -98,11 +92,13 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 	boolean canPlotU;
 	private boolean viewOnly;
 	private boolean userPlotted = false;
+	private boolean settingUAVDirection = false;
 	
 	protected LocationManager locationManager;
 	
 	public ArrayList<MarkerPlus> markers = new ArrayList<MarkerPlus>();
 	private static ArrayList<MarkerPlus> incomingMarkers = new ArrayList<MarkerPlus>();
+	private ArrayList<MarkerPlus> UAVMarkers = new ArrayList<MarkerPlus>();
 	
 	Coordinates currentLocation;
 	private static MarkerPlus gpCurrentLocation;
@@ -212,13 +208,11 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 
 				map.clear();
 				markers.clear();
-
-				Canvas canvas = new Canvas();
+				UAVMarkers.clear();
+				
+				canPlotU = true;
 
 				Clear.setEnabled(false);
-				Plot.setEnabled(false);
-
-				canPlotU = true;
 
 				tView.setText("Please plot your current location.");
 
@@ -237,6 +231,7 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 				// Makes key visible (first image)
 				Send.setEnabled(false);
 				Clear.setEnabled(false);
+				Plot.setEnabled(true);
 				//geoPointToString();
 				Date date = new Date();
 				String dateString = date.toGMTString();
@@ -260,6 +255,17 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 		});
         
         
+	}
+	
+	public void drawMarkers(){
+		
+		if(markers!= null){
+			
+			for(int i = 0; i < markers.size(); i++){
+				
+			}
+		}
+		
 	}
 	
 	public void zoomToCity(double lat, double lon) {
@@ -310,8 +316,19 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 
 	@Override
 	public void onMapClick(LatLng point) {
-		// TODO Auto-generated method stub
-		
+		if(settingUAVDirection){
+			MarkerPlus UAVPoint = new MarkerPlus(point);
+			UAVMarkers.add(UAVPoint);
+			System.out.println("Drawing the flight path");
+			settingUAVDirection = false;
+			int index = UAVMarkers.size()-2;
+			DrawLine d = new DrawLine(UAVMarkers.get(index).getLatitude(), UAVMarkers.get(index).getLongitude(), point.latitude, point.longitude );
+			d.draw();
+			canPlot = false;
+			Send.animate();
+			Send.setEnabled(true);
+			
+		}
 	}
 
 	@Override
@@ -334,7 +351,60 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 
 	@Override
 	public void onMapLongClick(LatLng point) {
-		// TODO Auto-generated method stub
+		// Takes the coordinates of the spot tapped, adds them to an array,
+		// and displays the point on the screen
+
+		if ((canPlot && markers.size() < tapNum) && !settingUAVDirection) {
+
+			LatLng usersPlot = point;
+			
+			UAVMarkers.add(new MarkerPlus(point));
+
+			tView.setText("Now tap in the direction the UAV is going.");
+			settingUAVDirection = true;
+
+		}
+
+		if (UAVMarkers.size() > 0) {
+			tView.setText("Data can now be sent.");
+		}
+
+		// enables clear and send buttons once you've begun plotting
+		if (UAVMarkers.size() > 0) {
+			Clear.setEnabled(true);
+		}
+
+		// This segment of code is for the user to plot his position if
+		// he/she has no GPS signal.
+		if (canPlotU) {
+
+			tView.setText("You are located at\nLatitude: "
+					+ map.getMyLocation().getLatitude() + "\nLongitude: "
+					+ map.getMyLocation().getLongitude());
+			
+			// set the location for the notification service
+			NotificationService.userLat = map.getMyLocation().getLatitude();
+			NotificationService.userLng = map.getMyLocation().getLongitude();
+
+			NotificationService.latLongElvString = "Lat=\""
+					+ NotificationService.userLat + "\" Lng=\""
+					+ NotificationService.userLng + " \" Elv=\"0.0\"";
+
+			tView.clearAnimation();
+			Plot.startAnimation(animation);
+
+			canPlotU = false;
+
+			Plot.setEnabled(true);
+
+			Clear.setEnabled(true);
+
+			drawMarkers();
+			map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(map.getMyLocation().getLatitude(), map.getMyLocation().getLongitude()), 8));
+			
+			userPlotted = true;
+
+		}
 		
 	}
 	
@@ -348,4 +418,158 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 	public void onResume(){
 		super.onResume();
 	}
+	
+
+	// Overlay Class for Drawing the Line Connecting the points
+	private class DrawLine {
+
+		double gx1, gx2, gy1, gy2;
+
+		public DrawLine(double x1, double y1, double x2, double y2) {
+
+			gx1 = x1;
+			gx2 = x2;
+			gy1 = y1;
+			gy2 = y2;
+		}
+
+
+		/*
+		 * Draws the map view on the screen with the geopoint
+		 * overlays
+		 */
+		public void draw() {
+
+			
+			LatLng src = new LatLng(gx1, gy1);
+			LatLng des = new LatLng(gx2, gy2);
+			
+			map.addPolyline(new PolylineOptions().add(src, des).width(3).color(Color.BLACK).geodesic(true));
+//			Paint mPaint = new Paint();
+//			mPaint.setDither(true);
+//
+//			mPaint.setColor(Color.BLACK);
+//
+//			mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+//			mPaint.setStrokeJoin(Paint.Join.ROUND);
+//			mPaint.setStrokeCap(Paint.Cap.ROUND);
+//			mPaint.setStrokeWidth(3);
+//
+//			GeoPoint gP1 = new GeoPoint(gx1, gy1);
+//			GeoPoint gP2 = new GeoPoint(gx2, gy2);
+//
+//			Point p1 = new Point();
+//			Point p2 = new Point();
+//			Path path = new Path();
+//
+//			projection.toPixels(gP1, p1);
+//			projection.toPixels(gP2, p2);
+//
+//			path.moveTo(p2.x, p2.y);
+//			path.lineTo(p1.x, p1.y);
+//
+//			canvas.drawPath(path, mPaint);
+
+		}
+
+	}
+
+	/* 
+	 * Draws wide red line (Flight Path / with error) and 
+	 * creates the overlays that are displayed
+	 */
+	class DistanceDrawer {
+
+		int gx1, gx2, gy1, gy2;
+		ArrayList<Double> array;
+
+		// constructor for the overlays: requires a position
+		public DistanceDrawer(int x1, int y1, int x2, int y2, ArrayList<Double> a) {
+
+			gx1 = x1;
+			gx2 = x2;
+			gy1 = y1;
+			gy2 = y2;
+			array = a;
+		}
+
+		/* 
+		 * Draws wide red line (Flight Path / with error) and 
+		 * creates the overlays that are displayed
+		 */
+		public void draw() {
+			
+			
+			int width = 2;
+			
+			double sum = 0;
+			double ave = 1;
+			for(int i = 0; i < array.size(); i++){
+				sum += array.get(i);
+			}
+			ave = sum / array.size();
+			
+			if (ave < 1) {
+				width = 20;
+			}
+			if (ave > 1 && ave < 3) {
+				width = 40;
+			}
+			if (ave > 3) {
+				width = 60;
+			}
+			
+			
+			LatLng src = new LatLng(gx1, gy1);
+			LatLng des = new LatLng(gx2, gy2);
+				
+			map.addPolyline(new PolylineOptions().add(src, des).width(width).color(Color.RED).geodesic(true));
+//			Paint mPaint = new Paint();
+//			mPaint.setDither(true);
+//
+//			mPaint.setColor(Color.RED);
+//
+//			mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+//			mPaint.setStrokeJoin(Paint.Join.ROUND);
+//			mPaint.setStrokeCap(Paint.Cap.ROUND);
+//
+//			double sum = 0;
+//			double ave;
+//			for (int i = 0; i < array.size(); i++) {
+//				sum += array.get(i);
+//			}
+//			ave = sum / array.size();
+//
+//			// changes size of line based on distance from the points you are
+//			// plotting
+//			if (ave < 1) {
+//				mPaint.setStrokeWidth(20);
+//			}
+//			if (ave > 1 && ave < 3) {
+//				mPaint.setStrokeWidth(40);
+//			}
+//			if (ave > 3) {
+//				mPaint.setStrokeWidth(60);
+//			}
+//
+//			mPaint.setAlpha(100);
+//
+//			GeoPoint gP1 = new GeoPoint(gx1, gy1);
+//			GeoPoint gP2 = new GeoPoint(gx2, gy2);
+//
+//			Point p1 = new Point();
+//			Point p2 = new Point();
+//			Path path = new Path();
+//
+//			projection.toPixels(gP1, p1);
+//			projection.toPixels(gP2, p2);
+//
+//			path.moveTo(p2.x, p2.y);
+//			path.lineTo(p1.x, p1.y);
+//
+//			canvas.drawPath(path, mPaint);
+		}
+
+	}
+
 }
