@@ -16,7 +16,6 @@
     <string name="et_addl_address">Additional Email Addresses</string>
     <string name="thank_submission">Thank you for your submission.</string>
     <string name="send_failed">Send failed. Please try again.</string>
-    <string name="send">Send</string>
     <string name="type_picture">Photo</string>
     <string name="type_video">Video</string>
     <string name="type_audio">Audio</string>
@@ -30,7 +29,6 @@
     <string name="urlWillBeHere">The URL will be displayed hsere</string>
     <string name="description">Description</string>
     <string name="textDescr">Text Description</string>
-    <string name="start">  Press to upload information  </string>
     <string name="pic">Take a Picture</string>
     <string name="uploadPic">Upload Photo</string>
     <string name="back">  Return to main screen  </string>
@@ -164,7 +162,6 @@
     <string name="cardinal_south">S</string>
     <string name="cardinal_west">W</string>
     <string name="start">START</string>
-    <string name="back">BACK</string>
     <string name="stop">STOP</string>
     <string name="done">DONE</string>
     <string name="volume">Volume:</string>
