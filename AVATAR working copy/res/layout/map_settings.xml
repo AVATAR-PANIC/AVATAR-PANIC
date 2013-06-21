@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView
+        android:id="@+id/mapSettingsProject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:typeface="serif"
+        android:text="Select Map" />
+    
+    <RadioGroup
+        android:id="@+id/mapSelection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        
+        <RadioButton
+            android:id="@+id/avatar_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AVATAR Map"
+            android:textColor="@color/white"
+            android:checked="true" />
+        
+        <RadioButton 
+            android:id="@+id/tricorder_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tricorder Map"
+            android:textColor="@color/white"/>
+        
+        <RadioButton
+            android:id="@+id/guardian_angel_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:text="Guardian Angel Map"
+            android:textColor="@color/white"/>
+        
+        
+    </RadioGroup>
+    
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#666666"/>
+    
+    
+    <TextView 
+        android:id="@+id/mapSettingsType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:typeface="serif"
+        android:text="Map Type" />
+    
+    <RadioGroup
+        android:id="@+id/mapSelection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        
+        <RadioButton
+            android:id="@+id/normal_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Normal"
+            android:textColor="@color/white"
+            android:checked="true" />
+        
+        <RadioButton 
+            android:id="@+id/satellite_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Satellite"
+            android:textColor="@color/white"/>
+        
+        <RadioButton 
+            android:id="@+id/hybrid_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hybrid"
+            android:textColor="@color/white"/>
+        
+        <RadioButton 
+            android:id="@+id/terrain_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Terrain"
+            android:textColor="@color/white"/>
+        
+    </RadioGroup>
+        "
+    <Button
+        android:id="@+id/map_settings_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Settings"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>

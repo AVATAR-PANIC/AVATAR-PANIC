@@ -10,5 +10,10 @@
         android:icon="@drawable/refresh"
         android:title="Login to a Server"
         />
+    
+        <item
+        android:id="@+id/map_settings_menu"
+        android:title="Map Settings"
+        />
 
 </menu>
