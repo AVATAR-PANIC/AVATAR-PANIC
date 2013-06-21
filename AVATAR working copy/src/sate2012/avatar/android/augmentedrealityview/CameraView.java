@@ -130,6 +130,7 @@ public class CameraView extends Fragment implements Callback {
 		
 		new HttpThread(this).execute();
 		// Initializes the button
+//		backButton = (Button) getActivity().findViewById(R.id.to_main_activity);
 		makeGeoDataRepository();
 		LocationManager mlocManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 		LocationListener mlocListener = new MyLocationListener();   //TODO
@@ -478,7 +479,7 @@ public class CameraView extends Fragment implements Callback {
 	public void setmPreviewRunning(boolean mPreviewRunning) {
 		this.mPreviewRunning = mPreviewRunning;
 	}
-	
+
 	public void setMarkerArray(ArrayList<MarkerPlus> array){
 		this.markerArray = array;
 	}
