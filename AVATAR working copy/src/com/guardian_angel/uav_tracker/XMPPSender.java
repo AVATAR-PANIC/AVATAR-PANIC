@@ -117,7 +117,6 @@ public class XMPPSender{
 	 * 
 	 */
 	public void createMessage(){
-		
 		//These checks are used to make sure the correct phase is appended to the username
 		String phaseNum = "";
 		switch(phase)
@@ -162,7 +161,6 @@ public class XMPPSender{
     	msg.setBody(text);
     	//This will add on image data should a picture need to be attached.
     	msg.setThread(sendThread);
-		
 	}
 	
 	/**

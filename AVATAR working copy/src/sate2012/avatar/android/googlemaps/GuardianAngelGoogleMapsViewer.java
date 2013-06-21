@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import DialogFragments.GuardianAngelLoginDialogFragment;
 import DialogFragments.MajorCitiesDialogFragment;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -31,6 +33,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -57,26 +60,9 @@ public class GuardianAngelGoogleMapsViewer extends Fragment implements OnMapLong
 OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener {
 
 	//Dialog Variables - May be switched to pop-ups once I get there.
-	private MajorCitiesDialogFragment dialog;
+	private DialogFragment dialog;
 	protected Button ok;
 	protected Button cancel;
-	private RadioButton NewYorkCity;
-	private RadioButton Chicago;
-	private RadioButton Houston;
-	private RadioButton Philadelphia;
-	private RadioButton Phoenix;
-	private RadioButton Boston;
-	private RadioButton Denver;
-	private RadioButton WashingtonDC;
-	private RadioButton Miami;
-	private RadioButton Indianapolis;
-	private RadioButton Columbus;
-	private RadioButton Memphis;
-	private RadioButton OklahomaCity;
-	private RadioButton LasVegas;
-	private RadioButton Charlotte;
-	private int MajorCitiesDialog = 1;
-	private double lat, lon;
 	private boolean switchLocation = false;
 	
 	//Probably will remove these buttons
@@ -90,7 +76,6 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 	
 	boolean canPlot;
 	boolean canPlotU;
-	private boolean viewOnly;
 	private boolean userPlotted = false;
 	private boolean settingUAVDirection = false;
 	
@@ -99,6 +84,7 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 	public ArrayList<MarkerPlus> markers = new ArrayList<MarkerPlus>();
 	private static ArrayList<MarkerPlus> incomingMarkers = new ArrayList<MarkerPlus>();
 	private ArrayList<MarkerPlus> UAVMarkers = new ArrayList<MarkerPlus>();
+	private ArrayList<String> pointStrings = new ArrayList<String>();
 	
 	Coordinates currentLocation;
 	private static MarkerPlus gpCurrentLocation;
@@ -235,12 +221,16 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 				String dateString = date.toGMTString();
 				// send the locations of the user and their points to the server
 				//TODO need to edit this piece of code.
-//				xmppSender = new XMPPSender(
-//						NotificationService.latLongElvString,
-//						NotificationService.geoCodeString, dateString,
-//						geoPointStrings);
-//				xmppSender.createMessage();
-//				xmppSender.sendMessage();
+				try{
+				xmppSender = new XMPPSender(
+						NotificationService.latLongElvString,
+						NotificationService.geoCodeString, dateString,
+						pointStrings);
+				xmppSender.createMessage();
+				xmppSender.sendMessage();
+				}catch(NullPointerException ex){
+					Toast.makeText(getActivity(), "You are not Logged in", 3000).show();
+				}
 
 				//TODO reimplement this part of the code.
 //				Intent nextScreen = new Intent(getApplicationContext(),
@@ -283,10 +273,19 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Setup the MajorCitiesDialog interface elements
-		
-		FragmentManager fragMgr = getFragmentManager();
-		dialog = new MajorCitiesDialogFragment(this);
-		dialog.show(fragMgr, "MAJOR_CITIES");
+		FragmentManager fragMgr;
+		switch(item.getItemId()){
+		case R.id.majorCities:
+			fragMgr = getFragmentManager();
+			dialog = new MajorCitiesDialogFragment(this);
+			dialog.show(fragMgr, "MAJOR_CITIES");
+			break;
+		case R.id.login:
+			fragMgr = getFragmentManager();
+			dialog = new GuardianAngelLoginDialogFragment();
+			dialog.show(fragMgr, "GUARDIAN_ANGEL_LOGIN");
+			break;
+		}
 		return true;
 	}
 	

@@ -162,26 +162,26 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			
 			break;
 		case R.id.guardian_angel:
-//			fragMgr = getFragmentManager();
-//			xact = fragMgr.beginTransaction();
-//			if(fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP") != null){
-//				xact.replace(R.id.container, fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP"), "GUARDIAN_ANGEL_MAP");
-//			}else{
-//				xact.replace(R.id.container, new GuardianAngelGoogleMapsViewer(), "GUARDIAN_ANGEL_MAP");
-//				xact.addToBackStack(null);
-//			}
-//			xact.commit();
-			//startActivity(new Intent(this, MainActivity.class));
-			//Currently want to draw the fragment I'm working on
 			fragMgr = getFragmentManager();
 			xact = fragMgr.beginTransaction();
-			if(fragMgr.findFragmentByTag("GUARDIAN_ANGEL_SERVER_CONNECT") != null){
-				xact.replace(R.id.container, fragMgr.findFragmentByTag("GUARDIAN_ANGEL_SERVER_CONNECT"), "GUARDIAN_ANGEL_SERVER_CONNECT");
+			if(fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP") != null){
+				xact.replace(R.id.container, fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP"), "GUARDIAN_ANGEL_MAP");
 			}else{
-				xact.replace(R.id.container, new MainActivity(), "GUARDIAN_ANGEL_SERVER_CONNECT");
+				xact.replace(R.id.container, new GuardianAngelGoogleMapsViewer(), "GUARDIAN_ANGEL_MAP");
 				xact.addToBackStack(null);
 			}
 			xact.commit();
+			//startActivity(new Intent(this, MainActivity.class));
+			//Currently want to draw the fragment I'm working on
+//			fragMgr = getFragmentManager();
+//			xact = fragMgr.beginTransaction();
+//			if(fragMgr.findFragmentByTag("GUARDIAN_ANGEL_SERVER_CONNECT") != null){
+//				xact.replace(R.id.container, fragMgr.findFragmentByTag("GUARDIAN_ANGEL_SERVER_CONNECT"), "GUARDIAN_ANGEL_SERVER_CONNECT");
+//			}else{
+//				xact.replace(R.id.container, new MainActivity(), "GUARDIAN_ANGEL_SERVER_CONNECT");
+//				xact.addToBackStack(null);
+//			}
+//			xact.commit();
 			break;
 		case R.id.avatar:
 			//this.finish();
