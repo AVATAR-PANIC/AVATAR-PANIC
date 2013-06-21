@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/user_background"
+    android:background="@drawable/background"
     android:orientation="vertical" >
 
     <ScrollView
@@ -139,6 +139,7 @@
                 android:id="@+id/done_button"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/buttonbackground"
                 android:text="@string/done" />
         </LinearLayout>
     </ScrollView>

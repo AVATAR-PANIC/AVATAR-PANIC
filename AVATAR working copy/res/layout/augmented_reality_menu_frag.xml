@@ -30,6 +30,8 @@
             android:layout_height="0px"
             android:layout_weight=".05" />
 
+        
+        
         <Button
             android:id="@+id/emergencyCall"
             android:layout_width="match_parent"

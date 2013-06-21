@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res/tricorder.tecedge"
     android:id="@+id/thermlayout"
-    android:layout_width="100dp"
+    android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/background"
     android:orientation="vertical"
     android:weightSum="20" >
 
