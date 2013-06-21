@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import DialogFragments.MajorCitiesDialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -48,7 +49,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
-import com.guardian_angel.uav_tracker.MajorCitiesDialogFragment;
 import com.guardian_angel.uav_tracker.Map.Coordinates;
 import com.guardian_angel.uav_tracker.NotificationService;
 import com.guardian_angel.uav_tracker.XMPPSender;
@@ -209,8 +209,6 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 				map.clear();
 				markers.clear();
 				UAVMarkers.clear();
-				
-				canPlotU = true;
 
 				Clear.setEnabled(false);
 

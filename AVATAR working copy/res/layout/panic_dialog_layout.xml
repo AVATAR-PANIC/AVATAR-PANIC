@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+        
+     <Button 
+       	android:id="@+id/panic_police"
+       	android:layout_width="200dp"
+       	android:layout_height="wrap_content"
+       	android:text="Police"/>
+     
+     <Button 
+       	android:id="@+id/panic_fire"
+       	android:layout_width="200dp"
+       	android:layout_height="wrap_content"
+       	android:text="Fire Department"/>"
+     
+     <Button 
+       	android:id="@+id/panic_parents"
+       	android:layout_width="200dp"
+       	android:layout_height="wrap_content"
+       	android:text="Parents"/>
+
+</LinearLayout>

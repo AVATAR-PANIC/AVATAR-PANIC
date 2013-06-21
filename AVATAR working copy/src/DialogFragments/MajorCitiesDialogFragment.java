@@ -1,4 +1,4 @@
-package com.guardian_angel.uav_tracker;
+package DialogFragments;
 
 import sate2012.avatar.android.googlemaps.GuardianAngelGoogleMapsViewer;
 import gupta.ashutosh.avatar.R;
