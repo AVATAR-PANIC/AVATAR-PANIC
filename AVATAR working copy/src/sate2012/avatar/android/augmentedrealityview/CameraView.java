@@ -71,7 +71,6 @@ public class CameraView extends Fragment implements Callback {
 	private PointerView pointerView;// pointer view variable
 	boolean mPreviewRunning;
 	private Canvas myCanvas = new Canvas();
-	private Button backButton;
 	protected AugRelPointManager pointManager;
 	protected ArrayList<MarkerPlus> drawPointList = new ArrayList<MarkerPlus>();
 	MyLocationListener locationListener = new MyLocationListener();
@@ -131,7 +130,6 @@ public class CameraView extends Fragment implements Callback {
 		
 		new HttpThread(this).execute();
 		// Initializes the button
-		backButton = (Button) getActivity().findViewById(R.id.to_main_activity);
 		makeGeoDataRepository();
 		LocationManager mlocManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 		LocationListener mlocListener = new MyLocationListener();   //TODO
@@ -217,16 +215,6 @@ public class CameraView extends Fragment implements Callback {
 		};
 		SENSORMANAGER.registerListener(listener, ROTATION,
 				SensorManager.SENSOR_DELAY_FASTEST);
-
-		// Tells the button what to do
-		backButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				// Creates activity intent
-				//Intent main_activity = new Intent(getApplicationContext(),
-						//GoogleMapsViewer.class);
-				//startActivity(main_activity);
-			}
-		});
 	}
 
 	/**
@@ -489,15 +477,6 @@ public class CameraView extends Fragment implements Callback {
 
 	public void setmPreviewRunning(boolean mPreviewRunning) {
 		this.mPreviewRunning = mPreviewRunning;
-	}
-
-	
-	public Button getBackButton() {
-		return backButton;
-	}
-
-	public void setBackButton(Button backButton) {
-		this.backButton = backButton;
 	}
 	
 	public void setMarkerArray(ArrayList<MarkerPlus> array){

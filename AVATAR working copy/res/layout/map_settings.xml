@@ -22,8 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="AVATAR Map"
-            android:textColor="@color/white"
-            android:checked="true" />
+            android:textColor="@color/white" />
         
         <RadioButton 
             android:id="@+id/tricorder_map"
@@ -66,8 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Normal"
-            android:textColor="@color/white"
-            android:checked="true" />
+            android:textColor="@color/white" />
         
         <RadioButton 
             android:id="@+id/satellite_view"

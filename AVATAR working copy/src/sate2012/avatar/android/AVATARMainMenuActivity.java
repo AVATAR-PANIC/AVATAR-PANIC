@@ -102,17 +102,9 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			xact.replace(R.id.container,tempMap, "AVATAR_MAP");
 			xact.addToBackStack(null);
 			tempMap.setArguments(bundle);
-			
-			
-			if(fragMgr.findFragmentByTag("MENU") != null){
-				xact.replace(R.id.menu, fragMgr.findFragmentByTag("MENU"), "MENU");
-			}else{
-				xact.replace(R.id.menu, new Frag(R.layout.map_menu_frag), "MENU");
-			}
-			xact.commit();
 			break;
 		case R.id.augmentedReality:
-			getActionBar().hide();
+			//getActionBar().hide();
 			fragMgr = getFragmentManager();
 			xact = fragMgr.beginTransaction();
 			if(fragMgr.findFragmentByTag("AUGMENTED_REALITY") != null){
@@ -153,12 +145,6 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 			break;
-		case R.id.phone_exit_button:
-			fragMgr = getFragmentManager();
-			xact = fragMgr.beginTransaction();
-			fragMgr.popBackStack();
-			xact.commit();
-			break;
 		}
 	}
 
@@ -172,48 +158,6 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 		FragmentManager fragMgr = getFragmentManager();
 		
 		((TricorderGoogleMapsViewer)fragMgr.findFragmentByTag("TRICORDER_MAP")).tricorderOnClick(v);
-	}
-	
-	/**
-	 * Used by a method below to set the side menu correctly
-	 */
-	public void emergencyCall(){
-		FragmentManager fragMgr;
-		FragmentTransaction xact;
-		
-		fragMgr = getFragmentManager();
-		xact = fragMgr.beginTransaction();
-		if(fragMgr.findFragmentByTag("PHONE_CALL") != null){
-			xact.replace(R.id.menu, fragMgr.findFragmentByTag("PHONE_CALL"), "PHONE_CALL");
-		}else{
-			xact.replace(R.id.menu, new PhoneCall(), "PHONE_CALL");
-			xact.addToBackStack(null);
-		}
-		xact.commit();
-		
-	}
-	
-	/**
-	 * When the app is resumed, will check media was uploaded and was emergency. If so, it will bring up the right menu.
-	 */
-	@Override
-	public void onResume(){
-		super.onResume();
-		if(UploadMedia.isEmergency){
-			emergencyCall();
-		}else{
-			
-		}
-	}
-	
-	@Override
-	public Dialog onCreateDialog(int id) {
-		FragmentManager fragMgr = getFragmentManager();
-		System.out.println("HEY: " + id);
-		Dialog dialog = ((MainActivity)(fragMgr.findFragmentByTag("GUARDIAN_ANGEL_SERVER_CONNECT"))).onCreateDialog(id);
-		dialog.show();
-		
-		return dialog;
 	}
 
 }

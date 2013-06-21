@@ -32,11 +32,12 @@ public class MapSettingsDialogFragment extends DialogFragment {
 	RadioButton hybrid;
 	RadioButton terrain;
 	Button save;
-	private int currentMap = 1; // 1 is for AVATAR map, 2 Tricorder, 3 Guardian Angel
-	private int currentMapType = GoogleMap.MAP_TYPE_NORMAL;
+	private int currentMap; // 1 is for AVATAR map, 2 Tricorder, 3 Guardian Angel
+	private int currentMapType;
 	
 	public MapSettingsDialogFragment(){
-		
+		currentMap = 1;
+		currentMapType = GoogleMap.MAP_TYPE_NORMAL;
 	}
 	
 	public MapSettingsDialogFragment(int currentMap, int currentMapType){
