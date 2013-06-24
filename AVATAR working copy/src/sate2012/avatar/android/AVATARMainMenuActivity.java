@@ -44,7 +44,6 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		getActionBar().hide();
 		setContentView(R.layout.main);
 //		uploadB = (Button) findViewById(R.id.uploadB);
 //		uploadB.setOnClickListener(this);
@@ -60,7 +59,12 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 		FragmentManager fragMgr = getFragmentManager();
 		
 		FragmentTransaction xact = fragMgr.beginTransaction();
-		xact.add(R.id.container, new GoogleMapsViewer(), "MAP");
+
+		Bundle bundle = new Bundle();
+		bundle.putInt("MAP_TYPE", 1);
+		GoogleMapsViewer tempMap = new GoogleMapsViewer();
+		tempMap.setArguments(bundle);
+		xact.add(R.id.container, tempMap, "AVATAR_MAP");
 		
 		xact.add(R.id.menu, new Frag(R.layout.map_menu_frag), "MENU");
 		xact.commit();
@@ -76,29 +80,31 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 	 *            v - the button clicked
 	 */
 	public void myClickMethod(View v) {
+		getActionBar().show();
 		Intent i;
 		FragmentManager fragMgr;
 		FragmentTransaction xact;
 		switch (v.getId()) {
 		case R.id.map:
 			//this.finish();
-			
 			fragMgr = getFragmentManager();
-			
 			xact = fragMgr.beginTransaction();
-			if(fragMgr.findFragmentByTag("MAP") != null){
-				xact.replace(R.id.container, fragMgr.findFragmentByTag("MAP"), "MAP");
-			}else{
-				xact.replace(R.id.container, new GoogleMapsViewer(), "MAP");
+			Bundle bundle = new Bundle();
+			bundle.putInt("MAP_TYPE", 1);
+			GoogleMapsViewer tempMap;
+			
+			
+			if(fragMgr.findFragmentByTag("AVATAR_MAP") != null){
+				tempMap = (GoogleMapsViewer) fragMgr.findFragmentByTag("AVATAR_MAP");
+				xact.detach(tempMap);
 			}
-			if(fragMgr.findFragmentByTag("MENU") != null){
-				xact.replace(R.id.menu, fragMgr.findFragmentByTag("MENU"), "MENU");
-			}else{
-				xact.replace(R.id.menu, new Frag(R.layout.map_menu_frag), "MENU");
-			}
-			xact.commit();
+			tempMap = new GoogleMapsViewer();
+			xact.replace(R.id.container,tempMap, "AVATAR_MAP");
+			xact.addToBackStack(null);
+			tempMap.setArguments(bundle);
 			break;
 		case R.id.augmentedReality:
+			//getActionBar().hide();
 			fragMgr = getFragmentManager();
 			xact = fragMgr.beginTransaction();
 			if(fragMgr.findFragmentByTag("AUGMENTED_REALITY") != null){
@@ -139,86 +145,6 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 			break;
-		case R.id.phone_exit_button:
-			fragMgr = getFragmentManager();
-			xact = fragMgr.beginTransaction();
-			fragMgr.popBackStack();
-			xact.commit();
-			break;
-			
-		//All implentations of other projects, Create them as activities for now.
-		case R.id.tricorder:
-			//startActivity(new Intent(this, opening_menu.class));
-			//Currently want to draw the fragment I'm working on
-			fragMgr = getFragmentManager();
-			xact = fragMgr.beginTransaction();
-			if(fragMgr.findFragmentByTag("TRICORDER_MAP") != null){
-				xact.replace(R.id.container, fragMgr.findFragmentByTag("TRICORDER_MAP"), "TRICORDER_MAP");
-			}else{
-				xact.replace(R.id.container, new TricorderGoogleMapsViewer(), "TRICORDER_MAP");
-				xact.addToBackStack(null);
-			}
-			xact.commit();
-			
-			break;
-		case R.id.guardian_angel:
-			fragMgr = getFragmentManager();
-			xact = fragMgr.beginTransaction();
-			if(fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP") != null){
-				xact.replace(R.id.container, fragMgr.findFragmentByTag("GUARDIAN_ANGEL_MAP"), "GUARDIAN_ANGEL_MAP");
-			}else{
-				xact.replace(R.id.container, new GuardianAngelGoogleMapsViewer(), "GUARDIAN_ANGEL_MAP");
-				xact.addToBackStack(null);
-			}
-			xact.commit();
-			//startActivity(new Intent(this, MainActivity.class));
-			//Currently want to draw the fragment I'm working on
-//			fragMgr = getFragmentManager();
-//			xact = fragMgr.beginTransaction();
-//			if(fragMgr.findFragmentByTag("GUARDIAN_ANGEL_SERVER_CONNECT") != null){
-//				xact.replace(R.id.container, fragMgr.findFragmentByTag("GUARDIAN_ANGEL_SERVER_CONNECT"), "GUARDIAN_ANGEL_SERVER_CONNECT");
-//			}else{
-//				xact.replace(R.id.container, new MainActivity(), "GUARDIAN_ANGEL_SERVER_CONNECT");
-//				xact.addToBackStack(null);
-//			}
-//			xact.commit();
-			break;
-		case R.id.avatar:
-			//this.finish();
-			
-			fragMgr = getFragmentManager();
-			
-			xact = fragMgr.beginTransaction();
-			if(fragMgr.findFragmentByTag("MAP") != null){
-				xact.replace(R.id.container, fragMgr.findFragmentByTag("MAP"), "MAP");
-			}else{
-				xact.replace(R.id.container, new GoogleMapsViewer(), "MAP");
-			}
-			xact.replace(R.id.menu, new Frag(R.layout.map_menu_frag), "MENU");
-			xact.commit();
-			break;
-			
-		//All Non fragment changing buttons. IE change map type
-		case R.id.changeType:
-			fragMgr = getFragmentManager();
-			
-			int[] mapTypeArray = GoogleMapsViewer.mapTypes;
-			GoogleMapsViewer viewer = ((GoogleMapsViewer)fragMgr.findFragmentByTag("MAP"));
-			
-			mapTypeLoop:
-			for(int a = 0; a < mapTypeArray.length; a++){
-				if(mapTypeArray[a] == viewer.currentMapType){
-					if(a == 3){
-						viewer.getMap().setMapType(GoogleMapsViewer.mapTypes[0]);
-						viewer.currentMapType = GoogleMapsViewer.mapTypes[0];
-						break mapTypeLoop;
-					}else{
-						viewer.getMap().setMapType(GoogleMapsViewer.mapTypes[a+1]);
-						viewer.currentMapType = GoogleMapsViewer.mapTypes[a+1];
-						break mapTypeLoop;
-					}
-				}
-			}
 		}
 	}
 
@@ -232,48 +158,6 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 		FragmentManager fragMgr = getFragmentManager();
 		
 		((TricorderGoogleMapsViewer)fragMgr.findFragmentByTag("TRICORDER_MAP")).tricorderOnClick(v);
-	}
-	
-	/**
-	 * Used by a method below to set the side menu correctly
-	 */
-	public void emergencyCall(){
-		FragmentManager fragMgr;
-		FragmentTransaction xact;
-		
-		fragMgr = getFragmentManager();
-		xact = fragMgr.beginTransaction();
-		if(fragMgr.findFragmentByTag("PHONE_CALL") != null){
-			xact.replace(R.id.menu, fragMgr.findFragmentByTag("PHONE_CALL"), "PHONE_CALL");
-		}else{
-			xact.replace(R.id.menu, new PhoneCall(), "PHONE_CALL");
-			xact.addToBackStack(null);
-		}
-		xact.commit();
-		
-	}
-	
-	/**
-	 * When the app is resumed, will check media was uploaded and was emergency. If so, it will bring up the right menu.
-	 */
-	@Override
-	public void onResume(){
-		super.onResume();
-		if(UploadMedia.isEmergency){
-			emergencyCall();
-		}else{
-			
-		}
-	}
-	
-	@Override
-	public Dialog onCreateDialog(int id) {
-		FragmentManager fragMgr = getFragmentManager();
-		System.out.println("HEY: " + id);
-		Dialog dialog = ((MainActivity)(fragMgr.findFragmentByTag("GUARDIAN_ANGEL_SERVER_CONNECT"))).onCreateDialog(id);
-		dialog.show();
-		
-		return dialog;
 	}
 
 }

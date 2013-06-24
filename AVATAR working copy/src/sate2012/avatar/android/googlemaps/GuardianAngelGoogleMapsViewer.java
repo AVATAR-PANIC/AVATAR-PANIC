@@ -8,6 +8,7 @@ import java.util.List;
 
 import DialogFragments.GuardianAngelLoginDialogFragment;
 import DialogFragments.MajorCitiesDialogFragment;
+import DialogFragments.MapSettingsDialogFragment;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -59,6 +60,10 @@ import com.guardian_angel.uav_tracker.XMPPSender;
 public class GuardianAngelGoogleMapsViewer extends Fragment implements OnMapLongClickListener, InfoWindowAdapter, 
 OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener {
 
+	//For Map Settings
+	private int currentMapType = GoogleMap.MAP_TYPE_NORMAL;
+	private int currentMap = 3; //3 is the ID for the GuardianAngel map
+	
 	//Dialog Variables - May be switched to pop-ups once I get there.
 	private DialogFragment dialog;
 	protected Button ok;
@@ -131,7 +136,9 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 		MapFragment mapfrag = ((MapFragment) getFragmentManager()
 				.findFragmentById(R.id.guardian_angel_googlemap));
 		map = mapfrag.getMap();
-		
+		Bundle b = getArguments();
+		currentMapType = b.getInt("MAP_TYPE");
+		map.setMapType(currentMapType);
 		//Set the Maps listeners
 		map.setOnMapLongClickListener(this);
 		map.setInfoWindowAdapter(this);
@@ -285,6 +292,10 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 			dialog = new GuardianAngelLoginDialogFragment();
 			dialog.show(fragMgr, "GUARDIAN_ANGEL_LOGIN");
 			break;
+		case R.id.map_settings_menu:
+			fragMgr = getFragmentManager();
+			dialog = new MapSettingsDialogFragment(currentMap, currentMapType);
+			dialog.show(fragMgr, "MAP_SETTINGS");
 		}
 		return true;
 	}
@@ -296,7 +307,7 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-		inflater.inflate(R.menu.map_menu, menu);
+		inflater.inflate(R.menu.guardian_angel_map_menu, menu);
 	}
 
 	@Override

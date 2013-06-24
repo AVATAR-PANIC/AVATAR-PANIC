@@ -4,7 +4,6 @@ import gupta.ashutosh.avatar.R;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
@@ -13,21 +12,18 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import sate2012.avatar.android.AVATARMainMenuActivity;
 import sate2012.avatar.android.Constants;
-import sate2012.avatar.android.MapsForgeMapViewer;
-import sate2012.avatar.android.PhoneCall;
 import sate2012.avatar.android.UploadMedia;
 import sate2012.avatar.android.VideoPlayer;
+import DialogFragments.MapSettingsDialogFragment;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -50,11 +46,12 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -74,7 +71,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -90,6 +86,10 @@ public class GoogleMapsViewer extends Fragment implements LocationListener,
 InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, 
 OnInfoWindowClickListener, OnPreparedListener{
 
+	//For the Map settings
+	private int currentMapType = GoogleMap.MAP_TYPE_NORMAL;
+	private int currentMap = 1; // The ID for the AVATAR map
+	
 	public GoogleMap map;
 	public Location myLocation = new Location(LocationManager.NETWORK_PROVIDER);
 	public Location myCurrentLocation;
@@ -100,10 +100,6 @@ OnInfoWindowClickListener, OnPreparedListener{
 	private static SensorManager mySensorManager;
 	private boolean sensorrunning;
 	private boolean hasMapCentered = false;
-	public static int[] mapTypes = { GoogleMap.MAP_TYPE_NORMAL,
-			GoogleMap.MAP_TYPE_SATELLITE, GoogleMap.MAP_TYPE_HYBRID,
-			GoogleMap.MAP_TYPE_TERRAIN };
-	public int currentMapType = GoogleMapsViewer.mapTypes[0];
 	private ArrayList<MarkerPlus> markerArray = new ArrayList<MarkerPlus>();// = MarkerMaker.makeMarkers();
 	private Marker activeMarker = null;
 	private Bitmap currentImage = null;
@@ -136,6 +132,25 @@ OnInfoWindowClickListener, OnPreparedListener{
 		return view;
 	}
 	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+		inflater.inflate(R.menu.avatar_map_menu, menu);
+		
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		FragmentManager fragMgr;
+		fragMgr = getFragmentManager();
+		
+		DialogFragment dialog;
+		
+		dialog = new MapSettingsDialogFragment(currentMap, currentMapType);
+		dialog.show(fragMgr, "MAP_SETTINGS");
+		
+		return true;
+	}
+	
 	/**
 	 * When the fragment is started, this runs.
 	 */
@@ -144,7 +159,11 @@ OnInfoWindowClickListener, OnPreparedListener{
 		super.onStart();
 		MapFragment mapfrag = ((MapFragment) getFragmentManager()
 				.findFragmentById(R.id.googlemap));
+		setHasOptionsMenu(true);
 		map = mapfrag.getMap();
+		Bundle b = getArguments();
+		currentMapType = b.getInt("MAP_TYPE");
+		map.setMapType(currentMapType);
 		new HttpThread(this).execute("");
 		final GoogleMapsViewer activity = this;
 		
@@ -158,7 +177,6 @@ OnInfoWindowClickListener, OnPreparedListener{
         map.setOnInfoWindowClickListener(this);
         
         drawMarkers(true);
-		map.setMapType(GoogleMapsViewer.mapTypes[0]);
 		lastKnownZoomLevel = map.getCameraPosition().zoom;
 		// TODO
 		pointDeleter = new PointDeleter();

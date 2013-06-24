@@ -1,5 +1,7 @@
 package sate2012.avatar.android.googlemaps;
 
+import gupta.ashutosh.avatar.R;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,13 +9,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-import gupta.ashutosh.avatar.R;
-import tricorder.tecedge.Mapm;
 import tricorder.tecedge.PHPScriptQuery;
-import tricorder.tecedge.POIm;
 import tricorder.tecedge.Refreshm;
 import tricorder.tecedge.Settings;
+import DialogFragments.MapSettingsDialogFragment;
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,6 +28,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.InflateException;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,14 +47,16 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
-import com.google.android.maps.OverlayItem;
 
 public class TricorderGoogleMapsViewer extends Fragment implements InfoWindowAdapter, OnCameraChangeListener, 
 OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongClickListener {
 
+	//Stuff for the map selection settings
+	private int currentMapType = GoogleMap.MAP_TYPE_NORMAL;
+	private int currentMap = 2; // The ID for Tricorder
+	
 	//For the Database side of the project
 	public static Handler h;
 	static String initializing;
@@ -95,6 +102,23 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 		return view;
 	}
 	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+		inflater.inflate(R.menu.tricorder_map_menu, menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		FragmentManager fragMgr;
+		fragMgr = getFragmentManager();
+		DialogFragment dialog;
+		
+		dialog = new MapSettingsDialogFragment(currentMap, currentMapType);
+		dialog.show(fragMgr, "MAP_SETTINGS");
+		
+		return true;
+	}
+	
 	/**
 	 * When the fragment is started, this runs.
 	 */
@@ -103,7 +127,12 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 		super.onStart();
 		MapFragment mapfrag = ((MapFragment) getFragmentManager()
 				.findFragmentById(R.id.tricorder_googlemap));
+		setHasOptionsMenu(true);
 		map = mapfrag.getMap();
+		Bundle b = getArguments();
+		currentMapType = b.getInt("MAP_TYPE");
+		map.setMapType(currentMapType);
+		
 		markers = new ArrayList<TricorderMarkerPlus>();
 		
 		//Set the Maps listeners
