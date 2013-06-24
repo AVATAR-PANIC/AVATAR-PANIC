@@ -11,15 +11,13 @@ import org.mapsforge.android.maps.GeoPoint;
 import sate2012.avatar.android.DataObject;
 import sate2012.avatar.android.GeoDataRepository;
 import sate2012.avatar.android.LocationDataReceiverAVATAR;
-import sate2012.avatar.android.MapsForgeMapViewer;
-import sate2012.avatar.android.PhoneCall;
-import sate2012.avatar.android.MapsForgeMapViewer.MyLocationListener;
-import sate2012.avatar.android.googlemaps.GoogleMapsViewer;
 import sate2012.avatar.android.googlemaps.HttpThread;
 import sate2012.avatar.android.googlemaps.MarkerPlus;
-import android.app.Activity;
+import DialogFragments.ActivePointDialogFragment;
+import DialogFragments.PointSettingsDialogFragment;
+import android.app.DialogFragment;
 import android.app.Fragment;
-import android.content.Intent;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -38,17 +36,16 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
 import android.widget.Toast;
 
 /**
@@ -83,7 +80,42 @@ public class CameraView extends Fragment implements Callback {
 	// testLocation.getLongitude() - 1);
 	// GeoPoint[] pointArray = {testPoint, testPoint2};
 	float[] currentValues = new float[3];
-	protected ArrayList<MarkerPlus> markerArray;// = MarkerMaker.makeMarkers();
+	public ArrayList<MarkerPlus> markerArray;// = MarkerMaker.makeMarkers();
+	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+		inflater.inflate(R.menu.ar_menu, menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		
+		FragmentManager fragMgr;
+		fragMgr = getFragmentManager();
+		
+		DialogFragment dialog;
+		Bundle bundle = new Bundle();
+		
+		switch(item.getItemId()){
+		case R.id.active_point:
+			bundle.putSerializable("POINT_MANAGER", pointManager);
+			
+			dialog = new ActivePointDialogFragment();
+			dialog.setArguments(bundle);
+			dialog.show(fragMgr, "ACTIVE_POINTS");
+			break;
+		case R.id.ar_settings:
+			bundle.putSerializable("POINT_MANAGER", pointManager);
+			
+			dialog = new PointSettingsDialogFragment();
+			dialog.setArguments(bundle);
+			dialog.show(fragMgr, "POINT_SETTINGS");
+			break;
+		
+		}
+		
+		return true;
+	}
 	
 
 	/**
@@ -127,7 +159,6 @@ public class CameraView extends Fragment implements Callback {
 	@Override
 	public void onStart() {
 		super.onStart();
-		
 		new HttpThread(this).execute();
 		// Initializes the button
 //		backButton = (Button) getActivity().findViewById(R.id.to_main_activity);
@@ -139,6 +170,7 @@ public class CameraView extends Fragment implements Callback {
 		myLocation = mlocManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 		//Create helper class
 		pointManager = new AugRelPointManager(this);
+		setHasOptionsMenu(true);
 
 
 		// Initialize the surface for the camera
