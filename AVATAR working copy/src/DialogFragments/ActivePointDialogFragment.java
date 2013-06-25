@@ -62,9 +62,14 @@ public class ActivePointDialogFragment extends DialogFragment {
 
 			@Override
 			public void onClick(View v) {
-				ArrayList<MarkerPlus> tempArray = adapter.getCheckedItems();
-				
-				manager.setActivePoints(tempArray);
+				if(adapter.getCheckedItems().size() > 0){
+					ArrayList<MarkerPlus> tempArray = adapter.getCheckedItems();
+					
+					manager.setActivePoints(tempArray);
+				}else{
+					ArrayList<MarkerPlus> dummyArray = new ArrayList<MarkerPlus>();
+					manager.setActivePoints(dummyArray);
+				}
 				getDialog().cancel();
 				
 			}
