@@ -30,12 +30,14 @@ public class AugRelPointManager implements Serializable {
 	final transient CameraView outer;
 	private ArrayList<MarkerPlus> onPoints;
 	private ArrayList<MarkerPlus> allPoints;
+	private ArrayList<MarkerPlus> activePoints;
 	transient Paint paint;
 	
 	public AugRelPointManager(CameraView outer) {
 		this.outer = outer;
 		onPoints = new ArrayList<MarkerPlus>();
 		allPoints = new ArrayList<MarkerPlus>();
+		activePoints = new ArrayList<MarkerPlus>();
 		paint = new Paint();
 	}
 	
@@ -130,9 +132,18 @@ public class AugRelPointManager implements Serializable {
 		return allPoints;
 	}
 	
+	public void setActivePoints(ArrayList<MarkerPlus> tempArray){
+		this.outer.drawPointList = tempArray;
+		this.activePoints = tempArray;
+	}
+	
+	public ArrayList<MarkerPlus> getActivePoints(){
+		return this.activePoints;
+	}
+	
 	public void drawPoint(MarkerPlus marker, Canvas canvas, float myBearing, float myPitch){
 		
-		
+		System.out.println(outer.fragWidth);
 		//For determining which icon to draw
 		Bitmap pointIcon;
 		

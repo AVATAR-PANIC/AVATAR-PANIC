@@ -29,8 +29,6 @@ public class ActivePointDialogFragment extends DialogFragment {
 
 	ListView list;
 	AugRelPointManager manager;
-	ArrayList<String> pointNames = new ArrayList<String>();
-	ArrayList<Integer> pointIndexes = new ArrayList<Integer>();
 	Button saveButton;
 	
 	public ActivePointDialogFragment(){
@@ -42,13 +40,11 @@ public class ActivePointDialogFragment extends DialogFragment {
 		getDialog().setTitle("Set Active Points");
 		manager = (AugRelPointManager) getArguments().get("POINT_MANAGER");
 		
-		generatePointNames(manager.getAllPoints());
-		
 		list = (ListView) view.findViewById(R.id.points_list);
 		list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		saveButton = (Button) view.findViewById(R.id.show_checked);
 		
-		final CustomArrayAdapter adapter = new CustomArrayAdapter(getActivity(), pointNames);
+		final CustomArrayAdapter adapter = new CustomArrayAdapter(getActivity(), manager.getAllPoints());
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(new OnItemClickListener(){
 
@@ -66,11 +62,9 @@ public class ActivePointDialogFragment extends DialogFragment {
 
 			@Override
 			public void onClick(View v) {
-				ArrayList<String> tempArray = adapter.getCheckedItems();
+				ArrayList<MarkerPlus> tempArray = adapter.getCheckedItems();
 				
-				for(int i = 0; i < tempArray.size(); i++){
-					System.out.println(tempArray.get(i));
-				}
+				manager.setActivePoints(tempArray);
 				getDialog().cancel();
 				
 			}
@@ -81,35 +75,35 @@ public class ActivePointDialogFragment extends DialogFragment {
 		return view;
 	}
 	
-	public void generatePointNames(ArrayList<MarkerPlus> points){
-		
-		for(MarkerPlus point: points){
-			pointNames.add(point.getName());
-		}
-	}
-	
 	class CustomArrayAdapter extends BaseAdapter{
 
 		Context mContext;
 		LayoutInflater mInflater;
-		ArrayList<String> names;
+		ArrayList<MarkerPlus> points;
 		SparseBooleanArray mSparseBooleanArray;
 		
-		public CustomArrayAdapter(Context context,ArrayList<String> objects) {
+		public CustomArrayAdapter(Context context,ArrayList<MarkerPlus> objects) {
 			this.mContext = context;
 			mInflater = LayoutInflater.from(mContext);
 			mSparseBooleanArray = new SparseBooleanArray();
-			names = new ArrayList<String>();
-			this.names = objects;
+			points = new ArrayList<MarkerPlus>();
+			this.points = objects;
+			
+			for(int i = 0; i < manager.getActivePoints().size(); i++){
+				
+				if(this.points.contains(manager.getActivePoints().get(i))){
+					mSparseBooleanArray.put(this.points.indexOf(manager.getActivePoints().get(i)), true);
+				}
+			}
 			
 		}
 		
-		public ArrayList<String> getCheckedItems(){
-			ArrayList<String> tempArray = new ArrayList<String>();
+		public ArrayList<MarkerPlus> getCheckedItems(){
+			ArrayList<MarkerPlus> tempArray = new ArrayList<MarkerPlus>();
 			
-			for(int i = 0; i < names.size(); i++){
+			for(int i = 0; i < points.size(); i++){
 				if(mSparseBooleanArray.get(i)){
-					tempArray.add(names.get(i));
+					tempArray.add(points.get(i));
 				}
 			}
 			
@@ -119,12 +113,12 @@ public class ActivePointDialogFragment extends DialogFragment {
 		
 		@Override
 		public int getCount(){
-			return names.size();
+			return points.size();
 		}
 		
 		@Override
-		public String getItem(int position){
-			return names.get(position);
+		public MarkerPlus getItem(int position){
+			return points.get(position);
 		}
 		
 		@Override
@@ -140,7 +134,7 @@ public class ActivePointDialogFragment extends DialogFragment {
 			}
 			
 			TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
-			tvTitle.setText(names.get(position));
+			tvTitle.setText(points.get(position).getName());
 			
 			
 			CheckBox mCheckBox = (CheckBox) convertView.findViewById(R.id.chkEnable);
@@ -156,6 +150,7 @@ public class ActivePointDialogFragment extends DialogFragment {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
+				System.out.println(buttonView.getTag());
 				mSparseBooleanArray.put((Integer)buttonView.getTag(), isChecked);
 				
 			}

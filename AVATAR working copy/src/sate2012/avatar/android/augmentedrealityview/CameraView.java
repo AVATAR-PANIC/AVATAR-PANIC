@@ -46,6 +46,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Toast;
 
 /**
@@ -150,6 +151,8 @@ public class CameraView extends Fragment implements Callback {
 	@Override 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		return inflater.inflate(R.layout.camera_view, container, false);
+		
+		
 	}
 	
 
@@ -169,9 +172,8 @@ public class CameraView extends Fragment implements Callback {
 				1, 10, mlocListener);
 		myLocation = mlocManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 		//Create helper class
-		pointManager = new AugRelPointManager(this);
 		setHasOptionsMenu(true);
-
+		pointManager = new AugRelPointManager(this);
 
 		// Initialize the surface for the camera
 		mSurfaceView = (SurfaceView) getActivity().findViewById(R.id.surface_camera);
@@ -190,7 +192,17 @@ public class CameraView extends Fragment implements Callback {
 		getActivity().addContentView(pointerView, layoutParamsDrawing);
 		pointerView.setPadding(0, pointerView.getPaddingTop(),
 				pointerView.getPaddingRight(), pointerView.getPaddingBottom());
+		
+		this.getView().getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener(){
 
+			@Override
+			public void onGlobalLayout() {
+				FragmentManager fragMgr = getFragmentManager();
+				fragWidth = fragMgr.findFragmentByTag("AUG_MENU").getView().getWidth();
+			}
+			
+		});
+		
 		// Set up the sensors
 		final SensorManager SENSORMANAGER = (SensorManager) getActivity().getSystemService(getActivity().SENSOR_SERVICE);
 		final Sensor ROTATION = SENSORMANAGER
@@ -237,12 +249,6 @@ public class CameraView extends Fragment implements Callback {
 	
 					// Redraw the screen
 					pointerView.postInvalidate();
-					try{
-						fragWidth = getFragmentManager().findFragmentById(R.id.frag1)
-								.getView().getWidth();
-					}catch(Exception ex){
-						
-					}
 				}
 			}
 		};
