@@ -94,7 +94,7 @@ public class CameraRecord extends Fragment implements SensorEventListener,
 	}
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		return inflater.inflate(R.layout.camera_record, container, false);
+		return inflater.inflate(R.layout.guardianangel_camera_record, container, false);
 	}
 	
 	/** Called when the activity is first created. */
