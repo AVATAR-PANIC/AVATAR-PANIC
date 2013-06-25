@@ -11,7 +11,7 @@
         android:background="@color/black"
         >
 	    <LinearLayout
-	        android:layout_width="wrap_content"
+	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical">
 	        
@@ -29,6 +29,41 @@
 			        android:layout_height="wrap_content"
 			        android:layout_marginTop="4dp" />
 			    
+			    <View
+			        android:layout_width="match_parent"
+			        android:layout_height="3dp"
+			        android:background="@color/lightgrey" />
+			    
+			    <TextView
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:text="Augmented Reality Type"
+			        android:textColor="@color/white"
+			        android:textSize="20sp" />
+			    
+			    <RadioGroup 
+			        android:id="@+id/ar_choices"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content">
+			        
+			        <RadioButton
+			            android:id="@+id/ar_avatar"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:text="Avatar Augmented Reality"
+			            android:textColor="@color/white" />
+			        
+			        <RadioButton
+			            android:id="@+id/areality_guardian_angel"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:text="Guardian Angel Augmented Reality"
+			            android:textColor="@color/white" />
+			        
+			        
+			    </RadioGroup>
+			    
+			    			    
 			    <Button 
 			        android:id="@+id/ar_save_button"
 			        android:layout_width="wrap_content"

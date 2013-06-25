@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -86,16 +87,20 @@ public class UserData extends Activity {
 				}
 				else
 				{
-				xmppSender = new XMPPSender(dateString, features, message);
-				xmppSender.createMessage();
-				xmppSender.sendMessage();
+					xmppSender = new XMPPSender(dateString, features, message);
+					try{
+						xmppSender.createMessage();
+						xmppSender.sendMessage();
+					}catch(Exception ex){
+						Toast.makeText(getApplicationContext(), "There was a problem sending the data", Toast.LENGTH_SHORT).show();
+					}
 				}
 				
 				
-				Intent nextScreen = new Intent(getApplicationContext(),
-						MainActivity.class);
-				nextScreen.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				startActivity(nextScreen);
+//				Intent nextScreen = new Intent(getApplicationContext(),
+//						MainActivity.class);
+//				nextScreen.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//				startActivity(nextScreen);
 				
 				finish();
 			}
