@@ -45,7 +45,7 @@ public class Name_Loader extends Activity // implements OnItemClickListener
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.list_item);
+		setContentView(R.layout.tricorder_list_item);
 		projectname = (ListView) findViewById(R.id.projectname);
 		textview = new TextView(this);
 		textview.setText("Projects");

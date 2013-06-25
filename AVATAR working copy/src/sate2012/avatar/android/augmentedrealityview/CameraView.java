@@ -117,7 +117,7 @@ public class CameraView extends Fragment implements Callback {
 	 */
 	@Override 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		return inflater.inflate(R.layout.camera_view, container, false);
+		return inflater.inflate(R.layout.avatar_camera_view, container, false);
 	}
 	
 

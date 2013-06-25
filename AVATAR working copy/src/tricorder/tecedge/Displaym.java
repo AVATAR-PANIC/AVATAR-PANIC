@@ -27,7 +27,7 @@ public class Displaym extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.displaym);
+		setContentView(R.layout.tricorder_displaym);
 		try{
 		Bundle extras = getIntent().getExtras();
 		type = extras.getString("Type");

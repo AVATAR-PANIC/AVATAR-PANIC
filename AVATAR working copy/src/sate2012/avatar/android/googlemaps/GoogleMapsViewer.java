@@ -125,7 +125,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 			}
 		}
 		try{
-			view = inflater.inflate(R.layout.googlemap_viewer, container, false);
+			view = inflater.inflate(R.layout.avatar_googlemap_viewer, container, false);
 		}catch(InflateException e){
 			
 		}

@@ -278,7 +278,7 @@ public class Settings extends PreferenceActivity {
 			@Override
 			public boolean onPreferenceClick(Preference arg0) {
 				final Dialog dialog = new Dialog(Settings.this);
-				dialog.setContentView(R.layout.legendm);
+				dialog.setContentView(R.layout.tricorder_legendm);
 				dialog.setTitle(R.string.legendt);
 				dialog.setCanceledOnTouchOutside(true);
 				dialog.show();
