@@ -291,7 +291,7 @@ public class Settings extends PreferenceActivity {
 					public boolean onPreferenceClick(Preference arg0) {
 						final Dialog dialog = new Dialog(Settings.this);
 						System.out.print(loadPreferences("Start"));
-						dialog.setContentView(R.layout.timem);
+						dialog.setContentView(R.layout.tricorder_timem);
 						dialog.setTitle("Choose Data Time Range");
 						dialog.setCanceledOnTouchOutside(true);
 						dialog.show();

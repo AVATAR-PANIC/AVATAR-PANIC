@@ -110,7 +110,7 @@ public class MainActivity extends Fragment implements
 
 		// Setup the XMPPConnectionDialog interface elements
 		dialog = new Dialog(getActivity());
-		dialog.setContentView(R.layout.xmpp_connection_settings);
+		dialog.setContentView(R.layout.guardian_angel_xmpp_connection_settings);
 		dialog.getWindow().setLayout(LayoutParams.FILL_PARENT,
 				LayoutParams.WRAP_CONTENT);
 		dialog.setTitle("Connection Settings:");
@@ -271,7 +271,7 @@ public class MainActivity extends Fragment implements
 	// Create the XMPP Connection Dialog box
 	public Dialog onCreateDialog(int id) {
 		// Setup the XMPPConnectionDialog interface elements
-		dialog.setContentView(R.layout.xmpp_connection_settings);
+		dialog.setContentView(R.layout.guardian_angel_xmpp_connection_settings);
 		dialog.getWindow().setLayout(LayoutParams.FILL_PARENT,
 				LayoutParams.WRAP_CONTENT);
 		dialog.setTitle("Connection Settings:");

@@ -39,7 +39,7 @@ public class VoiceNotes extends Activity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.voice);
+		setContentView(R.layout.avatar_voice);
 		media = false;
 		playing = false;
 		recording = false;

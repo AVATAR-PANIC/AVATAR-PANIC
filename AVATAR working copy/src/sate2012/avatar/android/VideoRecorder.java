@@ -45,7 +45,7 @@ public class VideoRecorder extends Activity implements SurfaceHolder.Callback,
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.video);
+		setContentView(R.layout.avatar_video);
 		playing = false;
 		recording = false;
 		mVideoClockTime = 0;

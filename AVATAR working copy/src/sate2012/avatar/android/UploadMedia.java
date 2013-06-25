@@ -56,7 +56,7 @@ public class UploadMedia extends Activity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		thisContext = getApplicationContext();
-		setContentView(R.layout.upload_menu);
+		setContentView(R.layout.avatar_upload_menu);
 
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		createStorageDirectory();

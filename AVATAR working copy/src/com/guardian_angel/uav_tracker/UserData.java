@@ -45,7 +45,7 @@ public class UserData extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.user_data);
+		setContentView(R.layout.guardian_angel_user_data);
 
 		// initialize and instantiate variables
 		silent = (RadioButton) findViewById(R.id.silent);
