@@ -53,7 +53,7 @@ public class MajorCitiesDialogFragment extends DialogFragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance){
-		View view = inflater.inflate(R.layout.guardianangel_major_cities, container);
+		View view = inflater.inflate(R.layout.guardian_angel_major_cities, container);
 		
 		getDialog().getWindow().setLayout(LayoutParams.FILL_PARENT,
 				LayoutParams.WRAP_CONTENT);
