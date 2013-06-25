@@ -69,8 +69,8 @@ public class UploadMedia extends Activity implements OnClickListener {
 		audioB.setOnClickListener(this);
 		commentB = (ImageButton) findViewById(R.id.commentButton);
 		commentB.setOnClickListener(this);
-		emergency = (Button) findViewById(R.id.emergency);
-		emergency.setOnClickListener(this);
+//		emergency = (Button) findViewById(R.id.emergency);
+//		emergency.setOnClickListener(this);
 
 	}
 
@@ -106,18 +106,18 @@ public class UploadMedia extends Activity implements OnClickListener {
 			i.putExtra("LatLng", intent.getParcelableExtra("LatLng"));
 			startActivity(i);
 			break;
-		case (R.id.emergency):
-			dataType = getResources().getString(R.string.type_emergency);
-			
-			Intent emergencyIntent = getIntent();
-
-			LatLng latlng = (LatLng) emergencyIntent.getParcelableExtra("LatLng");
-			HttpSender connect = new HttpSender();
-			connect.execute("EMERGENCY", latlng.latitude + "",
-					latlng.longitude + "", "0", "EMERGENCY");
-			UploadMedia.isEmergency = true;
-			finish();
-			break;
+//		case (R.id.emergency):
+//			dataType = getResources().getString(R.string.type_emergency);
+//			
+//			Intent emergencyIntent = getIntent();
+//
+//			LatLng latlng = (LatLng) emergencyIntent.getParcelableExtra("LatLng");
+//			HttpSender connect = new HttpSender();
+//			connect.execute("EMERGENCY", latlng.latitude + "",
+//					latlng.longitude + "", "0", "EMERGENCY");
+//			UploadMedia.isEmergency = true;
+//			finish();
+//			break;
 		}
 	}
 

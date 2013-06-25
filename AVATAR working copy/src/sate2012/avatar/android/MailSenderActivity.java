@@ -61,7 +61,7 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 		ptURL_noFTP = "virtualdiscoverycenter.net/AVATAR/"
 				+ thisIntent.getStringExtra("Filename");
 		ptName = thisIntent.getStringExtra("Filename");
-		setContentView(R.layout.mail_prep_apv);
+		setContentView(R.layout.avatar_mail_prep_apv);
 		setLayout(ptType);
 		send = (Button) findViewById(R.id.Send);
 		send.setOnClickListener(this);
@@ -109,13 +109,13 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 				GMailSender sender = new GMailSender(
 						"sate2012.avatar@gmail.com", "SATE2013AVATARpass");
 				//sender.sendMail(subj, body, from, toList);
-				setContentView(R.layout.sent);
+				setContentView(R.layout.avatar_sent);
 				button_return = (Button) findViewById(R.id.Return);
 				button_return.setOnClickListener(this);
 			} catch (Exception e) {
 				System.out.println("EXCEPTION: " + e);
 				e.printStackTrace();
-				setContentView(R.layout.send_failed);
+				setContentView(R.layout.avatar_send_failed);
 			}
 			break;
 		case (R.id.Return):
@@ -128,16 +128,16 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 	
 	public void setLayout(String type) {
 		if (type.equals(getResources().getString(R.string.type_comment)))
-			setContentView(R.layout.mail_prep_comment);
+			setContentView(R.layout.avatar_mail_prep_comment);
 		else if (type.equals(getResources().getString(R.string.type_android))) {
-			setContentView(R.layout.mail_prep_android);
+			setContentView(R.layout.avatar_mail_prep_android);
 			EditText pointName = (EditText) findViewById(R.id.pointName);
 			TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 			pointName.setText(telephonyManager.getDeviceId());
 		} else if (type.equals(getResources().getString(R.string.type_audio))
 				|| type.equals(getResources().getString(R.string.type_picture))
 				|| type.equals(getResources().getString(R.string.type_video))) {
-			setContentView(R.layout.mail_prep_apv);
+			setContentView(R.layout.avatar_mail_prep_apv);
 			EditText pointDesc = (EditText) findViewById(R.id.pointDesc);
 			pointDesc.setText(ptURL_noFTP);
 			EditText pointName = (EditText) findViewById(R.id.pointName);

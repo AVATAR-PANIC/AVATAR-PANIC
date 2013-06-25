@@ -23,7 +23,7 @@ public class GAdirections extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.directions);
+		setContentView(R.layout.guardian_angel_directions);
 		directions = (TextView) findViewById(R.id.readme);
 
 		back = (Button) findViewById(R.id.back);

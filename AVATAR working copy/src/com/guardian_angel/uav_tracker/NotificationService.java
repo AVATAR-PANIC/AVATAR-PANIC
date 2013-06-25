@@ -192,7 +192,7 @@ public class NotificationService extends Service{
 								// Instantiate the notification and add all the parts to it
 								Notification notification = new Notification(icon,tickerText,when);
 								Context context = getApplicationContext();
-								RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.custom_notification);
+								RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.guardian_angel_custom_notification);
 								contentView.setImageViewResource(R.id.ic_launcher, R.drawable.ic_launcher);
 								contentView.setTextViewText(R.id.title, "Spotted at: " + region);
 								contentView.setTextViewText(R.id.text, "Unable to obtain distance or heading!");
@@ -357,7 +357,7 @@ public class NotificationService extends Service{
 						// Instantiate the notification and add all the parts to it
 						Notification notification = new Notification(icon,tickerText,when);
 						Context context = getApplicationContext();
-						RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.custom_notification);
+						RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.guardian_angel_custom_notification);
 						contentView.setImageViewResource(R.id.ic_launcher, R.drawable.ic_launcher);
 						contentView.setTextViewText(R.id.title, "Spotted at: " + region);
 						contentView.setTextViewText(R.id.text, distanceAway);

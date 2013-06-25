@@ -35,7 +35,7 @@ public class PointSettingsDialogFragment extends DialogFragment{
 	}
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		View view = inflater.inflate(R.layout.point_settings_dialog, container, false);
+		View view = inflater.inflate(R.layout.dialog_point_settings, container, false);
 		
 		Bundle bundle = getArguments();
 		manager = (AugRelPointManager) bundle.get("POINT_MANAGER");

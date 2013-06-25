@@ -41,7 +41,7 @@ public class Password_request extends Activity {
 		lg = new LocalGraphs();
 		// if password is not on the database
 		if (Array.getLength(password) == 0) {
-			setContentView(R.layout.password_create);
+			setContentView(R.layout.tricorder_password_create);
 			Button submit = (Button) findViewById(R.id.submit);
 			final EditText passwordfield = (EditText) findViewById(R.id.passwordField);
 			final EditText passwordfield2 = (EditText) findViewById(R.id.passwordField2);
@@ -80,7 +80,7 @@ public class Password_request extends Activity {
 				}
 			});
 		} else {
-			setContentView(R.layout.password_request);
+			setContentView(R.layout.tricorder_password_request);
 			Button submit = (Button) findViewById(R.id.submit);
 			final EditText passwordfield = (EditText) findViewById(R.id.passwordField);
 			submit.setOnClickListener(new View.OnClickListener() {

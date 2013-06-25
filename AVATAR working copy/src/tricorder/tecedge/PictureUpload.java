@@ -53,7 +53,7 @@ public class PictureUpload extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.servercomm);
+		setContentView(R.layout.tricorder_servercomm);
 
 		// Bitmap bitmapOrg = BitmapFactory.decodeResource(getResources(),
 		// R.drawable.icon);

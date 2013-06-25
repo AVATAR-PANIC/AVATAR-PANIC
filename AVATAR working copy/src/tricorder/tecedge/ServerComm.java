@@ -134,7 +134,7 @@ public class ServerComm extends Activity implements OnItemSelectedListener {
 		// makes it full screen
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		setContentView(R.layout.servercomm);
+		setContentView(R.layout.tricorder_servercomm);
 		// log into db from here
 		test = new PHPScriptQuery();
 		// get unique phone id

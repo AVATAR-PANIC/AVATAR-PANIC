@@ -64,7 +64,7 @@ public class DeviceListActivity extends Activity {
 
 		// Setup the window
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setContentView(R.layout.device_list);
+		setContentView(R.layout.tricorder_device_list);
 
 		// Set result CANCELED in case the user backs out
 		setResult(Activity.RESULT_CANCELED);
@@ -81,9 +81,9 @@ public class DeviceListActivity extends Activity {
 		// Initialize array adapters. One for already paired devices and
 		// one for newly discovered devices
 		mPairedDevicesArrayAdapter = new ArrayAdapter<String>(this,
-				R.layout.device_name);
+				R.layout.tricorder_device_name);
 		mNewDevicesArrayAdapter = new ArrayAdapter<String>(this,
-				R.layout.device_name);
+				R.layout.tricorder_device_name);
 
 		// Find and set up the ListView for paired devices
 		ListView pairedListView = (ListView) findViewById(R.id.paired_devices);

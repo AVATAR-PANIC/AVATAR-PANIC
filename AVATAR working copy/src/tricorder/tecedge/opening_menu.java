@@ -22,7 +22,7 @@ public class opening_menu extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.opening_menu);
+		setContentView(R.layout.tricorder_opening_menu);
 
 		Button uploadData = (Button) findViewById(R.id.UploadData);
 		uploadData.setOnClickListener(new View.OnClickListener() {

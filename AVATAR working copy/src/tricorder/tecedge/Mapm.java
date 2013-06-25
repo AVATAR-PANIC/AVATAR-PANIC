@@ -278,7 +278,7 @@ public class Mapm extends MapActivity {
 
 		@Override
 		protected void onPostExecute(Integer result) {
-			setContentView(R.layout.mapsm);
+			setContentView(R.layout.tricorder_mapsm);
 			initMap();
 			addData(serverData);
 			super.onPostExecute(result);
