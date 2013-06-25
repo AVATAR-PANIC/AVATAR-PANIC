@@ -73,7 +73,7 @@ public class CameraRecord extends Activity implements SensorEventListener,
 		getWindow().setFormat(PixelFormat.TRANSLUCENT);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.camera_record);
+		setContentView(R.layout.guardianangel_camera_record);
 		
 		// Initialize timer for data
 		timer = new Timer();

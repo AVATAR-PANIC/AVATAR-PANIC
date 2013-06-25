@@ -64,7 +64,7 @@ public class GuardianAngelLoginDialogFragment extends DialogFragment implements 
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.xmpp_connection_settings, container, false);
-		getDialog().getWindow().setLayout(LayoutParams.FILL_PARENT,
+		getDialog().getWindow().setLayout(LayoutParams.MATCH_PARENT,
 				LayoutParams.WRAP_CONTENT);
 		getDialog().setTitle("Connection Settings:");
 		progressHandler = new Handler();

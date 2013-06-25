@@ -415,7 +415,7 @@ public class Map extends MapActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Setup the MajorCitiesDialog interface elements
 		dialog = new Dialog(this);
-		dialog.setContentView(R.layout.major_cities);
+		dialog.setContentView(R.layout.guardianangel_major_cities);
 		dialog.getWindow().setLayout(LayoutParams.FILL_PARENT,
 				LayoutParams.WRAP_CONTENT);
 		dialog.setTitle("Major Cities:");
@@ -434,7 +434,7 @@ public class Map extends MapActivity {
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		// Setup the MajorCitiesDialog interface elements
-		dialog.setContentView(R.layout.major_cities);
+		dialog.setContentView(R.layout.guardianangel_major_cities);
 		dialog.getWindow().setLayout(LayoutParams.FILL_PARENT,
 				LayoutParams.WRAP_CONTENT);
 		dialog.setTitle("Major Cities:");
