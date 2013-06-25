@@ -100,8 +100,10 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			}
 			tempMap = new GoogleMapsViewer();
 			xact.replace(R.id.container,tempMap, "AVATAR_MAP");
+			xact.replace(R.id.menu, fragMgr.findFragmentByTag("MENU"), "MENU");
 			xact.addToBackStack(null);
 			tempMap.setArguments(bundle);
+			xact.commit();
 			break;
 		case R.id.augmentedReality:
 			//getActionBar().hide();

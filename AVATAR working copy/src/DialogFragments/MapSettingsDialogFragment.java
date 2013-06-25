@@ -1,9 +1,10 @@
 package DialogFragments;
 
+import gupta.ashutosh.avatar.R;
+import sate2012.avatar.android.googlemaps.EagleEyeGoogleMapsViewer;
 import sate2012.avatar.android.googlemaps.GoogleMapsViewer;
 import sate2012.avatar.android.googlemaps.GuardianAngelGoogleMapsViewer;
 import sate2012.avatar.android.googlemaps.TricorderGoogleMapsViewer;
-import gupta.ashutosh.avatar.R;
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
@@ -27,6 +28,7 @@ public class MapSettingsDialogFragment extends DialogFragment {
 	RadioButton avatar;
 	RadioButton tricorder;
 	RadioButton guardianAngel;
+	RadioButton eagleEye;
 	RadioButton normal;
 	RadioButton satellite;
 	RadioButton hybrid;
@@ -52,6 +54,7 @@ public class MapSettingsDialogFragment extends DialogFragment {
 		avatar = (RadioButton) view.findViewById(R.id.avatar_map);
 		tricorder = (RadioButton) view.findViewById(R.id.tricorder_map);
 		guardianAngel = (RadioButton) view.findViewById(R.id.guardian_angel_map);
+		eagleEye = (RadioButton) view.findViewById(R.id.eagle_eye_map);
 		normal = (RadioButton) view.findViewById(R.id.normal_view);
 		satellite = (RadioButton) view.findViewById(R.id.satellite_view);
 		hybrid = (RadioButton) view.findViewById(R.id.hybrid_view);
@@ -73,6 +76,12 @@ public class MapSettingsDialogFragment extends DialogFragment {
 		guardianAngel.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 			public void onCheckedChanged(CompoundButton arg0, boolean arg1){
 				currentMap = 3;
+			}
+		});
+		
+		eagleEye.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+			public void onCheckedChanged(CompoundButton arg0, boolean arg1){
+				currentMap = 4;
 			}
 		});
 		
@@ -155,6 +164,17 @@ public class MapSettingsDialogFragment extends DialogFragment {
 			xact.commit();
 			
 			break;
+		case 4:
+			EagleEyeGoogleMapsViewer tempMap4;
+			if(fragMgr.findFragmentByTag("EAGLE_EYE_MAP") != null){
+				tempMap4 = (EagleEyeGoogleMapsViewer) fragMgr.findFragmentByTag("EAGLE_EYE_MAP");
+				xact.detach(tempMap4);
+			}
+			tempMap4 = new EagleEyeGoogleMapsViewer();
+			xact.replace(R.id.container,tempMap4,"EAGLE_EYE_MAP");
+			xact.addToBackStack(null);
+			tempMap4.setArguments(bundle);
+			xact.commit();
 		}
 	}
 	
