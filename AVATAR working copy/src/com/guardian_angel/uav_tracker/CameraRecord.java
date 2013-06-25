@@ -11,9 +11,12 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import DialogFragments.PointSettingsDialogFragment;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
@@ -69,7 +72,7 @@ public class CameraRecord extends Fragment implements SensorEventListener,
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-		inflater.inflate(R.menu.ar_menu, menu);
+		inflater.inflate(R.menu.guardian_angel_ar_menu, menu);
 	}
 	
 	@Override
@@ -78,9 +81,12 @@ public class CameraRecord extends Fragment implements SensorEventListener,
 		fragMgr = getFragmentManager();
 		
 		DialogFragment dialog;
-		Bundle bundle = new Bundle();
 		
 		switch(item.getItemId()){
+		case R.id.ar_settings:
+			dialog = new PointSettingsDialogFragment();
+			dialog.show(fragMgr, "ACTIVE_POINTS");
+			break;
 		}
 		
 		return true;
@@ -191,8 +197,10 @@ public class CameraRecord extends Fragment implements SensorEventListener,
 						.show();
 				
 				// initialize activity change intent
-				Intent nextScreen = new Intent(getActivity().getApplicationContext(),
-						UserData.class);
+				FragmentManager fragMgr = getFragmentManager();
+				DialogFragment d = new UserData();
+				
+				d.show(fragMgr, "USER_DATA");
 				
 				// stop timer
 				timer.cancel();
@@ -204,10 +212,7 @@ public class CameraRecord extends Fragment implements SensorEventListener,
 				numOfReadings = 0;
 				headingToFile();
 				pitchToFile();
-				
-				// start next activity
-				nextScreen.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				startActivity(nextScreen);
+
 			}
 		});
 

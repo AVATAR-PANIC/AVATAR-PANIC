@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@drawable/background"
     android:orientation="vertical" >
 
@@ -136,11 +136,11 @@
             </EditText>
 
             <Button
-                android:id="@+id/done_button"
-                android:layout_width="fill_parent"
+                android:id="@+id/guardian_angel_done_button"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/buttonbackground"
-                android:text="@string/done" />
+                android:text="Done"
+                android:layout_gravity="center_horizontal" />
         </LinearLayout>
     </ScrollView>
 
