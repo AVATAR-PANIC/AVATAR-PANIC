@@ -32,7 +32,7 @@ public class Settings extends PreferenceActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		TricorderGoogleMapsViewer.h.sendEmptyMessage(0);
-		addPreferencesFromResource(R.layout.settings);
+		addPreferencesFromResource(R.layout.tricorder_settings);
 		Preference legend = (Preference) findPreference("legend");
 		Preference timerange = (Preference) findPreference("timerange");
 		Preference checkPref = (Preference) findPreference("autoupload");

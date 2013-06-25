@@ -109,7 +109,7 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 				GMailSender sender = new GMailSender(
 						"sate2012.avatar@gmail.com", "SATE2013AVATARpass");
 				//sender.sendMail(subj, body, from, toList);
-				setContentView(R.layout.sent);
+				setContentView(R.layout.avatar_sent);
 				button_return = (Button) findViewById(R.id.Return);
 				button_return.setOnClickListener(this);
 			} catch (Exception e) {

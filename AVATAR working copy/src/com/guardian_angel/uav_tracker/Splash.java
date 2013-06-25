@@ -37,7 +37,7 @@ public class Splash extends Activity{
 		// Set the image to take up the full screen of the device
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.splash);
+		setContentView(R.layout.guardian_angel_splash);
 		
 		// Check to see if there are any extras with the bundle. This is used to verify if the application is attempting to be exited
 		Bundle extras = getIntent().getExtras();
