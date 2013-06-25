@@ -143,7 +143,7 @@ public class AugRelPointManager implements Serializable {
 	
 	public void drawPoint(MarkerPlus marker, Canvas canvas, float myBearing, float myPitch){
 		
-		System.out.println(outer.fragWidth);
+		//System.out.println(outer.fragWidth);
 		//For determining which icon to draw
 		Bitmap pointIcon;
 		

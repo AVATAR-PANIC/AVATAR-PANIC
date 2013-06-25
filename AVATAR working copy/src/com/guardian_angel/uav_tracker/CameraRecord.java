@@ -11,7 +11,12 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import DialogFragments.ActivePointDialogFragment;
+import DialogFragments.PointSettingsDialogFragment;
 import android.app.Activity;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -25,17 +30,22 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CameraRecord extends Activity implements SensorEventListener,
+public class CameraRecord extends Fragment implements SensorEventListener,
 		SurfaceHolder.Callback {
 	// camera view activity variables
 	protected ImageButton stopRecording;
@@ -64,38 +74,57 @@ public class CameraRecord extends Activity implements SensorEventListener,
 	private ArrayList<String> pitchList = new ArrayList<String>();
 	private XMPPSender xmppSender;
 
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+		inflater.inflate(R.menu.ar_menu, menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		FragmentManager fragMgr;
+		fragMgr = getFragmentManager();
+		
+		DialogFragment dialog;
+		Bundle bundle = new Bundle();
+		
+		switch(item.getItemId()){
+		}
+		
+		return true;
+	}
+	
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		return inflater.inflate(R.layout.camera_record, container, false);
+	}
+	
 	/** Called when the activity is first created. */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		getWindow().setFormat(PixelFormat.TRANSLUCENT);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(R.layout.guardianangel_camera_record);
+	public void onStart() {
+		super.onStart();
+		setHasOptionsMenu(true);
+		//setContentView(R.layout.camera_record);
 		
 		// Initialize timer for data
 		timer = new Timer();
 
 		// Initialize the surface
-		mSurfaceView = (SurfaceView) findViewById(R.id.surface_camera);
+		mSurfaceView = (SurfaceView) getActivity().findViewById(R.id.surface_camera);
 		mSurfaceHolder = mSurfaceView.getHolder();
 		mSurfaceHolder.addCallback(this);
 		mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
 		// Initialize the Buttons and images
-		startRecording = (ImageButton) findViewById(R.id.startRecording);
-		stopRecording = (ImageButton) findViewById(R.id.stopRecording);
-		crosshair = (ImageButton) findViewById(R.id.crosshair);
+		startRecording = (ImageButton) getActivity().findViewById(R.id.startRecording);
+		stopRecording = (ImageButton) getActivity().findViewById(R.id.stopRecording);
+		crosshair = (ImageButton) getActivity().findViewById(R.id.crosshair);
 		crosshair.setAlpha(1);
-		headingView = (TextView) findViewById(R.id.heading);
+		headingView = (TextView) getActivity().findViewById(R.id.heading);
 		headingView.setText(headingValue);
-		headingViewOutline = (TextView) findViewById(R.id.headingOutline);
+		headingViewOutline = (TextView) getActivity().findViewById(R.id.headingOutline);
 		headingViewOutline.setText(headingValue);
 
 		// create sensors to be used for the compass
-		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+		mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
 		oSensorListener = new SensorEventListener() {
 			public void onAccuracyChanged(Sensor arg0, int arg1) {
 
@@ -148,7 +177,7 @@ public class CameraRecord extends Activity implements SensorEventListener,
 			public void onClick(View v) {
 				// display message
 				String message = "Sensors now recording.";
-				Toast.makeText(CameraRecord.this, message, Toast.LENGTH_SHORT)
+				Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT)
 						.show();
 				numOfReadings = 0;
 				
@@ -165,11 +194,11 @@ public class CameraRecord extends Activity implements SensorEventListener,
 			public void onClick(View v) {
 				// display message
 				String message = "Sensors STOPPED recroding.";
-				Toast.makeText(CameraRecord.this, message, Toast.LENGTH_SHORT)
+				Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT)
 						.show();
 				
 				// initialize activity change intent
-				Intent nextScreen = new Intent(getApplicationContext(),
+				Intent nextScreen = new Intent(getActivity().getApplicationContext(),
 						UserData.class);
 				
 				// stop timer
@@ -186,7 +215,6 @@ public class CameraRecord extends Activity implements SensorEventListener,
 				// start next activity
 				nextScreen.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(nextScreen);
-				finish();
 			}
 		});
 
@@ -204,14 +232,14 @@ public class CameraRecord extends Activity implements SensorEventListener,
 					fos.write(imageData);
 					fos.close();
 					String message = "Picture saved.";
-					Toast.makeText(CameraRecord.this, message,
+					Toast.makeText(getActivity(), message,
 							Toast.LENGTH_SHORT).show();
 					// restart camera preview
 					mCamera.startPreview();
 				} catch (Exception ex) {
 					ex.printStackTrace();
 					String message = "Save failed.";
-					Toast.makeText(CameraRecord.this, message,
+					Toast.makeText(getActivity(), message,
 							Toast.LENGTH_LONG).show();
 					// restart camera preview
 					mCamera.startPreview();
@@ -224,7 +252,7 @@ public class CameraRecord extends Activity implements SensorEventListener,
 
 			public void onClick(View v) {
 				String message = "Picture taken.";
-				Toast.makeText(CameraRecord.this, message, Toast.LENGTH_SHORT)
+				Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT)
 						.show();
 
 				mCamera.takePicture(null, null, pictureCallback);
@@ -235,9 +263,8 @@ public class CameraRecord extends Activity implements SensorEventListener,
 	}
 
 	@Override
-	protected void onPause() {
+	public void onPause() {
 		super.onPause();
-		finish();
 	}
 
 	// Create camera preview.
@@ -270,15 +297,6 @@ public class CameraRecord extends Activity implements SensorEventListener,
 		mCamera.release();
 	}
 
-	@Override
-	public void onBackPressed() {
-		Intent nextScreen = new Intent(getApplicationContext(),
-				MainActivity.class);
-		nextScreen.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-		startActivity(nextScreen);
-		finish();
-	}
-
 	/*
 	 * Update the accelerometer values from when they were changed by the
 	 * sensors.
@@ -291,7 +309,7 @@ public class CameraRecord extends Activity implements SensorEventListener,
 
 	// Unregister the listener used for the compass data
 	@Override
-	protected void onDestroy() {
+	public void onDestroy() {
 		super.onDestroy();
 		if (sensor != null) {
 			mSensorManager.unregisterListener(this);
@@ -328,8 +346,12 @@ public class CameraRecord extends Activity implements SensorEventListener,
 			pitchList.add(phonePitch);
 			xmppSender = new XMPPSender(dateString, phonePitch,
 					headingValue, numOfReadings);
-			xmppSender.createMessage();
-			xmppSender.sendMessage();
+			try{
+				xmppSender.createMessage();
+				xmppSender.sendMessage();
+			}catch(Exception ex){
+				ex.printStackTrace();
+			}
         }
     }
 	

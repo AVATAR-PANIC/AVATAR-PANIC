@@ -197,6 +197,7 @@ public class CameraView extends Fragment implements Callback {
 			public void onGlobalLayout() {
 				FragmentManager fragMgr = getFragmentManager();
 				fragWidth = fragMgr.findFragmentByTag("AUG_MENU").getView().getWidth();
+				fragMgr.findFragmentByTag("AVATAR_AUGMENTED_REALITY").getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
 			}
 			
 		});

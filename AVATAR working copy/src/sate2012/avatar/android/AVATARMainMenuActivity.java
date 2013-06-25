@@ -109,10 +109,10 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 			//getActionBar().hide();
 			fragMgr = getFragmentManager();
 			xact = fragMgr.beginTransaction();
-			if(fragMgr.findFragmentByTag("AUGMENTED_REALITY") != null){
-				xact.replace(R.id.container, fragMgr.findFragmentByTag("AUGMENTED_REALITY"), "AUGMENTED_REALITY");
+			if(fragMgr.findFragmentByTag("AVATAR_AUGMENTED_REALITY") != null){
+				xact.replace(R.id.container, fragMgr.findFragmentByTag("AVATAR_AUGMENTED_REALITY"), "AVATAR_AUGMENTED_REALITY");
 			}else{
-				xact.replace(R.id.container, new CameraView(), "AUGMENTED_REALITY");
+				xact.replace(R.id.container, new CameraView(), "AVATAR_AUGMENTED_REALITY");
 			}
 			if(fragMgr.findFragmentByTag("AUG_MENU") != null){
 				xact.replace(R.id.menu, fragMgr.findFragmentByTag("AUG_MENU"));
