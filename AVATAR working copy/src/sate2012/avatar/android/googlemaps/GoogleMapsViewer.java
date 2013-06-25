@@ -465,7 +465,7 @@ OnInfoWindowClickListener, OnPreparedListener{
 	public View getInfoContents(Marker marker) {
 		View v = null;
 		try{
-		v = getActivity().getLayoutInflater().inflate(R.layout.marker_contents, null);
+		v = getActivity().getLayoutInflater().inflate(R.layout.avatar_marker_contents, null);
 
 		// Getting reference to the TextView to set title
 		TextView title = (TextView) v.findViewById(R.id.marker_title);

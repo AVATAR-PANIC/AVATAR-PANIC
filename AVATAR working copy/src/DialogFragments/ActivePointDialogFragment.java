@@ -130,7 +130,7 @@ public class ActivePointDialogFragment extends DialogFragment {
 		public View getView(final int position, View convertView, ViewGroup parent){
 			
 			if(convertView == null){
-				convertView = mInflater.inflate(R.layout.list_view_points_row, null);
+				convertView = mInflater.inflate(R.layout.dialog_list_view_points_row, null);
 			}
 			
 			TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);

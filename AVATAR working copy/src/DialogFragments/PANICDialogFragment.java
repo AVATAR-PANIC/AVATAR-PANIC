@@ -26,7 +26,7 @@ public class PANICDialogFragment extends DialogFragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstance){
-		View view = inflater.inflate(R.layout.panic_dialog_layout, container, false);
+		View view = inflater.inflate(R.layout.dialog_panic_layout, container, false);
 		
 		getDialog().setTitle("PANIC!");
 		

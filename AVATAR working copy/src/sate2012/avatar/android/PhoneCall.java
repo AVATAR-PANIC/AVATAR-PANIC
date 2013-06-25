@@ -25,7 +25,7 @@ public class PhoneCall extends Fragment implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		super.onCreateView(inflater, container, savedInstanceState);
-		return inflater.inflate(R.layout.phone_call, container, false);
+		return inflater.inflate(R.layout.avatar_phone_call, container, false);
 	}
 	
 	@Override

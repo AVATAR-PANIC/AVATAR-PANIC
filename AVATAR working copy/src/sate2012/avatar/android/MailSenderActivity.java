@@ -115,7 +115,7 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 			} catch (Exception e) {
 				System.out.println("EXCEPTION: " + e);
 				e.printStackTrace();
-				setContentView(R.layout.send_failed);
+				setContentView(R.layout.avatar_send_failed);
 			}
 			break;
 		case (R.id.Return):

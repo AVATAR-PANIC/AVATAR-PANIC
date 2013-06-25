@@ -25,7 +25,7 @@ public class Photographer extends Activity implements View.OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.photo);
+		setContentView(R.layout.avatar_photo);
 		iv = (ImageView) findViewById(R.id.ivReturnedPicture);
 		ib = (ImageButton) findViewById(R.id.ibTakePic);
 		ib.setOnClickListener(this);
