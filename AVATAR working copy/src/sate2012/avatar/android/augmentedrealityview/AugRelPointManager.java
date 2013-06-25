@@ -2,6 +2,7 @@ package sate2012.avatar.android.augmentedrealityview;
 
 import gupta.ashutosh.avatar.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import sate2012.avatar.android.googlemaps.MarkerPlus;
@@ -24,15 +25,19 @@ import android.util.Log;
  *
  */
 
-class AugRelPointManager {
+public class AugRelPointManager implements Serializable {
 
-	final CameraView outer;
-	protected ArrayList<MarkerPlus> onPoints;
-	Paint paint;
+	final transient CameraView outer;
+	private ArrayList<MarkerPlus> onPoints;
+	private ArrayList<MarkerPlus> allPoints;
+	private ArrayList<MarkerPlus> activePoints;
+	transient Paint paint;
 	
 	public AugRelPointManager(CameraView outer) {
 		this.outer = outer;
 		onPoints = new ArrayList<MarkerPlus>();
+		allPoints = new ArrayList<MarkerPlus>();
+		activePoints = new ArrayList<MarkerPlus>();
 		paint = new Paint();
 	}
 	
@@ -55,6 +60,7 @@ class AugRelPointManager {
 		this.clearPoints();
 		if(outer.markerArray != null)
 		{
+			allPoints = outer.markerArray;
 			for(MarkerPlus marker: outer.markerArray){
 				
 				Location gpLocation = new Location(LocationManager.NETWORK_PROVIDER);
@@ -72,6 +78,13 @@ class AugRelPointManager {
 	
 	public void setClosePoints(){
 		this.setClosePoints(16000);
+	}
+	
+	public void setClosePointsFromMiles(int miles){
+		
+		int meters = (int)(miles*1609.34);//conversion factor
+		setClosePoints(meters);
+		
 	}
 	
 	private void drawOnPoint(Canvas canvas, int number, int total, MarkerPlus markerPlus){
@@ -93,7 +106,7 @@ class AugRelPointManager {
 			this.setClosePoints();
 		}
 		for(MarkerPlus markerPlus: outer.drawPointList){
-			Log.i("TestForDate",markerPlus.getDate()+"END");
+			//Log.i("TestForDate",markerPlus.getDate()+"END");
 			Location gpLocation = new Location(LocationManager.NETWORK_PROVIDER);
 			gpLocation.setLatitude(markerPlus.getLatitude());
 			gpLocation.setLongitude(markerPlus.getLongitude());
@@ -115,9 +128,22 @@ class AugRelPointManager {
 		}
 	}
 	
+	public ArrayList<MarkerPlus> getAllPoints(){
+		return allPoints;
+	}
+	
+	public void setActivePoints(ArrayList<MarkerPlus> tempArray){
+		this.outer.drawPointList = tempArray;
+		this.activePoints = tempArray;
+	}
+	
+	public ArrayList<MarkerPlus> getActivePoints(){
+		return this.activePoints;
+	}
+	
 	public void drawPoint(MarkerPlus marker, Canvas canvas, float myBearing, float myPitch){
 		
-		
+		System.out.println(outer.fragWidth);
 		//For determining which icon to draw
 		Bitmap pointIcon;
 		
