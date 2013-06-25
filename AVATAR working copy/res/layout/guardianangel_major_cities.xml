@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical" >
+
+    <ScrollView
+       
+        android:id="@+id/MajorCityScrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/background" >
+
+        <LinearLayout
+           
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:scrollbars="vertical" >
+
+            <RadioGroup
+                android:id="@+id/radioVolume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <RadioButton
+                    android:id="@+id/NewYorkCity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NewYork City, New York"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/Chicago"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chicago, Illinois"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/Houston"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Houston, Texas"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/Philadelphia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Philadelphia, Pennsylvania"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/Phoenix"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phoenix, Arizona"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/Boston"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Boston, Massachusetts"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/Denver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Denver, Colorado"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/WashingtonDC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Washington D.C., USA"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/Miami"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Miami, Florida"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/Indianapolis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Indianapolis, Indiana"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/Columbus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Columbus, Ohio"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/Memphis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Memphis, Tennessee"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/OklahomaCity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Oklahoma City, Oklahoma"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/LasVegas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Las Vegas, Nevada"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/Charlotte"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Charlotte, North Carolina"
+                    android:textColor="@color/white" />
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/major_cities_ok"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Okay" />
+
+            <Button
+                android:id="@+id/major_cities_cancel"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Cancel" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

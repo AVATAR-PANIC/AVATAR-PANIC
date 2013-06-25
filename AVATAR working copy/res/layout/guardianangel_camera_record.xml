@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:keepScreenOn="true"
+    android:orientation="horizontal" >
+
+    <SurfaceView
+        android:id="@+id/surface_camera"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true" >
+    </SurfaceView>
+
+    <ImageButton
+        android:id="@+id/crosshair"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/crosshair"
+        android:contentDescription="takePicture"
+        android:src="@drawable/crosshair" >
+    </ImageButton>
+
+    <ImageButton
+        android:id="@+id/stopRecording"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/stop_recording"
+        android:contentDescription="stopRecording" />
+
+    <ImageButton
+        android:id="@+id/startRecording"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/start_recording"
+        android:contentDescription="startRecording"/>
+    <TextView
+        android:id="@+id/heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="0.0"
+        android:textSize="30dip"
+        android:textStyle="bold"
+        android:textColor="#ffffffff" />
+    <TextView
+        android:id="@+id/headingOutline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="0.0"
+        android:textSize="28dip"
+        android:textStyle="bold"
+        android:textColor="#00000000" />
+
+</RelativeLayout>

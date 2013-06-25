@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:background="@color/background"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/t1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/pintemp"
+        android:maxLines="1"
+        android:text="@string/sensor1"
+        android:textSize="40dp"
+        android:typeface="serif" />
+
+    <TextView
+        android:id="@+id/t3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/pinluminosity"
+        android:maxLines="1"
+        android:text="@string/sensor3"
+        android:textSize="40dp"
+        android:typeface="serif" />
+
+    <TextView
+        android:id="@+id/t4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/pinmethane"
+        android:maxLines="1"
+        android:text="@string/sensor4"
+        android:textSize="40dp"
+        android:typeface="serif" />
+
+    <TextView
+        android:id="@+id/t5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/pinpressure"
+        android:maxLines="1"
+        android:text="@string/sensor5"
+        android:textSize="40dp"
+        android:typeface="serif" />
+
+    <TextView
+        android:id="@+id/t6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/pinco"
+        android:maxLines="1"
+        android:text="@string/sensor6"
+        android:textSize="40dp"
+        android:typeface="serif" />
+
+    <TextView
+        android:id="@+id/t7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/pincotwo"
+        android:maxLines="1"
+        android:text="@string/sensor7"
+        android:textSize="40dp"
+        android:typeface="serif" />
+
+    <TextView
+        android:id="@+id/t8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/pinhumidity"
+        android:maxLines="1"
+        android:text="@string/sensor8"
+        android:textSize="40dp"
+        android:typeface="serif" />
+
+    <TextView
+        android:id="@+id/t9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/pinradiation"
+        android:maxLines="1"
+        android:text="@string/sensor9"
+        android:textSize="40dp"
+        android:typeface="serif" />
+
+    <TextView
+        android:id="@+id/tlast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/pinimage"
+        android:maxLines="1"
+        android:text="@string/sensorlast"
+        android:textSize="40dp"
+        android:typeface="serif" />
+
+</LinearLayout>
