@@ -53,7 +53,7 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 			}
 		}
 		try{
-			view = inflater.inflate(R.layout.avatar_googlemap_viewer, container, false);
+			view = inflater.inflate(R.layout.eagle_eye_map_viewer, container, false);
 		}catch(InflateException e){
 			
 		}
@@ -87,7 +87,7 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 	public void onStart() {
 		super.onStart();
 		MapFragment mapfrag = ((MapFragment) getFragmentManager()
-				.findFragmentById(R.id.googlemap));
+				.findFragmentById(R.id.eagle_eye_map));
 		setHasOptionsMenu(true);
 		map = mapfrag.getMap();
 		Bundle b = getArguments();
