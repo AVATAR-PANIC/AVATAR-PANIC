@@ -161,13 +161,12 @@ public class AugRelPointManager implements Serializable {
 		gpLocation.setLongitude(marker.getLongitude());
 		gpLocation.setAltitude(marker.getAltitude());
 		String name = marker.getName();
-
 		// All of these angles are in Radians.
 		double gpBearing = outer.myLocation.bearingTo(gpLocation) * Math.PI
 				/ 180.0;
 		double gpAlt = gpLocation.getAltitude();
-		double myPitchA = Math.atan((myAlt - gpAlt)
-				/ outer.myLocation.distanceTo(gpLocation));
+		double myPitchA = Math.atan2((myAlt - gpAlt)
+				, outer.myLocation.distanceTo(gpLocation));
 		double dist = outer.myLocation.distanceTo(gpLocation);
 		// This checks where the point is in relation to the tablets
 		// location and only draws it in the correct place.
