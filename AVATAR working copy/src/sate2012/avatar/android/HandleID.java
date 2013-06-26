@@ -33,7 +33,7 @@ public class HandleID extends AsyncTask<Void, Void, Boolean> {
 	private String FILENAME = "AVATAR_UNIQUE_ID";
 	private Context context;
 	public static String ID;
-	public static String Tag = "NONE";
+	public static String Tag;
 	
 	/**
 	 * Need context for writing data to the device
@@ -72,7 +72,11 @@ public class HandleID extends AsyncTask<Void, Void, Boolean> {
 					}
 					System.out.println(sb);
 					HandleID.ID = sb.substring(0, sb.indexOf(" "));
-					HandleID.Tag = "NONE";
+					HandleID.Tag = sb.substring(sb.indexOf(" ")+1,sb.length());
+					
+					if(HandleID.ID.equals("Null")){
+						((File) context.getFileStreamPath(FILENAME)).delete();
+					}
 					in.close();
 					inputStreamReader.close();
 					bufferedReader.close();
@@ -89,9 +93,11 @@ public class HandleID extends AsyncTask<Void, Void, Boolean> {
 						Scanner reader = new Scanner(response.getEntity().getContent());
 						
 						HandleID.ID = reader.next();
+						HandleID.Tag = "NONE";
 						
-						FileOutputStream fos = context.openFileOutput(FILENAME, Context.MODE_PRIVATE);
+						FileOutputStream fos = context.openFileOutput(FILENAME, Context.MODE_APPEND);
 						fos.write((HandleID.ID + " " + HandleID.Tag).getBytes());
+						fos.flush();
 						fos.close();
 						reader.close();
 						
