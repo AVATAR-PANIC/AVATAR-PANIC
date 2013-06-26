@@ -107,7 +107,7 @@ public class AvatarMapSettingsDialogFragment extends DialogFragment {
 					
 					Toast.makeText(getActivity(), "Tracking User. . .", Toast.LENGTH_SHORT).show();
 					map.map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(adapter.getCheckedItems().get(0).getLatitude()
-							, adapter.getCheckedItems().get(0).getLongitude()), 15));
+							, adapter.getCheckedItems().get(0).getLongitude()), 19));
 					
 				}
 				
