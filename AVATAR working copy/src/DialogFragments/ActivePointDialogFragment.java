@@ -25,6 +25,14 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
+/**
+ * 
+ * @author Garrett - emrickgarrett@gmail.com
+ * 
+ * This class is a dialog fragment that is used to select the active
+ * points in the AVATAR augmented Reality. 
+ *
+ */
 public class ActivePointDialogFragment extends DialogFragment {
 
 	ListView list;
@@ -80,6 +88,16 @@ public class ActivePointDialogFragment extends DialogFragment {
 		return view;
 	}
 	
+	/**
+	 * 
+	 * @author Garrett -emrickgarrett@gmail.com
+	 *
+	 *
+	 *This class is used as an adapter for a ListView that we need in order
+	 *to display the points correctly. Normally, Android re-uses views and will
+	 *highlight the wrong ones upon scrolling and causes a lot of problems. This fixes
+	 *that problem.
+	 */
 	class CustomArrayAdapter extends BaseAdapter{
 
 		Context mContext;
@@ -164,6 +182,9 @@ public class ActivePointDialogFragment extends DialogFragment {
 		
 	}
 	
+	/**
+	 * If there are no points, don't even use the dialog. Cancel it and alert the user.
+	 */
 	@Override
 	public void onResume(){
 		super.onResume();

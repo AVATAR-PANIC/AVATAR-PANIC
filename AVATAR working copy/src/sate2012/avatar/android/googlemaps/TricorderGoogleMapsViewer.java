@@ -50,6 +50,13 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 
+/**
+ * 
+ * @author Garrett - emrickgarrett@gmail.com
+ * 
+ * This class is used for the implementation of the Tricorder Google Maps.
+ *
+ */
 public class TricorderGoogleMapsViewer extends Fragment implements InfoWindowAdapter, OnCameraChangeListener, 
 OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongClickListener {
 
@@ -102,11 +109,18 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 		return view;
 	}
 	
+	/**
+	 * Used to set the Menu for the Options menu
+	 */
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
 		inflater.inflate(R.menu.tricorder_map_menu, menu);
 	}
 	
+	/**
+	 * When an options item is selected, only used Map Settings so we don't need a switch
+	 * statement.
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		FragmentManager fragMgr;
@@ -129,7 +143,7 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 				.findFragmentById(R.id.tricorder_googlemap));
 		setHasOptionsMenu(true);
 		map = mapfrag.getMap();
-		Bundle b = getArguments();
+		Bundle b = getArguments(); // The map type is sent from the bundle.
 		currentMapType = b.getInt("MAP_TYPE");
 		map.setMapType(currentMapType);
 		
@@ -144,6 +158,7 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
         map.setMyLocationEnabled(true);
         map.setOnInfoWindowClickListener(this);
         
+        //Loads preferences set from the settings part of Tricorder
 		if (!loadPreferences("firsttime").equalsIgnoreCase("false")) {
 			savePreferences("timefilter", "false");
 			savePreferences("firsttime", "false");
@@ -155,9 +170,12 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
         
 		mapViewer = this;
 		
+		//Starts downloading from the online database, 
+		//Can't use in current state since we don't have the sensors.
         database = new PHPScriptQuery();
         new DownloadFilesTask().execute();
         
+        //Handler that listens for a callback message.
         h = new Handler() {
 			public void handleMessage(Message msg) {
 				super.handleMessage(msg);
@@ -171,12 +189,18 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 		
 	}
 	
+	/**
+	 * Adds data to the marker array, in it's current state we don't have the sensor
+	 * so I have set it up to generate random data at the moment; - Garrett
+	 * @param currentData : The data to be added to the database.
+	 */
 	public void addData(ArrayList<TricorderMarkerPlus> currentData){
 		
 		//For testing of the Map
 		generateData();
 		drawMarkers();
 		
+		//If the data size is zero, it's still loading.
 		if (currentData.size() == 0) {
 			try{
 			Toast.makeText(getActivity(), "Loading Data...Please Wait",
@@ -188,12 +212,13 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 			}
 		}
 		
+		//Used to add the markers depending on their sensor types.
 		for (int i = 0; i < currentData.size(); i++) {
 
 			TricorderMarkerPlus sensorItem = currentData.get(i);
 			String sensorType = sensorItem.getType();
 			//Not sure if this was correct
-			System.out.println(sensorType);
+			//System.out.println(sensorType);
 
 			if (sensorType.equalsIgnoreCase("Temperature")) {
 				sensorItem.setImageID(R.drawable.pintemp);
@@ -228,14 +253,19 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 			}
 		}
 		
+		//Draw the markers.
 		drawMarkers();
 		
 	}
 	
+	/**
+	 * Class used to draw the markers on the map.
+	 */
 	public void drawMarkers(){
 		
-		System.out.println("DRAWING MARKERS! YOUR ARRAY SIZE IS: " + markers.size());
-		
+		//System.out.println("DRAWING MARKERS! YOUR ARRAY SIZE IS: " + markers.size());
+		map.clear();
+		//If the markers size isn't 0, add the markers.
 		if(markers.size() != 0){
 			for(int i = 0; i < markers.size(); i ++){
 				map.addMarker(markers.get(i).getMarkerOptions());
@@ -243,6 +273,10 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 		}
 	}
 	
+	/**
+	 * Random data generator, when you have the sensor you shouldn't use this.
+	 * This is simply used for testing purposes.
+	 */
 	public void generateData(){
 		Random r = new Random();
 		int size = r.nextInt(20)+1;
@@ -357,9 +391,13 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 		super.onResume();
 	}
 	
+	/**
+	 * Used for the buttons on the Tricorder Map.
+	 * @param v : The view.
+	 */
 	public void tricorderOnClick(View v){
 		Intent i;
-		System.out.println("CLICK");
+		//System.out.println("CLICK");
 		
 		switch(v.getId()){
 		
@@ -371,7 +409,7 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 			i = new Intent("tricorder.tecedge.Displaym");
 			startActivity(i);
 			break;
-		case R.id.tri_menu_refresh:
+		case R.id.tri_menu_refresh: // This currently generates random data.
 			addData(new ArrayList<TricorderMarkerPlus>());
 			//i = new Intent("tricorder.tecedge.Refresh");
 			//startActivity(i);
@@ -381,6 +419,11 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 		}
 	}
 
+	/**
+	 * Loads the users preferences. 
+	 * @param key : The key for the preferences file.
+	 * @return : The save.
+	 */
 	private String loadPreferences(String key) {
 		String save;
 		try{
@@ -394,6 +437,11 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 		return save;
 	}
 	
+	/**
+	 * Saves the users preferences
+	 * @param key : The key for the file.
+	 * @param value : The prefences to be saved.
+	 */
 	private void savePreferences(String key, String value) {
 		SharedPreferences preferences = getActivity().getSharedPreferences(
 				Settings.PREF_FILE_NAME, getActivity().MODE_PRIVATE);
@@ -403,6 +451,13 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 	}
 	
 
+	/**
+	 * Downloads the data for the sensors asynchronously. Only useful when a 
+	 * Arduino machine equipped with sensors is active and sending data to the 
+	 * database.
+	 * @author Garrett - emrickgarrett@gmail.com
+	 *
+	 */
 	public class DownloadFilesTask extends AsyncTask<Context, Integer, Integer> {
 
 		private ArrayList<TricorderMarkerPlus> serverData;
@@ -451,6 +506,11 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 		initializing = string;
 	};
 
+	/**
+	 * Don't use, import from old project that we may implement some day.
+	 * @author Garrett - emrickgarrett@gmail.com
+	 *
+	 */
 	class TouchOver extends Overlay {
 		public boolean onTouchEvent(MotionEvent e, MapView m) {
 			if (e.getAction() == MotionEvent.ACTION_DOWN) {

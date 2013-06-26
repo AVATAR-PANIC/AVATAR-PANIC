@@ -31,6 +31,12 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
+/**
+ * 
+ * @author Garrett - emrickgarrett@gmail.com
+ *
+ *This class is used for the implementation of Eagle Eye.
+ */
 public class EagleEyeGoogleMapsViewer extends Fragment implements InfoWindowAdapter, 
 OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongClickListener {
 

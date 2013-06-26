@@ -57,6 +57,13 @@ import com.guardian_angel.uav_tracker.Map.Coordinates;
 import com.guardian_angel.uav_tracker.NotificationService;
 import com.guardian_angel.uav_tracker.XMPPSender;
 
+/**
+ * 
+ * @author Garrett - emrickgarrett@gmail.com
+ * 
+ * This class is used for the implementation of the Guardian Angel Google Maps
+ *
+ */
 public class GuardianAngelGoogleMapsViewer extends Fragment implements OnMapLongClickListener, InfoWindowAdapter, 
 OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener {
 
@@ -136,7 +143,7 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 		MapFragment mapfrag = ((MapFragment) getFragmentManager()
 				.findFragmentById(R.id.guardian_angel_googlemap));
 		map = mapfrag.getMap();
-		Bundle b = getArguments();
+		Bundle b = getArguments(); //Gets the map type from the bundle
 		currentMapType = b.getInt("MAP_TYPE");
 		map.setMapType(currentMapType);
 		//Set the Maps listeners
@@ -252,6 +259,10 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
         
 	}
 	
+	/**
+	 * Draw the markers for the map, currently doesn't use.
+	 * This app instead draws lines as part of the flight path.
+	 */
 	public void drawMarkers(){
 		
 		if(markers!= null){
@@ -263,6 +274,11 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 		
 	}
 	
+	/**
+	 * Zooms to a city by using it's latitude and longitude
+	 * @param lat : The latitude
+	 * @param lon : The longitude
+	 */
 	public void zoomToCity(double lat, double lon) {
 		Drawable offlineMapDrawable = this.getResources().getDrawable(
 				R.drawable.placeholder);
@@ -274,7 +290,7 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 		switchLocation = true;
 	}
 	
-	/*  
+	/**  
 	 * The menu opens up a dialog that list the US major cities
 	 */
 	@Override
@@ -322,6 +338,12 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 		return false;
 	}
 
+	/**
+	 * If the map was clicked once setting the UAV direction, the flight path
+	 * will then be drawn through a line that is created. The point is the ending
+	 * destination of the UAV.
+	 * @param point : The ending position of the UAV.
+	 */
 	@Override
 	public void onMapClick(LatLng point) {
 		if(settingUAVDirection){
@@ -357,14 +379,17 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 		return null;
 	}
 
+	/**
+	 * When the user does a long click, start planning the flight path of the UAV
+	 * if the user has selected the option to plot. 
+	 * @param point: The position where the user clicked, starting destination of UAV.
+	 */
 	@Override
 	public void onMapLongClick(LatLng point) {
 		// Takes the coordinates of the spot tapped, adds them to an array,
 		// and displays the point on the screen
 
 		if ((canPlot && markers.size() < tapNum) && !settingUAVDirection) {
-
-			LatLng usersPlot = point;
 			
 			UAVMarkers.add(new MarkerPlus(point));
 
@@ -442,7 +467,7 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 		}
 
 
-		/*
+		/**
 		 * Draws the map view on the screen with the geopoint
 		 * overlays
 		 */
@@ -482,7 +507,7 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 
 	}
 
-	/* 
+	/** 
 	 * Draws wide red line (Flight Path / with error) and 
 	 * creates the overlays that are displayed
 	 */
@@ -501,7 +526,7 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 			array = a;
 		}
 
-		/* 
+		/**
 		 * Draws wide red line (Flight Path / with error) and 
 		 * creates the overlays that are displayed
 		 */

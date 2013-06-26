@@ -223,6 +223,7 @@ public class CameraRecord extends Fragment implements SensorEventListener,
 					File fileDir = new File(Environment
 							.getExternalStorageDirectory().getPath()
 							+ "/UAV_T/Images/");
+					System.out.println(fileDir);
 					fileDir.mkdirs();
 					// Create a File object for the output file
 					File outputFile = new File(fileDir, (filePath + ".jpg"));

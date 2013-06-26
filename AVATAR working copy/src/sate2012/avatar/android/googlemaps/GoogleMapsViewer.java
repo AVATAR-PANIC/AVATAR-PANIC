@@ -4,14 +4,17 @@ import gupta.ashutosh.avatar.R;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -19,7 +22,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import sate2012.avatar.android.AVATARMainMenuActivity;
 import sate2012.avatar.android.Constants;
+import sate2012.avatar.android.HandleID;
 import sate2012.avatar.android.UploadMedia;
 import sate2012.avatar.android.VideoPlayer;
 import DialogFragments.MapSettingsDialogFragment;
@@ -27,7 +32,11 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -44,8 +53,11 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
+import android.media.RingtoneManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.util.JsonReader;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -56,7 +68,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
+import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
@@ -82,23 +99,19 @@ import com.google.android.gms.maps.model.MarkerOptions;
  * The actual Google Map is a fragment, created inside the XML
  *
  */
-public class GoogleMapsViewer extends Fragment implements LocationListener,
+public class GoogleMapsViewer extends Fragment implements
 InfoWindowAdapter, OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, 
-OnInfoWindowClickListener, OnPreparedListener{
+OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, ConnectionCallbacks{
 
 	//For the Map settings
 	private int currentMapType = GoogleMap.MAP_TYPE_NORMAL;
 	private int currentMap = 1; // The ID for the AVATAR map
 	
 	public GoogleMap map;
-	public Location myLocation = new Location(LocationManager.NETWORK_PROVIDER);
-	public Location myCurrentLocation;
 	private double myAltitude;
 	private double myLatitude;
 	private double myLongitude;
 	private static float lastKnownZoomLevel;
-	private static SensorManager mySensorManager;
-	private boolean sensorrunning;
 	private boolean hasMapCentered = false;
 	private ArrayList<MarkerPlus> markerArray = new ArrayList<MarkerPlus>();// = MarkerMaker.makeMarkers();
 	private Marker activeMarker = null;
@@ -110,6 +123,10 @@ OnInfoWindowClickListener, OnPreparedListener{
 	private MarkerPlus myMarkerLocation;
 	private PointDeleter pointDeleter;
 	public static final int PHONE_CALL = 77;
+	private LocationClient myLocationClient;
+	public Location myLocation;
+	private boolean connectedGooglePlay = false;
+	private boolean hasAlerted = false;
 
 	/**
 	 * When the Fragment View is created, this is called
@@ -157,15 +174,25 @@ OnInfoWindowClickListener, OnPreparedListener{
 	@Override
 	public void onStart() {
 		super.onStart();
+		
+		AsyncTask<Void,Void,Boolean> HandleID = new HandleID(getActivity());
+		HandleID.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[])null);
+		
+		
 		MapFragment mapfrag = ((MapFragment) getFragmentManager()
 				.findFragmentById(R.id.googlemap));
 		setHasOptionsMenu(true);
+		hasAlerted = false;
 		map = mapfrag.getMap();
 		Bundle b = getArguments();
 		currentMapType = b.getInt("MAP_TYPE");
 		map.setMapType(currentMapType);
 		new HttpThread(this).execute("");
 		final GoogleMapsViewer activity = this;
+		map.setMyLocationEnabled(true);
+		myLocationClient = new LocationClient(getActivity(), this, this);
+		myLocationClient.connect();
+		connectedGooglePlay = false;
 		
 		//Set the Maps listeners
 		map.setOnMapLongClickListener(new Listener());
@@ -173,7 +200,6 @@ OnInfoWindowClickListener, OnPreparedListener{
 		map.setOnCameraChangeListener(this);
 		map.setOnMapClickListener(this);
 		map.setOnMarkerClickListener(this);
-        map.setMyLocationEnabled(true);
         map.setOnInfoWindowClickListener(this);
         
         drawMarkers(true);
@@ -185,7 +211,6 @@ OnInfoWindowClickListener, OnPreparedListener{
 		//This timer will run a thread to connect to the server every minute
 		Timer httpTimer = new Timer();
 		//Set the schedule function and rate
-		this.placeLocation();
 		httpTimer.scheduleAtFixedRate(new TimerTask() {
 
 		    @Override
@@ -197,24 +222,35 @@ OnInfoWindowClickListener, OnPreparedListener{
 		//Set how long before to start calling the TimerTask (in milliseconds)
 		30000,
 		//Set the amount of time between each execution (in milliseconds)
-		30000);
+		60000);
 		
-		this.placeLocation();
-		
+	}
+	
+	@Override
+	public void onStop(){
+		super.onStop();
+		myLocationClient.disconnect();
+		connectedGooglePlay = false;
+		//hasAlerted = false;
 	}
 	
 	@Override
 	public void onPause(){
 		super.onPause();
+		myLocationClient.disconnect();
+		connectedGooglePlay = false;
 	}
 	
 	public void onResume(){
 		super.onResume();
+		myLocationClient.connect();
+		connectedGooglePlay = false;
 	}
 	
 	@Override
 	public void onDetach(){
 		super.onDetach();
+		//hasAlerted = false;
 	}
 	
 	/**
@@ -333,62 +369,33 @@ OnInfoWindowClickListener, OnPreparedListener{
 		this.activeMarker = marker;
 		return false;
 	}
-
-	/**
-	 * Method called whenever the user's location is changed
-	 * 
-	 * @param loc
-	 *            : New location of the user.
-	 */
-	public void onLocationChanged(Location loc) {
-
-		// Debugging Tools
-		// String TAG = "Testing: ";
-		//
-		// Log.d(TAG, "Latitude: " + String.valueOf(myLatitude));
-		// Log.d(TAG, "Longitude: " + String.valueOf(myLongitude));
-		// Log.d(TAG, "Altitude: " + String.valueOf(myAltitude));
-		
-		// System.out.println("HEY");
-		System.out.println("HEY");
-		this.placeLocation();
-		
-
-		if (!hasMapCentered) {
-			map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition
-					.fromLatLngZoom(new LatLng(myLocation.getLatitude(),
-							myLocation.getLongitude()),
-							map.getMaxZoomLevel() / 3)));
-			hasMapCentered = true;
-		}
-	}
 	
 	public void placeLocation(){
 		Log.i("TestLocationPoint", "CALLED");
-		Location loc = map.getMyLocation();
-		if(loc != null){
+		Location loc = myLocation;
+		if(loc != null && HandleID.ID != null){
 			myLatitude = loc.getLatitude();
 			myLongitude = loc.getLongitude();
 			myAltitude = loc.getAltitude();
 			
-			String myID = android.provider.Settings.Secure.ANDROID_ID;
+			String myID = HandleID.ID;
 			MarkerPlus tempPoint = new MarkerPlus(myLatitude, myLongitude, myAltitude);
-			if(myMarkerLocation != null)
-			{
-				markerArray.remove(myMarkerLocation);
-				//pointDeleter.execute(myMarkerLocation.getDate());
-			}
-			tempPoint.setName(myID + "'s location");
-			tempPoint.setInfo("User Location Point");
-			map.addMarker(new MarkerOptions().position(new LatLng(myLatitude,
-					myLongitude)));
-			markerArray.add(tempPoint);
-			myMarkerLocation = tempPoint;
-			drawMarkers(true); 
-			UploadMedia.HttpSender httpSender = new UploadMedia.HttpSender();
-			//httpSender.execute(tempPoint.getName(), tempPoint.getLatitude() + "",
-			//		tempPoint.getLongitude() + "", "0", myID + "'s location");
 			
+			if(HandleID.Tag.equals("NONE")){
+				tempPoint.setName(myID + "'s location");
+				tempPoint.setInfo("User Location Point");
+			}else{
+				tempPoint.setName(HandleID.Tag + "'s location");
+				tempPoint.setInfo(HandleID.Tag + "'s Location Point");
+			}
+			drawMarkers(true); 
+
+			UploadMedia.HttpSender httpSender = new UploadMedia.HttpSender();
+			httpSender.execute(tempPoint.getName(), tempPoint.getLatitude() + "",
+					tempPoint.getLongitude() + "", tempPoint.getAltitude() + "", myID + " is the ID of this user.");
+			
+		}else{
+			new HandleID(getActivity()).execute();
 		}
 	}
 	
@@ -435,21 +442,6 @@ OnInfoWindowClickListener, OnPreparedListener{
 		public void onSensorChanged(SensorEvent event) {
 		}
 	};
-
-	@Override
-	public void onProviderDisabled(String arg0) {
-
-	}
-
-	@Override
-	public void onProviderEnabled(String provider) {
-
-	}
-
-	@Override
-	public void onStatusChanged(String provider, int status, Bundle extras) {
-
-	}
 
 	// Info Window Adapter implemented methods
 
@@ -583,7 +575,46 @@ OnInfoWindowClickListener, OnPreparedListener{
 			markerArray = new ArrayList<MarkerPlus>();
 		}
 		this.markerArray = array;
+		System.out.println("It's been set!");
+		checkForNearbyEmergencies();
+		
+		//Delete user point
+
+		if(connectedGooglePlay){
+			myLocation = myLocationClient.getLastLocation();
+			//placeLocation();
+			//Put Point Deleter
+			pointDeleter = new PointDeleter();
+			pointDeleter.execute(HandleID.ID + " is the ID of this user.");
+		}
+
 		//System.out.println("Set the Array!");
+	}
+	
+	public void checkForNearbyEmergencies(){
+		System.out.println("Checking");
+		
+		for(int i = 0; i < markerArray.size(); i++){
+			if(markerArray.get(i).getName().equals("EMERGENCY") && myLocation != null){
+				if(markerArray.get(i).getDistance(new MarkerPlus(myLocation.getLatitude(),myLocation.getLongitude())) < 20 ){
+					System.out.println("EMERGENCY IS NEAR");
+					NotificationCompat.Builder mBuilder;
+					mBuilder = new NotificationCompat.Builder(getActivity())
+					.setSmallIcon(R.drawable.emergency)
+					.setContentTitle("EMERGENCY")
+					.setContentText("There is an Emergency Present near your location!")
+					.setContentIntent(PendingIntent.getActivity(getActivity(),0,new Intent(getActivity(), AVATARMainMenuActivity.class), 0));
+					
+					if(!hasAlerted){
+						mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+						hasAlerted = true;
+					}
+					
+					NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+					notificationManager.notify(1, mBuilder.build());
+				}
+			}
+		}
 	}
 	
 	/**
@@ -775,16 +806,26 @@ OnInfoWindowClickListener, OnPreparedListener{
 		protected Boolean doInBackground(String... params) {
 			Boolean deleted = new Boolean(false);
 			// TODO Auto-generated method stub
+			System.out.println("DELETING");
 			int tries = 0;
 			while(tries < 3){
 				try {
 					List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-					nameValuePairs.add(new BasicNameValuePair("date", params[0]));
+					nameValuePairs.add(new BasicNameValuePair("id", params[0]));
+					System.out.println(params[0]);
 					System.out.println("TRYING TO CONNECT");
 					HttpClient client = new DefaultHttpClient();
-					HttpPost post = new HttpPost(new URI("http://" + Constants.SERVER_ADDRESS + "/deletePoint.php"));
+					HttpPost post = new HttpPost(new URI("http://" + Constants.SERVER_ADDRESS + "/deleteUserPoint.php"));
 					post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-					client.execute(post);
+					HttpResponse response = client.execute(post);
+					Scanner reader = new Scanner(new InputStreamReader(response.getEntity().getContent()));
+					
+				
+					while(reader.hasNext()){
+						System.out.println(reader.next());
+					}
+					reader.close();
+					deleted = true;
 					//HELP!!!
 					tries = 3;
 				} catch (Exception e) {
@@ -794,6 +835,46 @@ OnInfoWindowClickListener, OnPreparedListener{
 			}
 			return deleted;
 		}
+		
+		@Override
+		public void onPostExecute(Boolean bool){
+			System.out.println(bool);
+			placeLocation();
+		}
+	}
+
+	@Override
+	public void onConnectionFailed(ConnectionResult arg0) {
+
+		if(arg0.hasResolution()){
+			try{
+				arg0.startResolutionForResult(getActivity(), 
+						9000);
+			}catch(IntentSender.SendIntentException ex){
+				ex.printStackTrace();
+			}
+		}else{
+			Toast.makeText(getActivity(), "I have no idea what I'm doing.", Toast.LENGTH_SHORT).show();
+		}
+		
+	}
+
+	@Override
+	public void onConnected(Bundle connectionHint) {
+		Toast.makeText(getActivity(), "Connected to Google Play", Toast.LENGTH_SHORT).show();
+		connectedGooglePlay = true;
+		myLocation = myLocationClient.getLastLocation();
+		map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(
+				new LatLng(myLocation.getLatitude(),myLocation.getLongitude()),6)));
+		placeLocation();
+		
+	}
+
+	@Override
+	public void onDisconnected() {
+		Toast.makeText(getActivity(), "Disconnected to Google Play", Toast.LENGTH_SHORT).show();
+		connectedGooglePlay = false;
+		
 	}
 	
 

@@ -22,6 +22,15 @@ import android.widget.RadioButton;
 
 import com.google.android.gms.maps.GoogleMap;
 
+/**
+ * 
+ * @author Garrett - emrickgarrett@gmail.com
+ * 
+ * This class is used for the Map settings menu item, and is used commonly
+ * throughout the application. This is what is used to switch the map type
+ * of the application.
+ *
+ */
 @SuppressLint("ValidFragment")
 public class MapSettingsDialogFragment extends DialogFragment {
 

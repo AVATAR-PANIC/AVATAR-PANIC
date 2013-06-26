@@ -30,6 +30,14 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+/**
+ * 
+ * @author Garrett - emrickgarrett@gmail.com
+ * 
+ * This class is used for the Guardian Angels' log-in screen. Basically a re-implementation
+ * of most of their main class.
+ *
+ */
 public class GuardianAngelLoginDialogFragment extends DialogFragment implements OnClickListener {
 
 	private Button ok;

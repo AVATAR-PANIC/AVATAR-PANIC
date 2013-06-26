@@ -17,6 +17,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.JsonReader;
+import android.widget.Toast;
 
 /**
  * 
@@ -29,10 +30,10 @@ import android.util.JsonReader;
 public class HandleID extends AsyncTask<Void, Void, Boolean> {
 
 	//Variables
-	private String FILENAME = "AVATAR_DEVICEINFO";
+	private String FILENAME = "AVATAR_UNIQUE_ID";
 	private Context context;
-	private String ID;
-	private String Tag;
+	public static String ID;
+	public static String Tag = "NONE";
 	
 	/**
 	 * Need context for writing data to the device
@@ -45,65 +46,73 @@ public class HandleID extends AsyncTask<Void, Void, Boolean> {
 	
 	public Boolean doInBackground(Void...voids){
 		System.out.println("Starting task to get ID");
-		try{
-			System.out.println("Getting File");
-			File file = context.getFileStreamPath(FILENAME);
-			System.out.println("Got File");
-			
-			//Used for debugging, should be without the "!".
-			//For now since it has errors, will always try to grab from the server
-			//To see if the data parses correctly. Once that works, remove the "!".
-			if(!file.exists()){
-				//Use the ID already on the device.
-				System.out.println("File Exists");
-				FileInputStream in = context.openFileInput(FILENAME);
-				InputStreamReader inputStreamReader = new InputStreamReader(in);
-				BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-				StringBuilder sb = new StringBuilder();
-				String line;
+		Boolean bool = false;
+		while(!bool){
+			try{
+				System.out.println("Getting File");
+				File file = context.getFileStreamPath(FILENAME);
+				System.out.println("Got File");
 				
-				System.out.println("Appending String");
-				while((line = bufferedReader.readLine()) != null){
-					sb.append(line);
+				//Used for debugging, should be without the "!".
+				//For now since it has errors, will always try to grab from the server
+				//To see if the data parses correctly. Once that works, remove the "!".
+				if(file.exists()){
+					//Use the ID already on the device.
+					System.out.println("File Exists");
+					FileInputStream in = context.openFileInput(FILENAME);
+					System.out.println(file.getAbsolutePath());
+					InputStreamReader inputStreamReader = new InputStreamReader(in);
+					BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+					StringBuilder sb = new StringBuilder();
+					String line;
+					
+					System.out.println("Appending String");
+					while((line = bufferedReader.readLine()) != null){
+						sb.append(line);
+					}
+					System.out.println(sb);
+					HandleID.ID = sb.substring(0, sb.indexOf(" "));
+					HandleID.Tag = "NONE";
+					in.close();
+					inputStreamReader.close();
+					bufferedReader.close();
+					bool = true;
+					
+				}else{
+					//Connect to server and get ID.
+					try{
+						System.out.println("Connecting to the server for ID");
+						HttpClient client = new DefaultHttpClient();
+						HttpGet get = new HttpGet(new URI(
+								"http://" + Constants.SERVER_ADDRESS + "/sqlManageUsers.php"));
+						HttpResponse response = client.execute(get);
+						Scanner reader = new Scanner(response.getEntity().getContent());
+						
+						HandleID.ID = reader.next();
+						
+						FileOutputStream fos = context.openFileOutput(FILENAME, Context.MODE_PRIVATE);
+						fos.write((HandleID.ID + " " + HandleID.Tag).getBytes());
+						fos.close();
+						reader.close();
+						
+						System.out.println("All streams to server closed");
+						
+						bool = true;
+					}catch(Exception ex){
+						System.err.println("Something went wrong with my script :(");
+						ex.printStackTrace();
+						bool = false;
+					}
 				}
-				System.out.println(sb);
-				in.close();
-				inputStreamReader.close();
-				bufferedReader.close();
-				return true;
-				
-			}else{
-				//Connect to server and get ID.
-				try{
-					System.out.println("Connecting to the server for ID");
-					HttpClient client = new DefaultHttpClient();
-					HttpGet get = new HttpGet(new URI(
-							"http://" + Constants.SERVER_ADDRESS + "/sqlManageUsers.php"));
-					HttpResponse response = client.execute(get);
-					Scanner reader = new Scanner(response.getEntity().getContent());
-					
-					this.ID = reader.next();
-					this.Tag = reader.next();
-					
-					FileOutputStream fos = context.openFileOutput(FILENAME, Context.MODE_PRIVATE);
-					fos.write((this.ID + " " + this.Tag).getBytes());
-					fos.close();
-					reader.close();
-					
-					System.out.println("All streams to server closed");
-					
-					return true;
-				}catch(Exception ex){
-					System.err.println("Something went wrong with my script :(");
-					ex.printStackTrace();
-					return false;
-				}
+			}catch(Exception ex){
+				System.err.println("Something Wrong with accessing the file");
+				ex.printStackTrace();
+				bool = false;
 			}
-		}catch(Exception ex){
-			System.err.println("Something Wrong with accessing the file");
-			ex.printStackTrace();
-			return false;
-		}
+			
+			}
+		
+		return bool;
 		
 	}
 	
@@ -113,9 +122,9 @@ public class HandleID extends AsyncTask<Void, Void, Boolean> {
 	 */
 	@Override
 	public void onPostExecute(Boolean bool){
-		
+		System.out.println("What happened?");
 		if(bool){
-			System.err.println("Success! The ID is " + this.ID + " and the Tag is : " + this.Tag);
+			System.err.println("Success! The ID is " + HandleID.ID + " and the Tag is : " + HandleID.Tag);
 		}else{
 			System.err.println("Something went horribly wrong! Oh No!");
 		}

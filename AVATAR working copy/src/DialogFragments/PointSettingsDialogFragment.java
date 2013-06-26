@@ -21,12 +21,22 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+/**
+ * 
+ * @author Garrett - emrickgarrett@gmail.com
+ * 
+ * This class is used for the point settings in the augmented reality sections of the map.
+ * Basically allows the user to select the radius in which points will appear, and also
+ * allows the user to select which Augmented Reality to use. Currently used for both applications,
+ * and the point radius is simply disabled if it is not AVATAR's augmented reality.
+ *
+ */
 public class PointSettingsDialogFragment extends DialogFragment{
 
 	EditText pointRadius;
 	Button saveButton;
 	AugRelPointManager manager;
-	private boolean hasManager;
+	private boolean hasManager = true;
 	RadioButton avatar;
 	RadioButton guardianAngel;
 	private int currentARType = 0; //Default for no change. 1 = AVATAR 2 = Guardian Angel
