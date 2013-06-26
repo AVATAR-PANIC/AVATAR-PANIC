@@ -142,5 +142,26 @@ public class MarkerPlus{
 		
 		return this.toString().equals(other.toString());
 	}
+	
+	/**
+	 * Returns the distance in miles using the Haversine formula.
+	 * @param other : The other point (The user location in our case)
+	 * @return : The distance in miles.
+	 */
+	public double getDistance(MarkerPlus other){
+		double earthRadius = 3958.75;
+		double lat1 = this.getLatitude();
+		double lat2 = other.getLatitude();
+		double lon1 = this.getLongitude();
+		double lon2 = other.getLongitude();
+		double dLat = Math.toRadians(lat2 - lat1);
+		double dLng = Math.toRadians(lon2 - lon1);
+		double a = Math.pow((Math.sin(dLat/2)), 2) + Math.cos(lat1) * Math.cos(lat2)
+				* Math.pow(Math.sin(dLng/2), 2);
+		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+		//System.out.println(earthRadius * c);
+		//System.out.println("MY LAT = " + lat2 + " MY LON = " + lon2);
+		return earthRadius * c;
+	}
 }
 

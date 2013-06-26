@@ -18,6 +18,14 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
+/**
+ * 
+ * @author Garrett -emrickgarrett@gmail.com
+ * 
+ * This class is used for the major cities dialog in Guardian Angel that allows
+ * the user to zoom wherever they desire.
+ *
+ */
 @SuppressLint("ValidFragment")
 public class MajorCitiesDialogFragment extends DialogFragment {
 

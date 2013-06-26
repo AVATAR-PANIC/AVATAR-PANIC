@@ -21,11 +21,22 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+/**
+ * 
+ * @author Garrett - emrickgarrett@gmail.com
+ * 
+ * This class is used for the point settings in the augmented reality sections of the map.
+ * Basically allows the user to select the radius in which points will appear, and also
+ * allows the user to select which Augmented Reality to use. Currently used for both applications,
+ * and the point radius is simply disabled if it is not AVATAR's augmented reality.
+ *
+ */
 public class PointSettingsDialogFragment extends DialogFragment{
 
 	EditText pointRadius;
 	Button saveButton;
 	AugRelPointManager manager;
+	private boolean hasManager = true;
 	RadioButton avatar;
 	RadioButton guardianAngel;
 	private int currentARType = 0; //Default for no change. 1 = AVATAR 2 = Guardian Angel
@@ -35,10 +46,14 @@ public class PointSettingsDialogFragment extends DialogFragment{
 	}
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		View view = inflater.inflate(R.layout.dialog_point_settings, container, false);
+		View view = inflater.inflate(R.layout.point_settings_dialog, container, false);
 		
 		Bundle bundle = getArguments();
-		manager = (AugRelPointManager) bundle.get("POINT_MANAGER");
+		try{
+			manager = (AugRelPointManager) bundle.get("POINT_MANAGER");
+		}catch(NullPointerException ex){
+			hasManager = false;
+		}
 		
 		pointRadius = (EditText) view.findViewById(R.id.point_radius_input);
 		avatar = (RadioButton) view.findViewById(R.id.ar_avatar);
@@ -48,24 +63,29 @@ public class PointSettingsDialogFragment extends DialogFragment{
 		getDialog().setTitle("General Settings");
 		
 		
+		if(!hasManager){
+			pointRadius.setEnabled(false);
+		}
+		
 		saveButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
 				
-				try{
-					if(!pointRadius.getText().equals("")){
-						int radius = Integer.parseInt(pointRadius.getText().toString());
-						System.out.println("RADIUS: " + radius);
-						manager.setClosePointsFromMiles(radius);
-						}
+				if(hasManager){
+					try{
+						if(!pointRadius.getText().equals("")){
+							int radius = Integer.parseInt(pointRadius.getText().toString());
+							System.out.println("RADIUS: " + radius);
+							manager.setClosePointsFromMiles(radius);
+							}
+						
+					}catch(NumberFormatException ex){
+						Toast.makeText(getActivity(), "Has to be a valid number!", 3000).show();
+					}catch(Exception ex){
+						ex.printStackTrace();
+					}
 					
-				}catch(NumberFormatException ex){
-					Toast.makeText(getActivity(), "Has to be a valid number!", 3000).show();
-				}catch(Exception ex){
-					ex.printStackTrace();
 				}
-				
-				
 				FragmentManager fragMgr = getFragmentManager();
 				FragmentTransaction xact = fragMgr.beginTransaction();
 				

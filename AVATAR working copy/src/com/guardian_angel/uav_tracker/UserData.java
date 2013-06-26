@@ -6,20 +6,21 @@ import gupta.ashutosh.avatar.R;
 import java.io.File;
 import java.util.Date;
 
-import android.app.Activity;
-import android.content.Intent;
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
-public class UserData extends Activity {
+public class UserData extends DialogFragment {
 
 	private Button done;
 	private RadioButton silent;
@@ -41,24 +42,28 @@ public class UserData extends Activity {
 	
 	private XMPPSender xmppSender;
 
+	public UserData(){
+		
+	}
+	
 	/** Called when the activity is first created. */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.guardian_angel_user_data);
-
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.guardian_angel_user_data, container, false);
+		getDialog().setTitle("Data Information");
+		
 		// initialize and instantiate variables
-		silent = (RadioButton) findViewById(R.id.silent);
-		quiet = (RadioButton) findViewById(R.id.quiet);
-		loud = (RadioButton) findViewById(R.id.loud);
-		small = (RadioButton) findViewById(R.id.small);
-		medium = (RadioButton) findViewById(R.id.medium);
-		large = (RadioButton) findViewById(R.id.large);
-		fifty = (RadioButton) findViewById(R.id.ten);
-		oneHundred = (RadioButton) findViewById(R.id.fifty);
-		twoHundred = (RadioButton) findViewById(R.id.onehundred);
-		done = (Button) findViewById(R.id.done_button);
-		messageText = (EditText) findViewById(R.id.landmarkanswer);
+		silent = (RadioButton) view.findViewById(R.id.silent);
+		quiet = (RadioButton) view.findViewById(R.id.quiet);
+		loud = (RadioButton) view.findViewById(R.id.loud);
+		small = (RadioButton) view.findViewById(R.id.small);
+		medium = (RadioButton) view.findViewById(R.id.medium);
+		large = (RadioButton) view.findViewById(R.id.large);
+		fifty = (RadioButton) view.findViewById(R.id.ten);
+		oneHundred = (RadioButton) view.findViewById(R.id.fifty);
+		twoHundred = (RadioButton) view.findViewById(R.id.onehundred);
+		done = (Button) view.findViewById(R.id.guardian_angel_done_button);
+		messageText = (EditText) view.findViewById(R.id.landmarkanswer);
 		
 		
 		// set the listener for the done button
@@ -92,7 +97,7 @@ public class UserData extends Activity {
 						xmppSender.createMessage();
 						xmppSender.sendMessage();
 					}catch(Exception ex){
-						Toast.makeText(getApplicationContext(), "There was a problem sending the data", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), "There was a problem sending the data", Toast.LENGTH_SHORT).show();
 					}
 				}
 				
@@ -102,7 +107,7 @@ public class UserData extends Activity {
 //				nextScreen.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 //				startActivity(nextScreen);
 				
-				finish();
+				getDialog().cancel();
 			}
 		});
 		
@@ -207,20 +212,9 @@ public class UserData extends Activity {
 				}
 			}
 		});
+		
+		return view;
 
-	}
-	
-	@Override
-	protected void onPause()
-	{
-		super.onPause();
-		finish();
-	}
-	
-	@Override
-	public void onBackPressed()
-	{
-		finish();
 	}
 
 }

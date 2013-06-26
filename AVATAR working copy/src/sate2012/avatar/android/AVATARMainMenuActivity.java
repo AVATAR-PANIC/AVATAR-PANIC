@@ -1,28 +1,19 @@
 package sate2012.avatar.android;
 
-import com.guardian_angel.uav_tracker.MainActivity;
-
+import gupta.ashutosh.avatar.R;
 import sate2012.avatar.android.augmentedrealityview.CameraView;
 import sate2012.avatar.android.googlemaps.GoogleMapsViewer;
-import sate2012.avatar.android.googlemaps.GuardianAngelGoogleMapsViewer;
 import sate2012.avatar.android.googlemaps.TricorderGoogleMapsViewer;
-import tricorder.tecedge.opening_menu;
-import gupta.ashutosh.avatar.R;
-import DialogFragments.MajorCitiesDialogFragment;
 import DialogFragments.PANICDialogFragment;
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.app.FragmentManager;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.Button;
 
 /**
@@ -69,7 +60,7 @@ public class AVATARMainMenuActivity extends Activity implements OnClickListener 
 		xact.add(R.id.menu, new Frag(R.layout.map_menu_frag), "MENU");
 		xact.commit();
 		
-		new HandleID(this).execute();
+		//new HandleID(this).execute();
 	}
 
 	/**

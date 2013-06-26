@@ -102,8 +102,9 @@ public class AugRelPointManager implements Serializable {
 	public void drawPoints(Canvas canvas, float myBearing, float myPitch)
 	{
 		onPoints.clear();
-		if(outer.drawPointList.isEmpty()){
-			this.setClosePoints();
+		if(outer.drawPointList.isEmpty() && activePoints.isEmpty()){
+		}else{
+			outer.drawPointList = activePoints;
 		}
 		for(MarkerPlus markerPlus: outer.drawPointList){
 			//Log.i("TestForDate",markerPlus.getDate()+"END");
@@ -129,6 +130,7 @@ public class AugRelPointManager implements Serializable {
 	}
 	
 	public ArrayList<MarkerPlus> getAllPoints(){
+		this.allPoints = outer.markerArray;
 		return allPoints;
 	}
 	

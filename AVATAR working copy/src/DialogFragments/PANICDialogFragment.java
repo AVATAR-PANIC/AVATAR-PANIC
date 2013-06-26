@@ -12,6 +12,15 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 
+/**
+ * 
+ * @author Garrett - emrickgarrett@gmail.com
+ * 
+ * This is the implementation of PANIC through the use of a dialog fragment.
+ * If the user clicks on the EMERGENCY button on the navigation menu located on the left
+ * of the application, this will open up allowing the user to select which ICE to call.
+ *
+ */
 public class PANICDialogFragment extends DialogFragment {
 
 	private Button police;

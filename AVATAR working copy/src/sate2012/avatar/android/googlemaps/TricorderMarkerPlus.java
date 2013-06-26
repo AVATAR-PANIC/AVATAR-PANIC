@@ -7,6 +7,15 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+/**
+ * 
+ * @author Garrett - emrickgarrett@gmail.com
+ * 
+ * This class is very similar to the MarkerPlus class used in the AVATAR 
+ * Google Maps viewer. This one has more info though, which is needed
+ * for the points used in the Tricorder Google Maps Viewer.
+ *
+ */
 public class TricorderMarkerPlus extends MarkerPlus {
 
 	private MarkerOptions markerOptions = new MarkerOptions();
