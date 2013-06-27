@@ -4,16 +4,17 @@ import gupta.ashutosh.avatar.R;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import sate2012.avatar.android.googlemaps.MarkerPlus;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.location.Location;
 import android.location.LocationManager;
-import android.util.Log;
+import java.util.Map;
 
 /**
  * AugRelPointManager (Augmented Reality Point Manager)
@@ -32,6 +33,7 @@ public class AugRelPointManager implements Serializable {
 	private ArrayList<MarkerPlus> allPoints;
 	private ArrayList<MarkerPlus> activePoints;
 	transient Paint paint;
+	private Map<Rect, MarkerPlus> bitmapRects = new HashMap<Rect, MarkerPlus>();
 	
 	public AugRelPointManager(CameraView outer) {
 		this.outer = outer;
@@ -101,6 +103,7 @@ public class AugRelPointManager implements Serializable {
 	
 	public void drawPoints(Canvas canvas, float myBearing, float myPitch)
 	{
+		bitmapRects.clear();
 		onPoints.clear();
 		if(outer.drawPointList.isEmpty() && activePoints.isEmpty()){
 		}else{
@@ -144,7 +147,6 @@ public class AugRelPointManager implements Serializable {
 	}
 	
 	public void drawPoint(MarkerPlus marker, Canvas canvas, float myBearing, float myPitch){
-		
 		//System.out.println(outer.fragWidth);
 		//For determining which icon to draw
 		Bitmap pointIcon;
@@ -178,7 +180,15 @@ public class AugRelPointManager implements Serializable {
 						* (outer.mSurfaceView.getWidth() / 2)
 						/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
 						.getWidth() / 2)) > outer.fragWidth) {
-
+					bitmapRects.put(new Rect((int)(Math.tan(gpBearing - myBearing) * (outer.mSurfaceView.getWidth() / 2)
+							/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView.getWidth() / 2)), (int)(Math.tan(myPitchA - myPitch + Math.PI / 2.0) * (outer.mSurfaceView.getHeight() / 2)
+							/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
+							.getHeight() / 2)), (int)(Math.tan(gpBearing - myBearing)
+									* (outer.mSurfaceView.getWidth() / 2)
+									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
+									.getWidth() / 2)) + pointIcon.getWidth(), (int)(Math.tan(myPitchA - myPitch + Math.PI / 2.0) * (outer.mSurfaceView.getHeight() / 2)
+											/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
+													.getHeight() / 2)) + pointIcon.getHeight()), marker);
 					canvas.drawBitmap(
 							pointIcon,
 							(float) (Math.tan(gpBearing - myBearing)
@@ -213,11 +223,17 @@ public class AugRelPointManager implements Serializable {
 		} else if (outer.myLocation.getLatitude() > gpLocation.getLatitude()) {
 			if (myBearing <= 0) {
 
-				if ((float) (Math.tan(gpBearing - myBearing)
-						* (outer.mSurfaceView.getWidth() / 2)
-						/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
+				if ((float) (Math.tan(gpBearing - myBearing) * (outer.mSurfaceView.getWidth() / 2)	/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
 						.getWidth() / 2)) > outer.fragWidth) {
-
+					bitmapRects.put(new Rect((int)(Math.tan(gpBearing - myBearing) * (outer.mSurfaceView.getWidth() / 2)
+							/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView.getWidth() / 2)), (int)(Math.tan(myPitchA - myPitch + Math.PI / 2.0) * (outer.mSurfaceView.getHeight() / 2)
+							/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
+							.getHeight() / 2)), (int)(Math.tan(gpBearing - myBearing)
+									* (outer.mSurfaceView.getWidth() / 2)
+									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
+									.getWidth() / 2)) + pointIcon.getWidth(), (int)(Math.tan(myPitchA - myPitch + Math.PI / 2.0) * (outer.mSurfaceView.getHeight() / 2)
+											/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
+													.getHeight() / 2)) + pointIcon.getHeight()), marker);
 					canvas.drawBitmap(
 							pointIcon,
 							(float) (Math.tan(gpBearing - myBearing)
@@ -251,6 +267,15 @@ public class AugRelPointManager implements Serializable {
 		} else {
 			if (outer.myLocation.getLongitude() < gpLocation.getLongitude()) {
 				if (Math.abs(myBearing) > Math.PI / 2) {
+					bitmapRects.put(new Rect((int)(Math.tan(gpBearing - myBearing) * (outer.mSurfaceView.getWidth() / 2)
+							/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView.getWidth() / 2)), (int)(Math.tan(myPitchA - myPitch + Math.PI / 2.0) * (outer.mSurfaceView.getHeight() / 2)
+							/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
+							.getHeight() / 2)), (int)(Math.tan(gpBearing - myBearing)
+									* (outer.mSurfaceView.getWidth() / 2)
+									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
+									.getWidth() / 2)) + pointIcon.getWidth(), (int)(Math.tan(myPitchA - myPitch + Math.PI / 2.0) * (outer.mSurfaceView.getHeight() / 2)
+											/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
+													.getHeight() / 2)) + pointIcon.getHeight()), marker);
 					canvas.drawBitmap(
 							pointIcon,
 							(float) (Math.tan(gpBearing - myBearing)
@@ -282,6 +307,21 @@ public class AugRelPointManager implements Serializable {
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
 									.getHeight() / 2)) + pointIcon.getScaledHeight(canvas) + 10, paint);
 				}
+			}
+		}
+	}
+	
+	public void drawInfo(Canvas canvas, int x, int y){
+		MarkerPlus marker = new MarkerPlus();
+		for(Rect rect : bitmapRects.keySet()){
+			System.out.println(rect.toString());
+			System.out.println(rect.left + ", " + rect.right + ", "  + rect.top + ", " + rect.bottom + "/" + rect.width());
+			if(x > rect.left && x < rect.right && y < rect.bottom && y > rect.top){
+				System.out.println("YAY!");
+				marker = bitmapRects.get(rect);
+				canvas.drawText(marker.getName(), canvas.getWidth() - 100, canvas.getHeight() - 100, paint);
+				canvas.drawText(marker.getData(), canvas.getWidth() - 100, canvas.getHeight() - 50, paint);
+				return;
 			}
 		}
 	}
