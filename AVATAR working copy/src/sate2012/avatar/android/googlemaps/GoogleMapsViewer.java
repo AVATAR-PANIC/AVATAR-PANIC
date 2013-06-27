@@ -27,6 +27,7 @@ import sate2012.avatar.android.Constants;
 import sate2012.avatar.android.HandleID;
 import sate2012.avatar.android.UploadMedia;
 import sate2012.avatar.android.VideoPlayer;
+import DialogFragments.AvatarMapSettingsDialogFragment;
 import DialogFragments.MapSettingsDialogFragment;
 import android.app.DialogFragment;
 import android.app.Fragment;
@@ -127,6 +128,7 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 	public Location myLocation;
 	private boolean connectedGooglePlay = false;
 	private boolean hasAlerted = false;
+	private boolean shouldAddUserPoint = true;
 
 	/**
 	 * When the Fragment View is created, this is called
@@ -162,9 +164,15 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 		
 		DialogFragment dialog;
 		
-		dialog = new MapSettingsDialogFragment(currentMap, currentMapType);
-		dialog.show(fragMgr, "MAP_SETTINGS");
-		
+		switch(item.getItemId()){
+			case R.id.map_settings:
+				dialog = new MapSettingsDialogFragment(currentMap, currentMapType);
+				dialog.show(fragMgr, "MAP_SETTINGS");
+				break;
+			case R.id.avatar_map_settings:
+				dialog = new AvatarMapSettingsDialogFragment(this);
+				dialog.show(fragMgr, "AVATAR_MAP_SETTINGS");
+		}
 		return true;
 	}
 	
@@ -182,6 +190,7 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 		MapFragment mapfrag = ((MapFragment) getFragmentManager()
 				.findFragmentById(R.id.googlemap));
 		setHasOptionsMenu(true);
+		shouldAddUserPoint = true;
 		hasAlerted = false;
 		map = mapfrag.getMap();
 		Bundle b = getArguments();
@@ -231,6 +240,9 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 		super.onStop();
 		myLocationClient.disconnect();
 		connectedGooglePlay = false;
+		shouldAddUserPoint = false;
+		pointDeleter = new PointDeleter();
+		pointDeleter.execute(HandleID.ID + " is the ID of this user.");
 		//hasAlerted = false;
 	}
 	
@@ -302,8 +314,10 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 						}else if(marker.getPoints().get(0).getName().equals("EMERGENCY")){
 							map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()));
 						}else{
-							if(marker.getPoints().size() == 1){
-							map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+							if(marker.getPoints().size() == 1 && marker.getPoints().get(0).getData().contains(" is the ID of this user.")){
+							map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+							}else{
+								map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 							}
 						}
 					//}
@@ -596,7 +610,7 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 		
 		for(int i = 0; i < markerArray.size(); i++){
 			if(markerArray.get(i).getName().equals("EMERGENCY") && myLocation != null){
-				if(markerArray.get(i).getDistance(new MarkerPlus(myLocation.getLatitude(),myLocation.getLongitude())) < 20 ){
+				if(markerArray.get(i).getDistance(new MarkerPlus(myLocation.getLatitude(),myLocation.getLongitude())) < 10 ){
 					System.out.println("EMERGENCY IS NEAR");
 					NotificationCompat.Builder mBuilder;
 					mBuilder = new NotificationCompat.Builder(getActivity())
@@ -839,7 +853,9 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 		@Override
 		public void onPostExecute(Boolean bool){
 			System.out.println(bool);
-			placeLocation();
+			if(shouldAddUserPoint){
+				placeLocation();
+			}
 		}
 	}
 
@@ -875,6 +891,10 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 		Toast.makeText(getActivity(), "Disconnected to Google Play", Toast.LENGTH_SHORT).show();
 		connectedGooglePlay = false;
 		
+	}
+	
+	public ArrayList<MarkerPlus> getPoints(){
+		return markerArray;
 	}
 	
 
