@@ -13,7 +13,7 @@
 	    <TextView
 	         android:layout_width="wrap_content"
 	         android:layout_height="wrap_content"
-	         android:text="Set your Tag"
+	         android:text="Set your Tag and Status"
 	         android:textColor="@color/white"
 	         android:textSize="20sp"/>
 	    
@@ -23,10 +23,23 @@
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="4dp" />
 	    
+	    <EditText
+	        android:id="@+id/avatar_status"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="4dp" />
+	    
 	    <View
 	        android:layout_width="match_parent"
 	        android:layout_height="3dp"
 	        android:background="@color/lightgrey" />
+	    
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Track a User"
+	        android:layout_marginTop="2dp"
+	        android:layout_marginBottom="2dp"/>
 	    
 	    <ListView 
 	        android:id="@+id/user_locations"
