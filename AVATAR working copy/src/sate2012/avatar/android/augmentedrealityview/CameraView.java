@@ -25,6 +25,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
 import android.hardware.Camera;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -40,10 +41,13 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -55,7 +59,7 @@ import android.widget.Toast;
  * Fragment used for the augmented reality aspect of the project.
  *
  */
-public class CameraView extends Fragment implements Callback {
+public class CameraView extends Fragment implements Callback, OnTouchListener{
 	
 	//Use these variables to determine size of side fragment to offset in the PointerView class
 	protected int fragWidth;
@@ -201,7 +205,7 @@ public class CameraView extends Fragment implements Callback {
 			}
 			
 		});
-		
+		this.getView().setOnTouchListener(this);
 		// Set up the sensors
 		final SensorManager SENSORMANAGER = (SensorManager) getActivity().getSystemService(getActivity().SENSOR_SERVICE);
 		final Sensor ROTATION = SENSORMANAGER
@@ -519,5 +523,18 @@ public class CameraView extends Fragment implements Callback {
 
 	public void setMarkerArray(ArrayList<MarkerPlus> array){
 		this.markerArray = array;
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		if(event.getAction() == MotionEvent.ACTION_DOWN){
+			System.out.println((int)event.getX() + fragWidth);
+			System.out.println((int)event.getY());
+			pointManager.drawInfo(myCanvas, (int) event.getX() + fragWidth, (int)event.getY());
+		}
+		return true;
+	}
+	public void showInfoWindow(){
+		
 	}
 }
