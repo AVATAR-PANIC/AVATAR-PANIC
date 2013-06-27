@@ -27,6 +27,7 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 
 		private GoogleMapsViewer maps;
 		private CameraView cameraView;
+		private EagleEyeGoogleMapsViewer eMap;
 		private boolean success;
 		
 		/**
@@ -45,6 +46,10 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 			this.cameraView = view;
 		}
 		
+		public HttpThread(EagleEyeGoogleMapsViewer eMap){
+			this.eMap = eMap;
+		}
+		
 		
 		/**
 		 * Asynchronous task, runs in background. Gets the connection for the application to the server
@@ -60,7 +65,12 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 				try {
 					System.out.println("TRYING TO CONNECT");
 					HttpClient client = new DefaultHttpClient();
-					HttpGet get = new HttpGet(new URI("http://" + Constants.SERVER_ADDRESS + "/jsonPoints.php"));
+					
+					HttpGet get= new HttpGet(new URI("http://" + Constants.SERVER_ADDRESS + "/jsonPoints.php"));;
+					if(eMap != null){
+						get= new HttpGet(new URI("http://" + Constants.SERVER_ADDRESS + "/jsonPointsEE.php"));
+					}
+					
 					HttpResponse response = client.execute(get);
 					JsonReader reader = new JsonReader(new InputStreamReader(response.getEntity().getContent()));
 					
@@ -72,31 +82,33 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 						while(reader.hasNext()){
 							try{
 							String name = reader.nextName();
-							if(name.equals("Name")){
+							if(name.equalsIgnoreCase("Name")){
 								String pointName = reader.nextString();
 								//System.out.println("NAME: " + pointName);
 								marker.setName(pointName);
-							}else if(name.equals("Lat")){
+							}else if(name.equalsIgnoreCase("Lat")){
 								double latitude = reader.nextDouble();
 								//System.out.println("LATITUDE: " + latitude);
 								marker.setLatitude(latitude);
-							}else if(name.equals("Long")){
+							}else if(name.equalsIgnoreCase("Long") || name.equalsIgnoreCase("lon")){
 								double longitude = reader.nextDouble();
 								//System.out.println("LONGITUDE: " + longitude);
 								marker.setLongitude(longitude);
-							}else if(name.equals("Alt (ft)")){
+							}else if(name.equalsIgnoreCase("Alt (ft)")){
 								double altitude = reader.nextDouble();
 								//System.out.println("ALTITUDE: " + altitude);
 								marker.setAltitude(altitude);
-							}else if(name.equals("Date")){
+							}else if(name.equalsIgnoreCase("Date")){
 								String date = reader.nextString();
 								data += "Upload Date: " + date + "\r\n";
 								//System.out.println("DATE: " + date);
-							}else if(name.equals("Link")){
+							}else if(name.equalsIgnoreCase("Link") || name.equalsIgnoreCase("mesg")){
 								String link = reader.nextString();
 								data += "Data: " + link;
 								//System.out.println("LINK: " + link);
 								//marker.setImage(Drawable.createFromStream(((InputStream)new java.net.URL(link).getContent()), "BLAH"));
+							}else{
+								reader.nextString();
 							}
 							}catch(IllegalStateException e){
 								System.out.println(reader.nextString());
@@ -130,10 +142,13 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 					maps.setMarkerArray(array);
 					maps.drawMarkers(true);
 					maps = null;
-				}else{
+				}else if(cameraView != null){
 					cameraView.setMarkerArray(array);
 					cameraView = null;
-					
+				}else if(eMap != null){
+					eMap.setMarkers(array);
+					eMap.drawMarkers(true);
+					eMap = null;
 				}
 			}
 		}
