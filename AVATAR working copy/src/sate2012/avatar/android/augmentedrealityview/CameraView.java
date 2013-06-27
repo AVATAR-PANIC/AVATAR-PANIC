@@ -174,8 +174,8 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 				1, 10, mlocListener);
 		myLocation = mlocManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 		//Create helper class
-		setHasOptionsMenu(true);
 		pointManager = new AugRelPointManager(this);
+		setHasOptionsMenu(true);
 
 		// Initialize the surface for the camera
 		mSurfaceView = (SurfaceView) getActivity().findViewById(R.id.surface_camera);
@@ -530,7 +530,7 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 		if(event.getAction() == MotionEvent.ACTION_DOWN){
 			System.out.println((int)event.getX() + fragWidth);
 			System.out.println((int)event.getY());
-			pointManager.drawInfo(myCanvas, (int) event.getX() + fragWidth, (int)event.getY());
+			pointManager.drawInfo((int) event.getX() + fragWidth, (int)event.getY());
 		}
 		return true;
 	}

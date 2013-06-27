@@ -10,10 +10,16 @@ import sate2012.avatar.android.googlemaps.MarkerPlus;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Bitmap.Config;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationManager;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageView;
+
 import java.util.Map;
 
 /**
@@ -311,7 +317,14 @@ public class AugRelPointManager implements Serializable {
 		}
 	}
 	
-	public void drawInfo(Canvas canvas, int x, int y){
+	public void drawInfo(int x, int y){
+		Bitmap markerInfo = Bitmap.createBitmap(100,50, Config.ARGB_8888);
+		Canvas canvas = new Canvas(markerInfo);
+		Paint tempPaint = new Paint();
+		tempPaint.setColor(Color.BLACK);
+		tempPaint.setAntiAlias(true);
+		tempPaint.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+		ImageView image = (ImageView) outer.getActivity().findViewById(R.id.augmented_reality_point_info);
 		MarkerPlus marker = new MarkerPlus();
 		for(Rect rect : bitmapRects.keySet()){
 			System.out.println(rect.toString());
@@ -319,8 +332,12 @@ public class AugRelPointManager implements Serializable {
 			if(x > rect.left && x < rect.right && y < rect.bottom && y > rect.top){
 				System.out.println("YAY!");
 				marker = bitmapRects.get(rect);
-				canvas.drawText(marker.getName(), canvas.getWidth() - 100, canvas.getHeight() - 100, paint);
-				canvas.drawText(marker.getData(), canvas.getWidth() - 100, canvas.getHeight() - 50, paint);
+				canvas.drawText(marker.getName(), 0, 20, tempPaint);
+				canvas.drawText(marker.getData(), 0, 40, tempPaint);
+				image.setImageBitmap(markerInfo);
+				image.bringToFront();
+				image.setMinimumHeight(markerInfo.getHeight());
+				image.setMinimumWidth(markerInfo.getWidth());
 				return;
 			}
 		}

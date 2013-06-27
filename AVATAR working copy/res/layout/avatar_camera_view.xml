@@ -23,6 +23,15 @@
             android:layout_height="fill_parent"
             android:layout_alignParentTop="true" >
         </SurfaceView>
+        
+        <ImageView 
+            android:id="@+id/augmented_reality_point_info"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:background="@color/white"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            />
 
         
     </RelativeLayout>

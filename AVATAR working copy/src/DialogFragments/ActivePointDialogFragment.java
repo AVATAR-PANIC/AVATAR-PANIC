@@ -111,6 +111,7 @@ public class ActivePointDialogFragment extends DialogFragment {
 			mSparseBooleanArray = new SparseBooleanArray();
 			points = new ArrayList<MarkerPlus>();
 			this.points = objects;
+			if(points == null) points = new ArrayList<MarkerPlus>();
 			
 			for(int i = 0; i < manager.getActivePoints().size(); i++){
 				
@@ -188,8 +189,13 @@ public class ActivePointDialogFragment extends DialogFragment {
 	@Override
 	public void onResume(){
 		super.onResume();
-		if(manager.getAllPoints().size() == 0){
-			Toast.makeText(getActivity(), "There are no points on the server.", Toast.LENGTH_SHORT).show();
+		if(manager != null && manager.getAllPoints() != null){
+			if(manager.getAllPoints().size() == 0){
+				Toast.makeText(getActivity(), "There are no points on the server.", Toast.LENGTH_SHORT).show();
+				getDialog().cancel();
+			}
+		}else{
+			Toast.makeText(getActivity(), "Error connecting to the Server.", Toast.LENGTH_SHORT).show();
 			getDialog().cancel();
 		}
 	}
