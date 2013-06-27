@@ -107,13 +107,13 @@ public class HandleID extends AsyncTask<Void, Void, Boolean> {
 					}catch(Exception ex){
 						System.err.println("Something went wrong with my script :(");
 						ex.printStackTrace();
-						bool = true;
+						bool = false;
 					}
 				}
 			}catch(Exception ex){
 				System.err.println("Something Wrong with accessing the file");
 				ex.printStackTrace();
-				bool = true;
+				bool = false;
 			}
 			
 			}
