@@ -70,37 +70,40 @@ public class UserData extends DialogFragment {
 		done.setOnClickListener(new OnClickListener() {
 			
 			public void onClick(View v) {
-				
-				message = messageText.getText().toString();
-				if (message.equals(""))
-				{
-					message = "null";
-				}
-				
-				String features = "Volume=\"" + volume + "\" Size=\"" + size
-						+ "\" Distance=\"" + distance + "\"";
-				
-				Date date = new Date();
-				String dateString = date.toGMTString();
-				
-				File savedFile = new File(Environment.getExternalStorageDirectory().getPath() + "/UAV_T/Images/uav_pic.jpg");
-				if(savedFile.exists())
-				{
-					xmppSender = new XMPPSender(dateString, features, message);
-					xmppSender.createMessage();
-					xmppSender.sendPicture();
-				}
-				else
-				{
-					xmppSender = new XMPPSender(dateString, features, message);
-					try{
-						xmppSender.createMessage();
-						xmppSender.sendMessage();
-					}catch(Exception ex){
-						Toast.makeText(getActivity(), "There was a problem sending the data", Toast.LENGTH_SHORT).show();
+				try{
+					message = messageText.getText().toString();
+					if (message.equals(""))
+					{
+						message = "null";
 					}
+					
+					String features = "Volume=\"" + volume + "\" Size=\"" + size
+							+ "\" Distance=\"" + distance + "\"";
+					
+					Date date = new Date();
+					String dateString = date.toGMTString();
+					
+					File savedFile = new File(Environment.getExternalStorageDirectory().getPath() + "/UAV_T/Images/uav_pic.jpg");
+					if(savedFile.exists())
+					{
+						xmppSender = new XMPPSender(dateString, features, message);
+						xmppSender.createMessage();
+						xmppSender.sendPicture();
+					}
+					else
+					{
+						xmppSender = new XMPPSender(dateString, features, message);
+						try{
+							xmppSender.createMessage();
+							xmppSender.sendMessage();
+						}catch(Exception ex){
+							Toast.makeText(getActivity(), "There was a problem sending the data", Toast.LENGTH_SHORT).show();
+						}
+					}
+				}catch(Exception ex){
+					ex.printStackTrace();
+					Toast.makeText(getActivity(), "There was a huge problem sending your data", Toast.LENGTH_SHORT).show();
 				}
-				
 				
 //				Intent nextScreen = new Intent(getApplicationContext(),
 //						MainActivity.class);

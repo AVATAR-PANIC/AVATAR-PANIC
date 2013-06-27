@@ -78,9 +78,9 @@ public class HandleID extends AsyncTask<Void, Void, Boolean> {
 					String[] info = lines.split("\\|");
 					System.out.println(sb.toString());
 					
-					System.out.println("Info 0: " + info[0]);
-					System.out.println("Info 1: " + info[1]);
-					System.out.println("Info 2: " + info[2]);
+//					System.out.println("Info 0: " + info[0]);
+//					System.out.println("Info 1: " + info[1]);
+//					System.out.println("Info 2: " + info[2]);
 					HandleID.ID = info[0];
 					HandleID.Tag = info[1];
 					HandleID.Status = info[2];

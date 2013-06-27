@@ -316,14 +316,14 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 							map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()));
 						}else{
 							if(marker.getPoints().size() == 1 && marker.getPoints().get(0).getData().contains(" is the ID of this user.")){
-								System.out.println(marker.getPoints().get(0).getName());
+//								System.out.println(marker.getPoints().get(0).getName());
 								String line = marker.getPoints().get(0).getData();
 								String [] data = line.split("\r\n");
-								System.out.println("DATA 0: " + data[0]);
-								System.out.println("DATA 1: " + data[1]);
+//								System.out.println("DATA 0: " + data[0]);
+//								System.out.println("DATA 1: " + data[1]);
 								String[] info = data[1].split("_\\*\\*\\*_");
-								System.out.println("INFO 0: " + info[0]);
-								System.out.println("INFO 1: " + info[1]);
+//								System.out.println("INFO 0: " + info[0]);
+//								System.out.println("INFO 1: " + info[1]);
 								marker.getPoints().get(0).getName();
 							map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(info[1] + "\r\n" + data[0]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 							
@@ -444,18 +444,22 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 			}catch(Exception ex){
 				ex.printStackTrace();
 			}
-			MarkerPlus tempPoint = new MarkerPlus(arg0.latitude, arg0.longitude, map.getMyLocation().getAltitude());
-			tempPoint.setName("User Point");
-			tempPoint.setInfo("User Submitted Point");
-			markerArray.add(tempPoint);
-			drawMarkers(true);
-			//placeLocation();
-			if(map != null && markerArray != null){
-				MarkerPlus tempPoint1 = new MarkerPlus(arg0.latitude, arg0.longitude, map.getMyLocation().getAltitude());
-				tempPoint1.setName("User Point");
-				tempPoint1.setInfo("User Submitted Point");
-				markerArray.add(tempPoint1);
+			try{
+				MarkerPlus tempPoint = new MarkerPlus(arg0.latitude, arg0.longitude, map.getMyLocation().getAltitude());
+				tempPoint.setName("User Point");
+				tempPoint.setInfo("User Submitted Point");
+				markerArray.add(tempPoint);
 				drawMarkers(true);
+				//placeLocation();
+				if(map != null && markerArray != null){
+					MarkerPlus tempPoint1 = new MarkerPlus(arg0.latitude, arg0.longitude, map.getMyLocation().getAltitude());
+					tempPoint1.setName("User Point");
+					tempPoint1.setInfo("User Submitted Point");
+					markerArray.add(tempPoint1);
+					drawMarkers(true);
+				}
+			}catch(Exception ex){
+				ex.printStackTrace();
 			}
 		}
 	}
