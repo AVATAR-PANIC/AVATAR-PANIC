@@ -880,8 +880,10 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 		Toast.makeText(getActivity(), "Connected to Google Play", Toast.LENGTH_SHORT).show();
 		connectedGooglePlay = true;
 		myLocation = myLocationClient.getLastLocation();
-		map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(
-				new LatLng(myLocation.getLatitude(),myLocation.getLongitude()),6)));
+		if(map != null){
+			map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(
+					new LatLng(myLocation.getLatitude(),myLocation.getLongitude()),6)));
+		}
 		placeLocation();
 		
 	}
