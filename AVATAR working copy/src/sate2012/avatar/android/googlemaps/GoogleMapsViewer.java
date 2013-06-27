@@ -459,7 +459,7 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 					drawMarkers(true);
 				}
 			}catch(Exception ex){
-				ex.printStackTrace();
+				
 			}
 		}
 	}
