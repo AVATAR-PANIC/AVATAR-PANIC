@@ -879,10 +879,14 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 	public void onConnected(Bundle connectionHint) {
 		Toast.makeText(getActivity(), "Connected to Google Play", Toast.LENGTH_SHORT).show();
 		connectedGooglePlay = true;
+		try{
 		myLocation = myLocationClient.getLastLocation();
 		map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(
 				new LatLng(myLocation.getLatitude(),myLocation.getLongitude()),6)));
 		placeLocation();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
 		
 	}
 

@@ -2,6 +2,7 @@ package sate2012.avatar.android.googlemaps;
 
 import gupta.ashutosh.avatar.R;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -30,6 +31,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * 
@@ -44,6 +46,8 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 	public GoogleMap map;
 	public int currentMapType = GoogleMap.MAP_TYPE_NORMAL;
 	public int currentMap = 4;
+	
+	private ArrayList<MarkerPlus> markers = new ArrayList<MarkerPlus>();
 	
 	/**
 	 * When the Fragment View is created, this is called
@@ -69,7 +73,7 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
 		//Need to create it's own unique menu.
-		inflater.inflate(R.menu.avatar_map_menu, menu);
+		inflater.inflate(R.menu.eagle_eye_map_menu, menu);
 		
 	}
 	
@@ -80,8 +84,15 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 		
 		DialogFragment dialog;
 		
-		dialog = new MapSettingsDialogFragment(currentMap, currentMapType);
-		dialog.show(fragMgr, "MAP_SETTINGS");
+		
+		switch(item.getItemId()){
+			case R.id.map_settings:
+				dialog = new MapSettingsDialogFragment(currentMap, currentMapType);
+				dialog.show(fragMgr, "MAP_SETTINGS");
+				break;
+			case R.id.eagle_eye_map_settings:
+				break;
+		}
 		
 		return false;
 	}
@@ -99,6 +110,7 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 		Bundle b = getArguments();
 		currentMapType = b.getInt("MAP_TYPE");
 		map.setMapType(currentMapType);
+		new HttpThread(this).execute();
 		
 		//Set the Maps listeners
 		map.setOnMapLongClickListener(this);
@@ -109,7 +121,46 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
         map.setMyLocationEnabled(true);
         map.setOnInfoWindowClickListener(this);
         
+        drawMarkers(true);
+    	
+		//Declare the timer
+		//This timer will run a thread to connect to the server every minute
+		Timer httpTimer = new Timer();
+		final EagleEyeGoogleMapsViewer fragment = this;
+		//Set the schedule function and rate
+		httpTimer.scheduleAtFixedRate(new TimerTask() {
+
+		    @Override
+		    public void run() {
+		        new HttpThread(fragment).execute("");
+		    }
+		         
+		},
+		//Set how long before to start calling the TimerTask (in milliseconds)
+		30000,
+		//Set the amount of time between each execution (in milliseconds)
+		60000);
 		
+	}
+	
+	public void drawMarkers(boolean shouldClear){
+		
+		if(shouldClear){
+			map.clear();
+		}
+		
+		if(markers != null && markers.size() != 0){
+			
+			for(MarkerPlus marker: markers){
+				map.addMarker(new MarkerOptions().position(new LatLng(marker.getLatitude(), marker.getLongitude())
+				).title(marker.getName()).snippet(marker.getData()));
+			}
+		}
+	}
+	
+	public void setMarkers(ArrayList<MarkerPlus> markers){
+		this.markers = markers;
+		drawMarkers(true);
 	}
 
 	@Override
