@@ -30,10 +30,11 @@ import android.widget.Toast;
 public class HandleID extends AsyncTask<Void, Void, Boolean> {
 
 	//Variables
-	private String FILENAME = "AVATAR_UNIQUE_ID";
+	private String FILENAME = "THE_USER_ID_AVATAR2";
 	private Context context;
 	public static String ID;
 	public static String Tag;
+	public static String Status;
 	
 	/**
 	 * Need context for writing data to the device
@@ -67,13 +68,22 @@ public class HandleID extends AsyncTask<Void, Void, Boolean> {
 					String line;
 					
 					System.out.println("Appending String");
+					int i = 0;
 					while((line = bufferedReader.readLine()) != null){
 						sb.append(line);
+						i++;
 					}
-					System.out.println(sb);
-					HandleID.ID = sb.substring(0, sb.indexOf(" "));
-					HandleID.Tag = sb.substring(sb.indexOf(" ")+1,sb.length());
 					
+					String lines = sb.toString();
+					String[] info = lines.split("\\|");
+					System.out.println(sb.toString());
+					
+//					System.out.println("Info 0: " + info[0]);
+//					System.out.println("Info 1: " + info[1]);
+//					System.out.println("Info 2: " + info[2]);
+					HandleID.ID = info[0];
+					HandleID.Tag = info[1];
+					HandleID.Status = info[2];
 					if(HandleID.ID.equals("Null")){
 						((File) context.getFileStreamPath(FILENAME)).delete();
 					}
@@ -94,9 +104,10 @@ public class HandleID extends AsyncTask<Void, Void, Boolean> {
 						
 						HandleID.ID = reader.next();
 						HandleID.Tag = "NONE";
+						HandleID.Status = "NONE";
 						
 						FileOutputStream fos = context.openFileOutput(FILENAME, Context.MODE_APPEND);
-						fos.write((HandleID.ID + " " + HandleID.Tag).getBytes());
+						fos.write((HandleID.ID + "|" + HandleID.Tag + "|" + HandleID.Status).getBytes());
 						fos.flush();
 						fos.close();
 						reader.close();

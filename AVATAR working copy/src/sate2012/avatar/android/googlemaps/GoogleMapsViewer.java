@@ -115,6 +115,7 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 	private static float lastKnownZoomLevel;
 	private boolean hasMapCentered = false;
 	private ArrayList<MarkerPlus> markerArray = new ArrayList<MarkerPlus>();// = MarkerMaker.makeMarkers();
+	private ArrayList<MarkerPlus> allMarkers = new ArrayList<MarkerPlus>();//Used for the Tracking of the users.
 	private Marker activeMarker = null;
 	private Bitmap currentImage = null;
 	private boolean gettingURL = false;
@@ -242,7 +243,7 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 		connectedGooglePlay = false;
 		shouldAddUserPoint = false;
 		pointDeleter = new PointDeleter();
-		pointDeleter.execute(HandleID.ID + " is the ID of this user.");
+		pointDeleter.execute(HandleID.ID + " is the ID of this user._***_"+ HandleID.Status);
 		//hasAlerted = false;
 	}
 	
@@ -315,7 +316,17 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 							map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()));
 						}else{
 							if(marker.getPoints().size() == 1 && marker.getPoints().get(0).getData().contains(" is the ID of this user.")){
-							map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+//								System.out.println(marker.getPoints().get(0).getName());
+								String line = marker.getPoints().get(0).getData();
+								String [] data = line.split("\r\n");
+//								System.out.println("DATA 0: " + data[0]);
+//								System.out.println("DATA 1: " + data[1]);
+								String[] info = data[1].split("_\\*\\*\\*_");
+//								System.out.println("INFO 0: " + info[0]);
+//								System.out.println("INFO 1: " + info[1]);
+								marker.getPoints().get(0).getName();
+							map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(info[1] + "\r\n" + data[0]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+							
 							}else{
 								map.addMarker(new MarkerOptions().position(marker.latlng).title(marker.getPoints().get(0).getName()).snippet(marker.getPoints().get(0).getData()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 							}
@@ -387,26 +398,29 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 	public void placeLocation(){
 		Log.i("TestLocationPoint", "CALLED");
 		Location loc = myLocation;
-		if(loc != null && HandleID.ID != null){
+		if(loc != null && HandleID.ID != null && HandleID.Tag != null && HandleID.Status != null){
 			myLatitude = loc.getLatitude();
 			myLongitude = loc.getLongitude();
 			myAltitude = loc.getAltitude();
-			
-			String myID = HandleID.ID;
 			MarkerPlus tempPoint = new MarkerPlus(myLatitude, myLongitude, myAltitude);
 			
 			if(HandleID.Tag.equals("NONE")){
-				tempPoint.setName(myID + "'s location");
+				tempPoint.setName(HandleID.ID + "'s location");
 				tempPoint.setInfo("User Location Point");
 			}else{
 				tempPoint.setName(HandleID.Tag + "'s location");
 				tempPoint.setInfo(HandleID.Tag + "'s Location Point");
 			}
+			if(!HandleID.Status.equals("NONE")){
+				tempPoint.setInfo(HandleID.Status);
+			}
 			drawMarkers(true); 
 
+			
+			System.out.println("Sending Data");
 			UploadMedia.HttpSender httpSender = new UploadMedia.HttpSender();
 			httpSender.execute(tempPoint.getName(), tempPoint.getLatitude() + "",
-					tempPoint.getLongitude() + "", tempPoint.getAltitude() + "", myID + " is the ID of this user.");
+					tempPoint.getLongitude() + "", tempPoint.getAltitude() + "", HandleID.ID + " is the ID of this user._***_"+ HandleID.Status);
 			
 		}else{
 			new HandleID(getActivity()).execute();
@@ -430,18 +444,22 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 			}catch(Exception ex){
 				ex.printStackTrace();
 			}
-			MarkerPlus tempPoint = new MarkerPlus(arg0.latitude, arg0.longitude, map.getMyLocation().getAltitude());
-			tempPoint.setName("User Point");
-			tempPoint.setInfo("User Submitted Point");
-			markerArray.add(tempPoint);
-			drawMarkers(true);
-			placeLocation();
-			if(map != null && markerArray != null){
-				MarkerPlus tempPoint1 = new MarkerPlus(arg0.latitude, arg0.longitude, map.getMyLocation().getAltitude());
-				tempPoint1.setName("User Point");
-				tempPoint1.setInfo("User Submitted Point");
-				markerArray.add(tempPoint1);
+			try{
+				MarkerPlus tempPoint = new MarkerPlus(arg0.latitude, arg0.longitude, map.getMyLocation().getAltitude());
+				tempPoint.setName("User Point");
+				tempPoint.setInfo("User Submitted Point");
+				markerArray.add(tempPoint);
 				drawMarkers(true);
+				//placeLocation();
+				if(map != null && markerArray != null){
+					MarkerPlus tempPoint1 = new MarkerPlus(arg0.latitude, arg0.longitude, map.getMyLocation().getAltitude());
+					tempPoint1.setName("User Point");
+					tempPoint1.setInfo("User Submitted Point");
+					markerArray.add(tempPoint1);
+					drawMarkers(true);
+				}
+			}catch(Exception ex){
+				ex.printStackTrace();
 			}
 		}
 	}
@@ -513,7 +531,7 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 					e.printStackTrace();
 				}
 		        //If the current image is not null 
-			}else if(currentImage != null){
+			}else if(currentImage != null && (marker.getSnippet().contains("png") || marker.getSnippet().contains("jpg") || marker.getSnippet().contains("gif"))){
 				image.setImageDrawable(new BitmapDrawable(null, currentImage));
 			}//If the marker has an image, draw the "Loading" image I have created
 			else if(marker.getSnippet().contains("png") || marker.getSnippet().contains("jpg") || marker.getSnippet().contains("gif")){
@@ -567,6 +585,7 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 		if(arg0.zoom != lastKnownZoomLevel){
 			lastKnownZoomLevel = arg0.zoom;
 			activeMarker = null;
+			currentImage = null;
 			drawMarkers(true);
 		}
 		
@@ -589,6 +608,7 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 			markerArray = new ArrayList<MarkerPlus>();
 		}
 		this.markerArray = array;
+		this.allMarkers = array;
 		System.out.println("It's been set!");
 		checkForNearbyEmergencies();
 		
@@ -599,8 +619,10 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 			//placeLocation();
 			//Put Point Deleter
 			pointDeleter = new PointDeleter();
-			pointDeleter.execute(HandleID.ID + " is the ID of this user.");
+			pointDeleter.execute(HandleID.ID + " is the ID of this user._***_"+ HandleID.Status);
 		}
+		
+		drawMarkers(false);
 
 		//System.out.println("Set the Array!");
 	}
@@ -883,7 +905,7 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 		myLocation = myLocationClient.getLastLocation();
 		map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(
 				new LatLng(myLocation.getLatitude(),myLocation.getLongitude()),6)));
-		placeLocation();
+		//placeLocation();
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
@@ -899,6 +921,10 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 	
 	public ArrayList<MarkerPlus> getPoints(){
 		return markerArray;
+	}
+	
+	public ArrayList<MarkerPlus> getAllPoints(){
+		return allMarkers;
 	}
 	
 

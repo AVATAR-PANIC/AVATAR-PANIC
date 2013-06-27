@@ -71,9 +71,6 @@ public class MarkerPlus{
 	public String getDate(){
 		return this.data.substring(13, this.data.indexOf("\r"));
 	}
-	public String getInfo() {
-		return data;
-	}
 	public void setInfo(String info) {
 		this.data = info;
 	}

@@ -41,7 +41,8 @@ public class AvatarMapSettingsDialogFragment extends DialogFragment {
 	private ListView list;
 	private Button saveButton;
 	private EditText tagArea;
-	private String FILENAME = "AVATAR_UNIQUE_ID";
+	private EditText statusArea;
+	private String FILENAME = "THE_USER_ID_AVATAR2";
 	
 	public AvatarMapSettingsDialogFragment(GoogleMapsViewer map){
 		this.map = map;
@@ -56,9 +57,11 @@ public class AvatarMapSettingsDialogFragment extends DialogFragment {
 		getDialog().setTitle("AVATAR Map Settings");
 		
 		tagArea = (EditText) view.findViewById(R.id.avatar_tag);
+		statusArea = (EditText) view.findViewById(R.id.avatar_status);
 		list = (ListView) view.findViewById(R.id.user_locations);
 		saveButton = (Button) view.findViewById(R.id.avatar_map_done);
-		tagArea.setHint(HandleID.Tag);
+		tagArea.setHint("Tag");
+		statusArea.setHint("Status");
 		
 		final CustomArrayAdapter adapter = new CustomArrayAdapter(getActivity());
 		list.setAdapter(adapter);
@@ -67,7 +70,6 @@ public class AvatarMapSettingsDialogFragment extends DialogFragment {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				// TODO Auto-generated method stub
 				
 			}
 			
@@ -78,23 +80,43 @@ public class AvatarMapSettingsDialogFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				String tag = "";
+				String status = "";
 				
 				tag = tagArea.getText().toString();
+				status = statusArea.getText().toString();
 				
-				if(!tag.equals("")){
-					System.out.println("Re-writing the tag");
+				if(!tag.equals("") || !status.equals("")){
+//					System.out.println("Re-writing the tag");
 					FileOutputStream fos;
 					try {
 						File file = getActivity().getFileStreamPath(FILENAME);
 						boolean isDeleted = file.delete();
 						
-						System.out.println("Delete Successful? " + isDeleted);
+//						System.out.println("Delete Successful? " + isDeleted);
 						
 						fos = getActivity().openFileOutput(FILENAME, Context.MODE_APPEND);
-						fos.write((HandleID.ID + " " + tag).getBytes());
+						if(status.equals("")){
+//							System.out.println("Status was blank");
+							fos.write((HandleID.ID + "|" + tag + "|" + HandleID.Status).getBytes());
+							HandleID.Tag = tag;
+						}
+						else if(tag.equals("")){
+//							System.out.println("Tag was blank");
+							fos.write((HandleID.ID + "|" + HandleID.Tag + "|" + status).getBytes());
+							HandleID.Status = status;
+						}
+						else{
+//							System.out.println("All was not blank");
+						fos.write((HandleID.ID + "|" + tag + "|" + status).getBytes());
+						HandleID.Tag = tag;
+						HandleID.Status = status;
+						}
+						
+//						System.out.println("Tag: " + tag);
+//						System.out.println("Status: " + status);
+						
 						fos.flush();
 						fos.close();
-						HandleID.Tag = tag;
 					} catch (Exception ex) {
 						// TODO Auto-generated catch block
 						ex.printStackTrace();
@@ -145,7 +167,7 @@ public class AvatarMapSettingsDialogFragment extends DialogFragment {
 			mInflater = LayoutInflater.from(mContext);
 			mSparseBooleanArray = new SparseBooleanArray();
 			this.points = new ArrayList<MarkerPlus>();
-			ArrayList<MarkerPlus> temp = map.getPoints();
+			ArrayList<MarkerPlus> temp = map.getAllPoints();
 			
 			for(int i = 0; i < temp.size(); i++){
 				if(temp.get(i).getData().contains(" is the ID of this user.")){
