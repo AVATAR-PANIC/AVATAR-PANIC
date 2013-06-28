@@ -243,7 +243,7 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 		connectedGooglePlay = false;
 		shouldAddUserPoint = false;
 		pointDeleter = new PointDeleter();
-		pointDeleter.execute(HandleID.ID + " is the ID of this user._***_"+ HandleID.Status);
+		pointDeleter.execute(HandleID.ID + " is the ID of this user");
 		//hasAlerted = false;
 	}
 	
@@ -619,7 +619,7 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 			//placeLocation();
 			//Put Point Deleter
 			pointDeleter = new PointDeleter();
-			pointDeleter.execute(HandleID.ID + " is the ID of this user._***_"+ HandleID.Status);
+			pointDeleter.execute(HandleID.ID + " is the ID of this user.");
 		}
 		
 		drawMarkers(false);
