@@ -62,6 +62,9 @@ import com.guardian_angel.uav_tracker.XMPPSender;
  * @author Garrett - emrickgarrett@gmail.com
  * 
  * This class is used for the implementation of the Guardian Angel Google Maps
+ * 
+ * I've done the basic work on creating the map, but without the server running I wasn't
+ * able to do much. Shouldn't be much harder to set up however, but will require some work.
  *
  */
 public class GuardianAngelGoogleMapsViewer extends Fragment implements OnMapLongClickListener, InfoWindowAdapter, 

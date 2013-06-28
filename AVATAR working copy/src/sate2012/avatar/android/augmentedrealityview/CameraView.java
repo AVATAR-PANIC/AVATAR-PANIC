@@ -249,7 +249,6 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 							.updateBearing((float) -(Math.atan2(rot[3], rot[0])));
 					pointerView
 							.updatePitch((float) -(Math.atan2(rot[7], rot[8]) - (Math.PI / 2)));
-	
 					// Redraw the screen
 					pointerView.postInvalidate();
 				}

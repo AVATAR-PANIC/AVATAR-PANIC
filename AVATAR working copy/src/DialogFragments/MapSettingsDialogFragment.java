@@ -128,6 +128,10 @@ public class MapSettingsDialogFragment extends DialogFragment {
 		return view;
 	}
 	
+	/**
+	 * Used to create the correct map with the correct settings based on which buttons
+	 * were selected above.
+	 */
 	private void createFragment(){
 		FragmentManager fragMgr = getFragmentManager();
 		FragmentTransaction xact = fragMgr.beginTransaction();

@@ -55,6 +55,9 @@ import com.google.android.maps.Overlay;
  * @author Garrett - emrickgarrett@gmail.com
  * 
  * This class is used for the implementation of the Tricorder Google Maps.
+ * 
+ * Should work once we have the sensor, but I'm not entirely sure since I couldn't
+ * test it.
  *
  */
 public class TricorderGoogleMapsViewer extends Fragment implements InfoWindowAdapter, OnCameraChangeListener, 
@@ -197,8 +200,8 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 	public void addData(ArrayList<TricorderMarkerPlus> currentData){
 		
 		//For testing of the Map
-		generateData();
-		drawMarkers();
+		//generateData();
+		//drawMarkers();
 		
 		//If the data size is zero, it's still loading.
 		if (currentData.size() == 0) {
@@ -410,9 +413,9 @@ OnMapClickListener, OnMarkerClickListener, OnInfoWindowClickListener, OnMapLongC
 			startActivity(i);
 			break;
 		case R.id.tri_menu_refresh: // This currently generates random data.
-			addData(new ArrayList<TricorderMarkerPlus>());
-			//i = new Intent("tricorder.tecedge.Refresh");
-			//startActivity(i);
+			//addData(new ArrayList<TricorderMarkerPlus>());
+			i = new Intent("tricorder.tecedge.Refresh");
+			startActivity(i);
 			break;
 		
 		

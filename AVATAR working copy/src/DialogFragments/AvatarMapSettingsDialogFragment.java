@@ -34,7 +34,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-@SuppressLint("ValidFragment")
+/**
+ * 
+ * @author Garrett - emrickgarrett@gmail.com
+ * 
+ * This class is used to display the Avatar's map settings.
+ * Allows the user to see the other users of the application, zoom to their
+ * location, and also allows the user to set their tag and status which will
+ * be displayed on the map.
+ *
+ */
+@SuppressLint("ValidFragment") //Just to let Android know this is okay.
 public class AvatarMapSettingsDialogFragment extends DialogFragment {
 
 	private GoogleMapsViewer map;
@@ -42,7 +52,7 @@ public class AvatarMapSettingsDialogFragment extends DialogFragment {
 	private Button saveButton;
 	private EditText tagArea;
 	private EditText statusArea;
-	private String FILENAME = "THE_USER_ID_AVATAR2";
+	private String FILENAME = "THE_USER_ID_AVATAR2"; //IMPORTANT! IF CHANGED ALSO CHANGE HANDLEID'S!
 	
 	public AvatarMapSettingsDialogFragment(GoogleMapsViewer map){
 		this.map = map;
@@ -52,6 +62,9 @@ public class AvatarMapSettingsDialogFragment extends DialogFragment {
 		
 	}
 	
+	/**
+	 * What happens when the View is created.
+	 */
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.avatar_map_settings, container, false);
 		getDialog().setTitle("AVATAR Map Settings");
@@ -63,10 +76,14 @@ public class AvatarMapSettingsDialogFragment extends DialogFragment {
 		tagArea.setHint("Tag");
 		statusArea.setHint("Status");
 		
+		//Adapter to correctly populate the list and handle clicks.
 		final CustomArrayAdapter adapter = new CustomArrayAdapter(getActivity());
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(new OnItemClickListener(){
 
+			/**
+			 * Currently not used.
+			 */
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
@@ -75,6 +92,7 @@ public class AvatarMapSettingsDialogFragment extends DialogFragment {
 			
 		});
 		
+		//What happens when the save button is clicked.
 		saveButton.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -90,10 +108,11 @@ public class AvatarMapSettingsDialogFragment extends DialogFragment {
 					FileOutputStream fos;
 					try {
 						File file = getActivity().getFileStreamPath(FILENAME);
-						boolean isDeleted = file.delete();
+						boolean isDeleted = file.delete(); //Delete the old file
 						
 //						System.out.println("Delete Successful? " + isDeleted);
 						
+						//Create the file, and write the correct data to it.
 						fos = getActivity().openFileOutput(FILENAME, Context.MODE_APPEND);
 						if(status.equals("")){
 //							System.out.println("Status was blank");
@@ -108,7 +127,7 @@ public class AvatarMapSettingsDialogFragment extends DialogFragment {
 						else{
 //							System.out.println("All was not blank");
 						fos.write((HandleID.ID + "|" + tag + "|" + status).getBytes());
-						HandleID.Tag = tag;
+						HandleID.Tag = tag; //Set the current sessions tag and ID so it sends correctly to server.
 						HandleID.Status = status;
 						}
 						
@@ -125,6 +144,7 @@ public class AvatarMapSettingsDialogFragment extends DialogFragment {
 					}
 				}
 				
+				//If the user has a user point selected, animate to that user.
 				if(adapter.getCheckedItems().size() > 0){
 					
 					Toast.makeText(getActivity(), "Tracking User. . .", Toast.LENGTH_SHORT).show();

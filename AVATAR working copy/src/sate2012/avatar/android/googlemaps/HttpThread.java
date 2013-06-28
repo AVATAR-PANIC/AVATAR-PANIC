@@ -46,6 +46,10 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 			this.cameraView = view;
 		}
 		
+		/**
+		 * Constructor. Use this for Eagle Eye
+		 * @param eMap : The Eagle Eye map.
+		 */
 		public HttpThread(EagleEyeGoogleMapsViewer eMap){
 			this.eMap = eMap;
 		}
@@ -67,7 +71,7 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 					HttpClient client = new DefaultHttpClient();
 					
 					HttpGet get= new HttpGet(new URI("http://" + Constants.SERVER_ADDRESS + "/jsonPoints.php"));;
-					if(eMap != null){
+					if(eMap != null){ //If it is an Eagle Eye map, use different php script.
 						get= new HttpGet(new URI("http://" + Constants.SERVER_ADDRESS + "/jsonPointsEE.php"));
 					}
 					

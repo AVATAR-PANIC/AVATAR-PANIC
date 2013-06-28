@@ -143,9 +143,13 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 		
 	}
 	
+	/**
+	 * What draws the markers and clears the map.
+	 * @param shouldClear : Whether or not to clear the map.
+	 */
 	public void drawMarkers(boolean shouldClear){
 		
-		if(shouldClear){
+		if(shouldClear){ //If the map needs to clear, clear it.
 			map.clear();
 		}
 		
@@ -158,6 +162,10 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 		}
 	}
 	
+	/**
+	 * Sets the markers in this class, used by HttpThread currently.
+	 * @param markers
+	 */
 	public void setMarkers(ArrayList<MarkerPlus> markers){
 		this.markers = markers;
 		drawMarkers(true);

@@ -43,6 +43,9 @@ public class ActivePointDialogFragment extends DialogFragment {
 		
 	}
 	
+	/**
+	 * When the view for the Dialog is created
+	 */
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.active_points_layout, container, false);
 		getDialog().setTitle("Set Active Points");
@@ -52,10 +55,14 @@ public class ActivePointDialogFragment extends DialogFragment {
 		list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		saveButton = (Button) view.findViewById(R.id.show_checked);
 		
+		//Adapter to populate the list and record which items are seleted
 		final CustomArrayAdapter adapter = new CustomArrayAdapter(getActivity(), manager.getAllPoints());
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(new OnItemClickListener(){
 
+			/**
+			 * Not currently used.
+			 */
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
@@ -68,6 +75,9 @@ public class ActivePointDialogFragment extends DialogFragment {
 		
 		saveButton.setOnClickListener(new OnClickListener(){
 
+			/**
+			 * What happens when the save button is clicked.
+			 */
 			@Override
 			public void onClick(View v) {
 				if(adapter.getCheckedItems().size() > 0){
@@ -105,6 +115,11 @@ public class ActivePointDialogFragment extends DialogFragment {
 		ArrayList<MarkerPlus> points;
 		SparseBooleanArray mSparseBooleanArray;
 		
+		/**
+		 * Constructor for the Adapter
+		 * @param context : The context of the fragment (Activity)
+		 * @param objects : The marker plus points.
+		 */
 		public CustomArrayAdapter(Context context,ArrayList<MarkerPlus> objects) {
 			this.mContext = context;
 			mInflater = LayoutInflater.from(mContext);
@@ -113,6 +128,10 @@ public class ActivePointDialogFragment extends DialogFragment {
 			this.points = objects;
 			if(points == null) points = new ArrayList<MarkerPlus>();
 			
+			/**
+			 * If this these points contains the managers active points,
+			 * highlight them.
+			 */
 			for(int i = 0; i < manager.getActivePoints().size(); i++){
 				
 				if(this.points.contains(manager.getActivePoints().get(i))){
@@ -122,6 +141,10 @@ public class ActivePointDialogFragment extends DialogFragment {
 			
 		}
 		
+		/**
+		 * Return which items are checked.
+		 * @return : An array list of Marker Plus items.
+		 */
 		public ArrayList<MarkerPlus> getCheckedItems(){
 			ArrayList<MarkerPlus> tempArray = new ArrayList<MarkerPlus>();
 			
@@ -150,6 +173,10 @@ public class ActivePointDialogFragment extends DialogFragment {
 			return position;
 		}
 		
+		/**
+		 * Used to determine which items are checked. This is important!
+		 * If you don't use this, Android will mess everything up as it recycles views.
+		 */
 		@Override
 		public View getView(final int position, View convertView, ViewGroup parent){
 			
@@ -169,6 +196,9 @@ public class ActivePointDialogFragment extends DialogFragment {
 			return convertView;
 		}
 		
+		/**
+		 * Listener for when an Items checked state is changed.
+		 */
 		OnCheckedChangeListener mCheckedChangeListener = new OnCheckedChangeListener(){
 
 			@Override

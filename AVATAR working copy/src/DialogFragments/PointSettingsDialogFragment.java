@@ -64,7 +64,7 @@ public class PointSettingsDialogFragment extends DialogFragment{
 		
 		
 		if(!hasManager){
-			pointRadius.setEnabled(false);
+			pointRadius.setEnabled(false); //If it's guardian angel, disable the text area.
 		}
 		
 		saveButton.setOnClickListener(new OnClickListener(){

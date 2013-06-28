@@ -26,7 +26,6 @@ public class PANICDialogFragment extends DialogFragment {
 	private Button police;
 	private Button fire;
 	private Button parents;
-	private Button cancel;
 	
 	
 	public PANICDialogFragment(){
@@ -42,7 +41,6 @@ public class PANICDialogFragment extends DialogFragment {
 		this.police = (Button) view.findViewById(R.id.panic_police);
 		this.fire = (Button) view.findViewById(R.id.panic_fire);
 		this.parents = (Button) view.findViewById(R.id.panic_parents);
-		//this.cancel = (Button) view.findViewById(R.id.panic_cancel);
 		
 		police.setOnClickListener(new OnClickListener(){
 			
@@ -76,15 +74,7 @@ public class PANICDialogFragment extends DialogFragment {
 				getDialog().cancel();
 			}
 		});
-		
-//		cancel.setOnClickListener(new OnClickListener(){
-//			
-//			public void onClick(View v){
-//				//Cancel code goes here.
-//				getDialog().cancel();
-//			}
-//		});
-		
+
 		return view;
 	}
 	

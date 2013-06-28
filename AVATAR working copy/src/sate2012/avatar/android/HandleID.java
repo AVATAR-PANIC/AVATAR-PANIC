@@ -30,7 +30,7 @@ import android.widget.Toast;
 public class HandleID extends AsyncTask<Void, Void, Boolean> {
 
 	//Variables
-	private String FILENAME = "THE_USER_ID_AVATAR2";
+	private String FILENAME = "THE_USER_ID_AVATAR2"; //IMPORTANT! IF CHANGED ALSO CHANGE AVATARMAPSETTINGS!
 	private Context context;
 	public static String ID;
 	public static String Tag;
@@ -48,35 +48,30 @@ public class HandleID extends AsyncTask<Void, Void, Boolean> {
 	public Boolean doInBackground(Void...voids){
 		System.out.println("Starting task to get ID");
 		Boolean bool = false;
-		while(!bool){
+		while(!bool){ //Need this while statement, Android will occasionally not run this correctly without.
 			try{
-				System.out.println("Getting File");
+				//System.out.println("Getting File");
 				File file = context.getFileStreamPath(FILENAME);
-				System.out.println("Got File");
+				//System.out.println("Got File");
 				
-				//Used for debugging, should be without the "!".
-				//For now since it has errors, will always try to grab from the server
-				//To see if the data parses correctly. Once that works, remove the "!".
 				if(file.exists()){
 					//Use the ID already on the device.
 					System.out.println("File Exists");
 					FileInputStream in = context.openFileInput(FILENAME);
-					System.out.println(file.getAbsolutePath());
+					//System.out.println(file.getAbsolutePath());
 					InputStreamReader inputStreamReader = new InputStreamReader(in);
 					BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 					StringBuilder sb = new StringBuilder();
 					String line;
 					
-					System.out.println("Appending String");
-					int i = 0;
+					//System.out.println("Appending String");
 					while((line = bufferedReader.readLine()) != null){
 						sb.append(line);
-						i++;
 					}
 					
 					String lines = sb.toString();
 					String[] info = lines.split("\\|");
-					System.out.println(sb.toString());
+					//System.out.println(sb.toString());
 					
 //					System.out.println("Info 0: " + info[0]);
 //					System.out.println("Info 1: " + info[1]);
@@ -139,7 +134,7 @@ public class HandleID extends AsyncTask<Void, Void, Boolean> {
 	 */
 	@Override
 	public void onPostExecute(Boolean bool){
-		System.out.println("What happened?");
+		//System.out.println("What happened?");
 		if(bool){
 			System.err.println("Success! The ID is " + HandleID.ID + " and the Tag is : " + HandleID.Tag);
 		}else{
