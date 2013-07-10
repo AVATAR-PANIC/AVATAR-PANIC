@@ -28,6 +28,7 @@ import sate2012.avatar.android.HandleID;
 import sate2012.avatar.android.UploadMedia;
 import sate2012.avatar.android.VideoPlayer;
 import DialogFragments.AvatarMapSettingsDialogFragment;
+import DialogFragments.LoginDialogFragment;
 import DialogFragments.MapSettingsDialogFragment;
 import android.app.DialogFragment;
 import android.app.Fragment;
@@ -173,6 +174,11 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 			case R.id.avatar_map_settings:
 				dialog = new AvatarMapSettingsDialogFragment(this);
 				dialog.show(fragMgr, "AVATAR_MAP_SETTINGS");
+				break;
+			case R.id.avatar_login_settings:
+				dialog = new LoginDialogFragment();
+				dialog.show(fragMgr, "LOGIN_DIALOG");
+				break;
 		}
 		return true;
 	}
@@ -854,13 +860,13 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 					HttpPost post = new HttpPost(new URI("http://" + Constants.SERVER_ADDRESS + "/deleteUserPoint.php"));
 					post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 					HttpResponse response = client.execute(post);
-					Scanner reader = new Scanner(new InputStreamReader(response.getEntity().getContent()));
+					//Scanner reader = new Scanner(new InputStreamReader(response.getEntity().getContent()));
 					
 				
-					while(reader.hasNext()){
-						System.out.println(reader.next());
-					}
-					reader.close();
+					//while(reader.hasNext()){
+					//	System.out.println(reader.nextLine());
+					//}
+					//reader.close();
 					deleted = true;
 					//HELP!!!
 					tries = 3;

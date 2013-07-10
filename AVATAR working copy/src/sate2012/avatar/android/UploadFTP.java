@@ -19,7 +19,7 @@ public class UploadFTP extends AsyncTask<String, String, String> {
 		String filename = "T" + time;
 		try {
 			ftpClient.connect(InetAddress.getByName("www.virtualdiscoverycenter.net"));
-			ftpClient.login("opensim", "widdlyscuds");
+			ftpClient.login(Constants.username, Constants.password);
 			ftpClient.changeWorkingDirectory("../../var/www/AVATAR/");
 			//Looper.prepare();
 			//if (ftpClient.getReplyString().contains("250")) {
