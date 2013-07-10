@@ -16,8 +16,8 @@ public class Constants {
 	public static final int PHONE_REQUEST = 4;
 	//public static final String SERVER_ADDRESS = "10.0.1.189";
 	public static final String SERVER_ADDRESS = "www.virtualdiscoverycenter.net/AVATAR";
-	public static final String username = "root";
-	public static final String password = "widdlyscuds";
+	public static String username ="";
+	public static String password ="";
  
 	public static String lat = "39.7";
 	public static String lng = "-84.2";
