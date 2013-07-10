@@ -28,6 +28,7 @@ import sate2012.avatar.android.HandleID;
 import sate2012.avatar.android.UploadMedia;
 import sate2012.avatar.android.VideoPlayer;
 import DialogFragments.AvatarMapSettingsDialogFragment;
+import DialogFragments.LoginDialogFragment;
 import DialogFragments.MapSettingsDialogFragment;
 import android.app.DialogFragment;
 import android.app.Fragment;
@@ -173,6 +174,11 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 			case R.id.avatar_map_settings:
 				dialog = new AvatarMapSettingsDialogFragment(this);
 				dialog.show(fragMgr, "AVATAR_MAP_SETTINGS");
+				break;
+			case R.id.avatar_login_settings:
+				dialog = new LoginDialogFragment();
+				dialog.show(fragMgr, "LOGIN_DIALOG");
+				break;
 		}
 		return true;
 	}

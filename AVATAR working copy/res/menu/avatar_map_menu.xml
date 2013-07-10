@@ -10,5 +10,9 @@
         android:id="@+id/avatar_map_settings"
         android:title="AVATAR Map Settings"
         />
+    
+    <item
+        android:id="@+id/avatar_login_settings"
+        android:title="Log-in Settings" />
 
 </menu>
