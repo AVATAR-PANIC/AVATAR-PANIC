@@ -36,9 +36,8 @@ public class LoginDialogFragment extends DialogFragment{
 				
 				String userNameInfo = username.getText().toString();
 				String userNamePassword = password.getText().toString();
-				
-				if(userNameInfo != null && userNameInfo != ""){
-					if(userNamePassword != null && userNamePassword != ""){
+				if(userNameInfo != null && !userNameInfo.equals("")){
+					if(userNamePassword != null && !userNamePassword.equals("")){
 						Constants.username = userNameInfo;
 						Constants.password = userNamePassword;
 						Toast.makeText(getActivity(), "Logging In", Toast.LENGTH_SHORT).show();
