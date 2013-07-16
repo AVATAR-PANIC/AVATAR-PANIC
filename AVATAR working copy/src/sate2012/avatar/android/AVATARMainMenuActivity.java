@@ -1,5 +1,7 @@
 package sate2012.avatar.android;
 
+import org.json.JSONObject;
+
 import gupta.ashutosh.avatar.R;
 import sate2012.avatar.android.augmentedrealityview.CameraView;
 import sate2012.avatar.android.googlemaps.GoogleMapsViewer;
