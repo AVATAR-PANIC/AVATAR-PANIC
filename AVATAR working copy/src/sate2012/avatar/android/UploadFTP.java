@@ -3,6 +3,8 @@ package sate2012.avatar.android;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
+
 import java.io.IOException;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -15,12 +17,15 @@ public class UploadFTP extends AsyncTask<String, String, String> {
 	public String doInBackground(String... params) {
 		System.out.println("FTP START");
 		FTPClient ftpClient = new FTPClient();
+		Log.d("HELP", ftpClient.toString());
 		long time = (System.currentTimeMillis());
 		String filename = "T" + time;
 		try {
 			ftpClient.connect(InetAddress.getByName("www.virtualdiscoverycenter.net"));
-			ftpClient.login("opensim", "widdlyscuds");
-			ftpClient.changeWorkingDirectory("../../var/www/AVATAR/");
+			ftpClient.login(Constants.username, Constants.password);
+			System.out.println(ftpClient.getStatus());
+			ftpClient.changeWorkingDirectory("/var/www/AVATAR");
+			System.out.println(ftpClient.printWorkingDirectory());
 			//Looper.prepare();
 			//if (ftpClient.getReplyString().contains("250")) {
 				//Handler progressHandler = new Handler();

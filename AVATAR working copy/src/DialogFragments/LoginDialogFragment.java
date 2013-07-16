@@ -24,13 +24,11 @@ public class LoginDialogFragment extends DialogFragment{
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View v = inflater.inflate(R.layout.avatar_login, container, false);
-		
 		getDialog().setTitle("Log-in Settings");
 		
 		username = (EditText) v.findViewById(R.id.username_field);
 		password = (EditText) v.findViewById(R.id.password_field);
 		save = (Button) v.findViewById(R.id.avatar_login_save);
-		
 		save.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -38,9 +36,8 @@ public class LoginDialogFragment extends DialogFragment{
 				
 				String userNameInfo = username.getText().toString();
 				String userNamePassword = password.getText().toString();
-				
-				if(userNameInfo != null && userNameInfo != ""){
-					if(userNamePassword != null && userNamePassword != ""){
+				if(userNameInfo != null && !userNameInfo.equals("")){
+					if(userNamePassword != null && !userNamePassword.equals("")){
 						Constants.username = userNameInfo;
 						Constants.password = userNamePassword;
 						Toast.makeText(getActivity(), "Logging In", Toast.LENGTH_SHORT).show();

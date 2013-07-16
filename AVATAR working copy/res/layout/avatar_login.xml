@@ -27,7 +27,9 @@
     
     <EditText
         android:id="@+id/password_field"
-        android:hint="Password" />
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:password="true" />
 
     <Button
         android:id="@+id/avatar_login_save"

@@ -860,13 +860,13 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 					HttpPost post = new HttpPost(new URI("http://" + Constants.SERVER_ADDRESS + "/deleteUserPoint.php"));
 					post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 					HttpResponse response = client.execute(post);
-					Scanner reader = new Scanner(new InputStreamReader(response.getEntity().getContent()));
+					//Scanner reader = new Scanner(new InputStreamReader(response.getEntity().getContent()));
 					
 				
-					while(reader.hasNext()){
-						System.out.println(reader.next());
-					}
-					reader.close();
+					//while(reader.hasNext()){
+					//	System.out.println(reader.nextLine());
+					//}
+					//reader.close();
 					deleted = true;
 					//HELP!!!
 					tries = 3;
