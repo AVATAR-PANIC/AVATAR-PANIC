@@ -38,6 +38,7 @@ public class ActivePointDialogFragment extends DialogFragment {
 	ListView list;
 	AugRelPointManager manager;
 	Button saveButton;
+	Button checkAll;
 	
 	public ActivePointDialogFragment(){
 		
@@ -54,6 +55,7 @@ public class ActivePointDialogFragment extends DialogFragment {
 		list = (ListView) view.findViewById(R.id.points_list);
 		list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		saveButton = (Button) view.findViewById(R.id.show_checked);
+		checkAll = (Button) view.findViewById(R.id.check_all);
 		
 		//Adapter to populate the list and record which items are seleted
 		final CustomArrayAdapter adapter = new CustomArrayAdapter(getActivity(), manager.getAllPoints());
@@ -93,7 +95,15 @@ public class ActivePointDialogFragment extends DialogFragment {
 			}
 			
 		});
-		
+		checkAll.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				System.out.println("MAEHTSEAI");
+				adapter.checkAllPoints();
+			}
+			
+		});
 		
 		return view;
 	}
@@ -194,6 +204,13 @@ public class ActivePointDialogFragment extends DialogFragment {
 			mCheckBox.setOnCheckedChangeListener(mCheckedChangeListener);
 			
 			return convertView;
+		}
+		
+		public void checkAllPoints(){
+			for(int i = 0; i < points.size(); i++){
+				mSparseBooleanArray.put(i, true);
+			}
+			this.notifyDataSetChanged();
 		}
 		
 		/**

@@ -21,14 +21,29 @@
         </ListView>
 
 	</LinearLayout>
-
-	<Button
-   	    android:id="@+id/show_checked"
-   	    android:layout_width="wrap_content"
+	
+	<LinearLayout 
+	    android:layout_width="wrap_content"
    	    android:layout_height="0dp"
    	    android:layout_weight="1"
-        android:text="Save Active Points"
-        android:enabled="true"
-        />
+	    android:orientation="horizontal">
+        
+	    <Button
+	   	    android:id="@+id/check_all"
+	   	    android:layout_width="wrap_content"
+	   	    android:layout_height="match_parent"
+	        android:text="Check all"
+	        android:enabled="true"
+	        />
+	    
+		<Button
+	   	    android:id="@+id/show_checked"
+	   	    android:layout_width="wrap_content"
+	   	    android:layout_height="match_parent"
+	        android:enabled="true"
+	        android:text="Save Active Points"
+	        />
+		
+	</LinearLayout>
 
 </LinearLayout>
