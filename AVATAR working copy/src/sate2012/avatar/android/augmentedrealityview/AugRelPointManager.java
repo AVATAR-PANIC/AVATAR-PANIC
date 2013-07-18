@@ -157,6 +157,8 @@ public class AugRelPointManager implements Serializable {
 		//For determining which icon to draw
 		Bitmap pointIcon;
 		
+		//System.err.println(myPitch);
+		
 		if(marker.getName().equals("EMERGENCY")){
 			pointIcon = BitmapFactory.decodeResource(outer.getResources(),
 					R.drawable.emergency);
@@ -182,135 +184,136 @@ public class AugRelPointManager implements Serializable {
 		if (outer.myLocation.getLatitude() < gpLocation.getLatitude()) {
 			if (myBearing >= 0) {
 				if ((float) (Math.tan(gpBearing - myBearing)
-						* (outer.mSurfaceView.getWidth() / 2)
+						* (outer.mSurfaceView.getWidth() / 2.0)
 						/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-						.getWidth() / 2)) > outer.fragWidth) {
-					bitmapRects.put(new Rect((int)(Math.tan(gpBearing - myBearing) * (outer.mSurfaceView.getWidth() / 2)
-							/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView.getWidth() / 2)), (int)(Math.tan(myPitchA - myPitch + Math.PI / 2.0) * (outer.mSurfaceView.getHeight() / 2)
+						.getWidth() / 2.0)) > outer.fragWidth) {
+					bitmapRects.put(new Rect((int)(Math.tan(gpBearing - myBearing) * (outer.mSurfaceView.getWidth() / 2.0)
+							/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView.getWidth() / 2.0)), (int)(Math.tan(myPitchA - myPitch + Math.PI / 2.0) * (outer.mSurfaceView.getHeight() / 2.0)
 							/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-							.getHeight() / 2)), (int)(Math.tan(gpBearing - myBearing)
-									* (outer.mSurfaceView.getWidth() / 2)
+							.getHeight() / 2.0)), (int)(Math.tan(gpBearing - myBearing)
+									* (outer.mSurfaceView.getWidth() / 2.0)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-									.getWidth() / 2)) + pointIcon.getWidth(), (int)(Math.tan(myPitchA - myPitch + Math.PI / 2.0) * (outer.mSurfaceView.getHeight() / 2)
+									.getWidth() / 2)) + pointIcon.getWidth(), (int)(Math.tan(myPitchA - myPitch + Math.PI / 2.0) * (outer.mSurfaceView.getHeight() / 2.0)
 											/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-													.getHeight() / 2)) + pointIcon.getHeight()), marker);
+													.getHeight() / 2.0)) + pointIcon.getHeight()), marker);
 					canvas.drawBitmap(
 							pointIcon,
 							(float) (Math.tan(gpBearing - myBearing)
-									* (outer.mSurfaceView.getWidth() / 2)
+									* (outer.mSurfaceView.getWidth() / 2.0)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-									.getWidth() / 2)),
+									.getWidth() / 2.0)),
 							(float) (Math.tan(myPitchA - myPitch + Math.PI
 									/ 2.0)
-									* (outer.mSurfaceView.getHeight() / 2)
+									* (outer.mSurfaceView.getHeight() / 2.0)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-									.getHeight() / 2)), null);
+									.getHeight() / 2.0))
+									, null);
 					canvas.drawText( name + ": " + dist,
 							(float) (Math.tan(gpBearing - myBearing)
-									* (outer.mSurfaceView.getWidth() / 2)
+									* (outer.mSurfaceView.getWidth() / 2.0)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-									.getWidth() / 2)),
+									.getWidth() / 2.0)),
 							(float) (Math.tan(myPitchA - myPitch + Math.PI/ 2.0)
-									* (outer.mSurfaceView.getHeight() / 2)
+									* (outer.mSurfaceView.getHeight() / 2.0)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-									.getHeight() / 2)), paint);
+									.getHeight() / 2.0)), paint);
 					canvas.drawText("" + dist,
 							(float) (Math.tan(gpBearing - myBearing)
-									* (outer.mSurfaceView.getWidth() / 2)
+									* (outer.mSurfaceView.getWidth() / 2.0)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-									.getWidth() / 2)),
+									.getWidth() / 2.0)),
 							(float) (Math.tan(myPitchA - myPitch + Math.PI/ 2.0)
-									* (outer.mSurfaceView.getHeight() / 2)
+									* (outer.mSurfaceView.getHeight() / 2.0)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-									.getHeight() / 2)) + pointIcon.getScaledHeight(canvas) + 10, paint);
+									.getHeight() / 2.0)) + pointIcon.getScaledHeight(canvas) + 10, paint);
 				}
 			}
 		} else if (outer.myLocation.getLatitude() > gpLocation.getLatitude()) {
 			if (myBearing <= 0) {
 
-				if ((float) (Math.tan(gpBearing - myBearing) * (outer.mSurfaceView.getWidth() / 2)	/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-						.getWidth() / 2)) > outer.fragWidth) {
-					bitmapRects.put(new Rect((int)(Math.tan(gpBearing - myBearing) * (outer.mSurfaceView.getWidth() / 2)
-							/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView.getWidth() / 2)), (int)(Math.tan(myPitchA - myPitch + Math.PI / 2.0) * (outer.mSurfaceView.getHeight() / 2)
+				if ((float) (Math.tan(gpBearing - myBearing) * (outer.mSurfaceView.getWidth() / 2.0)	/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
+						.getWidth() / 2.0)) > outer.fragWidth) {
+					bitmapRects.put(new Rect((int)(Math.tan(gpBearing - myBearing) * (outer.mSurfaceView.getWidth() / 2.0)
+							/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView.getWidth() / 2.0)), (int)(Math.tan(myPitchA - myPitch + Math.PI / 2.0) * (outer.mSurfaceView.getHeight() / 2.0)
 							/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-							.getHeight() / 2)), (int)(Math.tan(gpBearing - myBearing)
-									* (outer.mSurfaceView.getWidth() / 2)
+							.getHeight() / 2.0)), (int)(Math.tan(gpBearing - myBearing)
+									* (outer.mSurfaceView.getWidth() / 2.0)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-									.getWidth() / 2)) + pointIcon.getWidth(), (int)(Math.tan(myPitchA - myPitch + Math.PI / 2.0) * (outer.mSurfaceView.getHeight() / 2)
+									.getWidth() / 2)) + pointIcon.getWidth(), (int)(Math.tan(myPitchA - myPitch + Math.PI / 2.0) * (outer.mSurfaceView.getHeight() / 2.0)
 											/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-													.getHeight() / 2)) + pointIcon.getHeight()), marker);
+													.getHeight() / 2.0)) + pointIcon.getHeight()), marker);
 					canvas.drawBitmap(
 							pointIcon,
 							(float) (Math.tan(gpBearing - myBearing)
-									* (outer.mSurfaceView.getWidth() / 2)
+									* (outer.mSurfaceView.getWidth() / 2.0)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-									.getWidth() / 2)),
+									.getWidth() / 2.0)),
 							(float) (Math.tan(myPitchA - myPitch)
-									* (outer.mSurfaceView.getHeight() / 2)
+									* (outer.mSurfaceView.getHeight() / 2.0)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-									.getHeight() / 2)), null);
+									.getHeight() / 2.0)), null);
 					canvas.drawText( name,
 							(float) (Math.tan(gpBearing - myBearing)
-									* (outer.mSurfaceView.getWidth() / 2)
+									* (outer.mSurfaceView.getWidth() / 2.0)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-									.getWidth() / 2)),
+									.getWidth() / 2.0)),
 							(float) (Math.tan(myPitchA - myPitch)
-									* (outer.mSurfaceView.getHeight() / 2)
+									* (outer.mSurfaceView.getHeight() / 2.0)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-									.getHeight() / 2)), paint);
+									.getHeight() / 2.0)), paint);
 					canvas.drawText( dist + "",
 							(float) (Math.tan(gpBearing - myBearing)
-									* (outer.mSurfaceView.getWidth() / 2)
+									* (outer.mSurfaceView.getWidth() / 2.0)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-									.getWidth() / 2)) ,
+									.getWidth() / 2.0)) ,
 							(float) (Math.tan(myPitchA - myPitch)
-									* (outer.mSurfaceView.getHeight() / 2)
+									* (outer.mSurfaceView.getHeight() / 2.0)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-									.getHeight() / 2)) + pointIcon.getScaledHeight(canvas) + 10, paint);
+									.getHeight() / 2.0)) + pointIcon.getScaledHeight(canvas) + 10, paint);
 				}
 			}
 		} else {
 			if (outer.myLocation.getLongitude() < gpLocation.getLongitude()) {
-				if (Math.abs(myBearing) > Math.PI / 2) {
-					bitmapRects.put(new Rect((int)(Math.tan(gpBearing - myBearing) * (outer.mSurfaceView.getWidth() / 2)
-							/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView.getWidth() / 2)), (int)(Math.tan(myPitchA - myPitch + Math.PI / 2.0) * (outer.mSurfaceView.getHeight() / 2)
+				if (Math.abs(myBearing) > Math.PI / 2.0) {
+					bitmapRects.put(new Rect((int)(Math.tan(gpBearing - myBearing) * (outer.mSurfaceView.getWidth() / 2.0)
+							/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView.getWidth() / 2.0)), (int)(Math.tan(myPitchA - myPitch + Math.PI / 2.0) * (outer.mSurfaceView.getHeight() / 2.0)
 							/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-							.getHeight() / 2)), (int)(Math.tan(gpBearing - myBearing)
-									* (outer.mSurfaceView.getWidth() / 2)
+							.getHeight() / 2.0)), (int)(Math.tan(gpBearing - myBearing)
+									* (outer.mSurfaceView.getWidth() / 2.0)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-									.getWidth() / 2)) + pointIcon.getWidth(), (int)(Math.tan(myPitchA - myPitch + Math.PI / 2.0) * (outer.mSurfaceView.getHeight() / 2)
+									.getWidth() / 2.0)) + pointIcon.getWidth(), (int)(Math.tan(myPitchA - myPitch + Math.PI / 2.0) * (outer.mSurfaceView.getHeight() / 2.0)
 											/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-													.getHeight() / 2)) + pointIcon.getHeight()), marker);
+													.getHeight() / 2.0)) + pointIcon.getHeight()), marker);
 					canvas.drawBitmap(
 							pointIcon,
 							(float) (Math.tan(gpBearing - myBearing)
-									* (outer.mSurfaceView.getWidth() / 2)
+									* (outer.mSurfaceView.getWidth() / 2.0)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-									.getWidth() / 2)),
+									.getWidth() / 2.0)),
 							(float) (Math.tan(myPitchA - myPitch)
-									* (outer.mSurfaceView.getHeight() / 2)
+									* (outer.mSurfaceView.getHeight() / 2.0)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-									.getHeight() / 2)), null);
+									.getHeight() / 2.0)), null);
 					canvas.drawText(
 							name,
 							(float) (Math.tan(gpBearing - myBearing)
-									* (outer.mSurfaceView.getWidth() / 2)
+									* (outer.mSurfaceView.getWidth() / 2.0)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-									.getWidth() / 2)),
+									.getWidth() / 2.0)),
 							(float) (Math.tan(myPitchA - myPitch)
-									* (outer.mSurfaceView.getHeight() / 2)
+									* (outer.mSurfaceView.getHeight() / 2.0)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-									.getHeight() / 2)), paint);
+									.getHeight() / 2.0)), paint);
 					canvas.drawText(
 							dist + "",
 							(float) (Math.tan(gpBearing - myBearing)
-									* (outer.mSurfaceView.getWidth() / 2)
+									* (outer.mSurfaceView.getWidth() / 2.0)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-									.getWidth() / 2)),
+									.getWidth() / 2.0)),
 							(float) (Math.tan(myPitchA - myPitch)
-									* (outer.mSurfaceView.getHeight() / 2)
+									* (outer.mSurfaceView.getHeight() / 2.0)
 									/ Math.tan(Math.PI / 6.0) + (outer.mSurfaceView
-									.getHeight() / 2)) + pointIcon.getScaledHeight(canvas) + 10, paint);
+									.getHeight() / 2.0)) + pointIcon.getScaledHeight(canvas) + 10, paint);
 				}
 			}
 		}

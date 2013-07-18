@@ -32,6 +32,35 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             />
+        
+        <TextView
+            android:id="@+id/azimuth_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true" />
+        
+        <TextView
+            android:id="@+id/pitch_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_below="@+id/azimuth_display" />
+        
+        <TextView
+            android:id="@+id/roll_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_below="@+id/pitch_display"/>
+        
+        <TextView
+            android:id="@+id/yaw_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_below="@+id/roll_display" />
 
         
     </RelativeLayout>

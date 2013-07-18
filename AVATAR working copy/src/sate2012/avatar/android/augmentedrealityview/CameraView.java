@@ -37,6 +37,7 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -51,6 +52,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -63,7 +65,7 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 	
 	//Use these variables to determine size of side fragment to offset in the PointerView class
 	protected int fragWidth;
-	
+	private int z = 0;
 
 	// Camera dependent variables
 	private GeoDataRepository repo;
@@ -77,7 +79,7 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 	protected ArrayList<MarkerPlus> drawPointList = new ArrayList<MarkerPlus>();
 	MyLocationListener locationListener = new MyLocationListener();
 	
-	Location myLocation = new Location(LocationManager.NETWORK_PROVIDER);
+	Location myLocation = new Location(LocationManager.GPS_PROVIDER);
 	
 	GeoPoint testPoint = new GeoPoint(myLocation.getLatitude() - 1,
 			myLocation.getLongitude() - 1);
@@ -170,9 +172,9 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 		makeGeoDataRepository();
 		LocationManager mlocManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 		LocationListener mlocListener = new MyLocationListener();   //TODO
-		mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+		mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
 				1, 10, mlocListener);
-		myLocation = mlocManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		myLocation = mlocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		//Create helper class
 		pointManager = new AugRelPointManager(this);
 		setHasOptionsMenu(true);
@@ -201,18 +203,24 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 			public void onGlobalLayout() {
 				FragmentManager fragMgr = getFragmentManager();
 				fragWidth = fragMgr.findFragmentByTag("AUG_MENU").getView().getWidth();
-				fragMgr.findFragmentByTag("AVATAR_AUGMENTED_REALITY").getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
+				fragMgr.findFragmentByTag("AVATAR_AUGMENTED_REALITY").getView().getViewTreeObserver().removeGlobalOnLayoutListener(this);
 			}
 			
 		});
 		this.getView().setOnTouchListener(this);
+		getActivity();
 		// Set up the sensors
-		final SensorManager SENSORMANAGER = (SensorManager) getActivity().getSystemService(getActivity().SENSOR_SERVICE);
+		final SensorManager SENSORMANAGER = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
 		final Sensor ROTATION = SENSORMANAGER
 				.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+		final Sensor ACCELEROMETER = SENSORMANAGER.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		final Sensor MAGNETIC = SENSORMANAGER.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 		SensorEventListener listener = new SensorEventListener() {
 
 			float[] rot = new float[9];
+			float[] mGravity;
+			float[] mGeoMagnetic;
+			float pitch = 0;
 
 			public void onAccuracyChanged(Sensor sensor, int accuracy) {
 			}
@@ -227,6 +235,14 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 					// Do the calculations to determine orientation
 					// currentValues = lowPass(event.values.clone(), currentValues);
 					SensorManager.getRotationMatrixFromVector(rot, event.values);
+					
+					//Added code
+//					SensorManager
+//	                .remapCoordinateSystem(rot,
+//	                        SensorManager.AXIS_Y, SensorManager.AXIS_MINUS_X,
+//	                        rot);
+					
+					/////////////////////////
 					SensorManager.getOrientation(rot, values);
 	
 					/*
@@ -245,17 +261,96 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 	
 					// Update the bearing and pitch of the pointer view to keep the
 					// points in the right place.
-					pointerView
-							.updateBearing((float) -(Math.atan2(rot[3], rot[0])));
-					pointerView
-							.updatePitch((float) -(Math.atan2(rot[7], rot[8]) - (Math.PI / 2)));
+//					pointerView
+//							.updateBearing((float) -(Math.atan2(rot[3], rot[0])));
+//					pointerView
+//							.updatePitch((float) -(Math.atan2(rot[7], rot[8]) - (Math.PI / 2)));
 					// Redraw the screen
-					pointerView.postInvalidate();
+					//pointerView.postInvalidate();
+//					
+//					Log.d("Bearing", ""+pointerView.myBearing);
+//					Log.d("Pitch", ""+pointerView.myPitch);
+//					Log.d("Angle", ""+(Math.asin(event.values[2])*2));
+//					
+//					Log.d("X", ""+ values[0]);
+//					Log.d("Y", ""+ values[1]);
+//					Log.d("Z", ""+ values[2]);
+//					
+//					Log.d("Bearing", ""+Math.acos(-rot[8]/ Math.sqrt((1 - rot[2]*rot[2]))));
+//					for(int i = 0; i < 9; i++){
+//						Log.d(""+i, ""+rot[i]);
+//					}
+//					Log.d("ArcSin", ""+Math.asin(rot[2]));
+					float yaw = (float) Math.atan2(rot[6], rot[7]);
+					float roll = (float) -Math.atan2(rot[2], rot[5]);	
+					
+//					if(true){//roll > 1 && roll < 3){
+//						
+//						//Log.d("AUG", "IM AT THE SENSORS");
+//						
+//						if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+//							mGravity = event.values;
+//							//Log.d("AUG", "HERE 1");
+//						}
+//						if(event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD){
+//							mGeoMagnetic = event.values;
+//							//Log.d("AUG", "HERE 2");
+//						}
+//						if(mGravity != null && mGeoMagnetic != null){
+//							float R[] = new float[9];
+//							float I[] = new float[9];
+//							//Log.d("AUG", "HERE 3");
+//							
+//							boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeoMagnetic);
+//							if(success){
+//								float orientation[] = new float[3];
+//								SensorManager.getOrientation(R, orientation);
+//								float azimuth = orientation[0];
+//								//if(Math.abs(pointerView.myBearing-azimuth) < .05) azimuth = pointerView.myBearing;
+//								TextView temp = (TextView) getActivity().findViewById(gupta.ashutosh.avatar.R.id.azimuth_display);
+//								temp.setText("Bearing: " + Math.toDegrees(pointerView.myBearing));
+//								//Log.d("Bearing", ""+azimuth);
+//								pointerView.updateBearing(azimuth);
+//							}else{
+//								//System.err.println("ERROR");
+//							}
+//						}
+	
+						
+						float tmpPitch = (float) -Math.acos(rot[8]);
+						//System.out.println("PITCH IS:::::::::::" + tmpPitch);
+						if(Float.isNaN(tmpPitch))tmpPitch = pointerView.myPitch;
+						if(Math.abs(tmpPitch - pointerView.myPitch) < .01)tmpPitch = pointerView.myPitch;
+						
+						
+						if( z > 20){
+							TextView temp = (TextView) getActivity().findViewById(gupta.ashutosh.avatar.R.id.pitch_display);
+							temp.setText(""+pointerView.myPitch);
+							temp = (TextView) getActivity().findViewById(gupta.ashutosh.avatar.R.id.yaw_display);
+							temp.setText(""+yaw);
+							temp = (TextView) getActivity().findViewById(gupta.ashutosh.avatar.R.id.roll_display);
+							temp.setText(""+roll);
+							temp = (TextView) getActivity().findViewById(gupta.ashutosh.avatar.R.id.azimuth_display);
+							temp.setText(""+myLocation.getBearing());
+							z = 0;
+						}
+						z++;
+						
+						pointerView.updatePitch(tmpPitch);
+						pointerView.updateBearing(0.0f);
+						pointerView.postInvalidate();
+
+					
+
+					Log.d("AUG Bearing", pointerView.myBearing + "");
+					Log.d("AUG Pitch", pointerView.myPitch + "");
 				}
 			}
 		};
 		SENSORMANAGER.registerListener(listener, ROTATION,
 				SensorManager.SENSOR_DELAY_FASTEST);
+//		SENSORMANAGER.registerListener(listener, ACCELEROMETER, SensorManager.SENSOR_DELAY_FASTEST);
+//		SENSORMANAGER.registerListener(listener, MAGNETIC, SensorManager.SENSOR_DELAY_FASTEST);
 	}
 
 	/**
@@ -370,6 +465,8 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 			
 		}
 	}
+	
+	public float getMyPitch(){return pointerView.myPitch;}
 
 	/**
 	 * This is the Pointer view. It is what the points are drawn on. It lives in
@@ -393,7 +490,8 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 		 *            - The new Bearing of the Tablet.
 		 */
 		private void updateBearing(float f) {
-			myBearing = f;
+			//myBearing = f;
+			myBearing = myLocation.getBearing();
 		}
 
 		/**
@@ -424,6 +522,10 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 				// for (java.util.Map.Entry<GeoPoint, DataObject> entry :
 				// repo.getCollectionOfDataEntries()){
 				// for(GeoPoint testPoint: pointArray){
+				if(Float.isNaN(myPitch)){
+					myPitch = 1.5f;
+					//System.out.println("I HAVE FIXED THE NAN PROBLEM HERE");
+				}
 				pointManager.drawPoints(canvas, myBearing, myPitch);
 				drawGUI(canvas);
 			}else{

@@ -174,7 +174,7 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
         tView.setText("");
         tView.setTextColor(Color.BLACK);
         tView.setBackgroundColor(Color.BLACK);
-        tView.setBackground(this.getResources().getDrawable(R.drawable.guardian_angel_background));
+        tView.setBackgroundDrawable(this.getResources().getDrawable(R.drawable.guardian_angel_background));
         
         canPlotU = false;
         
