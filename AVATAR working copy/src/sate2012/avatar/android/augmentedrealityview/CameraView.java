@@ -8,8 +8,6 @@ import java.util.Map;
 
 import org.mapsforge.android.maps.GeoPoint;
 
-import sate2012.avatar.android.DataObject;
-import sate2012.avatar.android.GeoDataRepository;
 import sate2012.avatar.android.LocationDataReceiverAVATAR;
 import sate2012.avatar.android.googlemaps.HttpThread;
 import sate2012.avatar.android.googlemaps.MarkerPlus;
@@ -68,7 +66,6 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 	private int z = 0;
 
 	// Camera dependent variables
-	private GeoDataRepository repo;
 	private Camera mCamera;
 	protected SurfaceView mSurfaceView;
 	private SurfaceHolder mSurfaceHolder;
@@ -79,7 +76,7 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 	protected ArrayList<MarkerPlus> drawPointList = new ArrayList<MarkerPlus>();
 	MyLocationListener locationListener = new MyLocationListener();
 	
-	Location myLocation = new Location(LocationManager.GPS_PROVIDER);
+	Location myLocation = new Location(LocationManager.NETWORK_PROVIDER);
 	
 	GeoPoint testPoint = new GeoPoint(myLocation.getLatitude() - 1,
 			myLocation.getLongitude() - 1);
@@ -169,7 +166,6 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 		new HttpThread(this).execute();
 		// Initializes the button
 //		backButton = (Button) getActivity().findViewById(R.id.to_main_activity);
-		makeGeoDataRepository();
 		LocationManager mlocManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 		LocationListener mlocListener = new MyLocationListener();   //TODO
 		mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
@@ -331,7 +327,7 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 							temp = (TextView) getActivity().findViewById(gupta.ashutosh.avatar.R.id.roll_display);
 							temp.setText(""+roll);
 							temp = (TextView) getActivity().findViewById(gupta.ashutosh.avatar.R.id.azimuth_display);
-							temp.setText(""+myLocation.getBearing());
+							//temp.setText(""+myLocation.getBearing());
 							z = 0;
 						}
 						z++;
@@ -351,34 +347,6 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 				SensorManager.SENSOR_DELAY_FASTEST);
 //		SENSORMANAGER.registerListener(listener, ACCELEROMETER, SensorManager.SENSOR_DELAY_FASTEST);
 //		SENSORMANAGER.registerListener(listener, MAGNETIC, SensorManager.SENSOR_DELAY_FASTEST);
-	}
-
-	/**
-	 * This gets all of the points from the database and puts them in
-	 * entriesColl.
-	 */
-	private void makeGeoDataRepository() {
-		
-		try{
-		repo = geoPointDataRetriever();
-		final Map<GeoPoint, DataObject> entriesColl = repo
-				.getCollectionOfDataEntries();
-		}catch(Exception ex){
-			System.err.println("Possible Error connecting to the DataBase");
-		}
-	}
-
-	/**
-	 * This is what actually goes to the database and grabs the information.
-	 * 
-	 * @return
-	 */
-	protected GeoDataRepository geoPointDataRetriever() {
-		final String dataString = LocationDataReceiverAVATAR
-				.loadDataStringFromURL();
-		final GeoDataRepository repo = new GeoDataRepository();
-		repo.addEntriesFromURLString(dataString);
-		return repo;
 	}
 
 	// This controls what the view will do when the screen is changed
@@ -490,8 +458,7 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 		 *            - The new Bearing of the Tablet.
 		 */
 		private void updateBearing(float f) {
-			//myBearing = f;
-			myBearing = myLocation.getBearing();
+			myBearing = f;
 		}
 
 		/**
@@ -552,13 +519,14 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 			}
 			else
 			{
-				canvas.drawBitmap(disconneceted, mSurfaceView.getWidth()/7, 0, null);  //TODO Change values to something reasonable
+				canvas.drawBitmap(disconnected, mSurfaceView.getWidth()/7, 0, null);  //TODO Change values to something reasonable
 			}*/   //currently unused
-			if(mPreviewRunning){
+			if(mPreviewRunning && myLocation != null){
 				Paint white = new Paint();
 				white.setColor(Color.WHITE);
 				Paint red = new Paint(); 
 				red.setColor(Color.RED);
+				System.out.println(myLocation);
 				canvas.drawText("Latitude: " + myLocation.getLatitude(), 1, 10, white);  //TODO- Change all of these to be relative to the screen size.
 				canvas.drawText("Longitude: " + myLocation.getLongitude(), 1, 20, white); 
 				canvas.drawText("Altitude: " + myLocation.getAltitude(), 1, 30, white);

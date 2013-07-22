@@ -215,8 +215,7 @@ public class UploadMedia extends Activity implements OnClickListener {
 				HttpGet get = new HttpGet(new URI(
 						"http://" + Constants.SERVER_ADDRESS + "/sqlAddRow.php?Name=" + params[0]
 								+ "&Lat=" + params[1] + "&Long=" + params[2]
-								+ "&Alt=" + params[3]
-								+ "&Link=" + params[4]));
+								+ "&Alt=" + params[3] + "&Link=" + params[4]));
 				HttpResponse response = client.execute(get);
 			} catch (Exception e) {
 				System.out.println("SOMETHING WENT BOOM!");
