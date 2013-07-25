@@ -4,8 +4,8 @@ import gupta.ashutosh.avatar.R;
 
 import java.util.ArrayList;
 
-import sate2012.avatar.android.augmentedrealityview.AugRelPointManager;
 import sate2012.avatar.android.googlemaps.MarkerPlus;
+import sate2012.avatar.android.googlemaps.augmentedreality.AugRelPointManager;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;

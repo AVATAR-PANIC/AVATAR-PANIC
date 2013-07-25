@@ -21,6 +21,9 @@ public class MediaFileManager {
 					+ Constants.MEDIA_DIRECTORY);
 			if (!mediaFolder.exists())
 				mediaFolder.mkdir();
+/*
+ * 000000 FFFFFF 16^6 - 1  13563a 402bc3
+ */
 		}
 	}
 

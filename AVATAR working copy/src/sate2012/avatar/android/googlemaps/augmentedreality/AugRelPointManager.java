@@ -1,4 +1,4 @@
-package sate2012.avatar.android.augmentedrealityview;
+package sate2012.avatar.android.googlemaps.augmentedreality;
 
 import gupta.ashutosh.avatar.R;
 
@@ -173,7 +173,6 @@ public class AugRelPointManager implements Serializable {
 		gpLocation.setLongitude(marker.getLongitude());
 		gpLocation.setAltitude(marker.getAltitude());
 		String name = marker.getName();
-		// All of these angles are in Radians.
 		double gpBearing = outer.myLocation.bearingTo(gpLocation) * Math.PI
 				/ 180.0;
 		double gpAlt = gpLocation.getAltitude();

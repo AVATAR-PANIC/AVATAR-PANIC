@@ -1,4 +1,4 @@
-package sate2012.avatar.android.augmentedrealityview;
+package sate2012.avatar.android.googlemaps.augmentedreality;
 
 import gupta.ashutosh.avatar.R;
 
@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import org.mapsforge.android.maps.GeoPoint;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
+import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationClient;
 
 import sate2012.avatar.android.LocationDataReceiverAVATAR;
 import sate2012.avatar.android.googlemaps.HttpThread;
@@ -59,7 +64,7 @@ import android.widget.Toast;
  * Fragment used for the augmented reality aspect of the project.
  *
  */
-public class CameraView extends Fragment implements Callback, OnTouchListener{
+public class CameraView extends Fragment implements Callback, OnTouchListener, ConnectionCallbacks, OnConnectionFailedListener{
 	
 	//Use these variables to determine size of side fragment to offset in the PointerView class
 	protected int fragWidth;
@@ -76,6 +81,7 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 	protected ArrayList<MarkerPlus> drawPointList = new ArrayList<MarkerPlus>();
 	MyLocationListener locationListener = new MyLocationListener();
 	
+	private LocationClient myLocationClient;
 	Location myLocation = new Location(LocationManager.NETWORK_PROVIDER);
 	
 	GeoPoint testPoint = new GeoPoint(myLocation.getLatitude() - 1,
@@ -204,7 +210,9 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 			
 		});
 		this.getView().setOnTouchListener(this);
-		getActivity();
+
+		myLocationClient = new LocationClient(getActivity(), this, this);
+		myLocationClient.connect();
 		// Set up the sensors
 		final SensorManager SENSORMANAGER = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
 		final Sensor ROTATION = SENSORMANAGER
@@ -321,11 +329,11 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 						
 						if( z > 20){
 							TextView temp = (TextView) getActivity().findViewById(gupta.ashutosh.avatar.R.id.pitch_display);
-							temp.setText(""+pointerView.myPitch);
+							temp.setText("Pitch: "+pointerView.myPitch);
 							temp = (TextView) getActivity().findViewById(gupta.ashutosh.avatar.R.id.yaw_display);
-							temp.setText(""+yaw);
+							temp.setText("Yaw: "+yaw);
 							temp = (TextView) getActivity().findViewById(gupta.ashutosh.avatar.R.id.roll_display);
-							temp.setText(""+roll);
+							temp.setText("roll: "+roll);
 							temp = (TextView) getActivity().findViewById(gupta.ashutosh.avatar.R.id.azimuth_display);
 							//temp.setText(""+myLocation.getBearing());
 							z = 0;
@@ -333,7 +341,7 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 						z++;
 						
 						pointerView.updatePitch(tmpPitch);
-						pointerView.updateBearing(0.0f);
+						pointerView.updateBearing(yaw);
 						pointerView.postInvalidate();
 
 					
@@ -605,5 +613,22 @@ public class CameraView extends Fragment implements Callback, OnTouchListener{
 	}
 	public void showInfoWindow(){
 		
+	}
+
+	@Override
+	public void onConnected(Bundle connectionHint) {
+		Log.d("YAY", "IT WORKED!");
+		myLocation = myLocationClient.getLastLocation();
+	}
+
+	@Override
+	public void onDisconnected() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onConnectionFailed(ConnectionResult result) {
+		Log.d("WHOOPS", result.toString());
 	}
 }

@@ -10,7 +10,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import sate2012.avatar.android.Constants;
-import sate2012.avatar.android.augmentedrealityview.CameraView;
+import sate2012.avatar.android.googlemaps.augmentedreality.CameraView;
 import android.os.AsyncTask;
 import android.util.JsonReader;
 

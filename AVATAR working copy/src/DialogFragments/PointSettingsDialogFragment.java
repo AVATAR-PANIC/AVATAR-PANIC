@@ -3,8 +3,8 @@ package DialogFragments;
 import com.guardian_angel.uav_tracker.CameraRecord;
 
 import gupta.ashutosh.avatar.R;
-import sate2012.avatar.android.augmentedrealityview.AugRelPointManager;
-import sate2012.avatar.android.augmentedrealityview.CameraView;
+import sate2012.avatar.android.googlemaps.augmentedreality.AugRelPointManager;
+import sate2012.avatar.android.googlemaps.augmentedreality.CameraView;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
