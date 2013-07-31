@@ -93,7 +93,8 @@ public class HandleID extends AsyncTask<Void, Void, Boolean> {
 						System.out.println("Connecting to the server for ID");
 						HttpClient client = new DefaultHttpClient();
 						HttpGet get = new HttpGet(new URI(
-								"http://" + Constants.SERVER_ADDRESS + "/sqlManageUsers.php"));
+								"http://" + Constants.SERVER_FTP_ADDRESS + "/" + Constants.SERVER_SCRIPT_SUBFOLDER + "/sqlManageUsers.php"));
+						
 						HttpResponse response = client.execute(get);
 						Scanner reader = new Scanner(response.getEntity().getContent());
 						

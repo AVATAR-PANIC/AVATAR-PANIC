@@ -3,6 +3,7 @@ package sate2012.avatar.android.googlemaps;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -68,17 +69,17 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 			while(tries < 3){
 				try {
 					System.out.println("TRYING TO CONNECT");
-					System.out.println(Constants.SERVER_ADDRESS);
+					System.out.println(Constants.SERVER_SCRIPT_SUBFOLDER);
 					HttpClient client = new DefaultHttpClient();
 					
-					HttpGet get= new HttpGet(new URI("http://" + Constants.SERVER_ADDRESS + "/jsonPoints.php"));;
+					HttpGet get= new HttpGet(new URI("http://" + Constants.SERVER_FTP_ADDRESS + "/"+ Constants.SERVER_SCRIPT_SUBFOLDER + "/jsonPoints.php"));;
 					if(eMap != null){ //If it is an Eagle Eye map, use different php script.
-						get= new HttpGet(new URI("http://" + Constants.SERVER_ADDRESS + "/jsonPointsEE.php"));
+						get= new HttpGet(new URI("http://" + Constants.SERVER_FTP_ADDRESS + "/" + Constants.SERVER_SCRIPT_SUBFOLDER + "/jsonPointsEE.php"));
 					}
 					
 					HttpResponse response = client.execute(get);
 					JsonReader reader = new JsonReader(new InputStreamReader(response.getEntity().getContent()));
-					
+					reader.setLenient(true);
 					reader.beginArray();
 					while(reader.hasNext()){
 						reader.beginObject();

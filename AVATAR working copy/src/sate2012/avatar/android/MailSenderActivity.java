@@ -48,12 +48,7 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 		final LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		final LocationListener mlocListener = new MyLocationListener();
 		mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-				(long) 2000, (float) 1.0, mlocListener); // (provider,
-															// time
-															// (ms),
-															// distance
-															// (m),
-															// listener)
+				(long) 2000, (float) 1.0, mlocListener); 
 		Intent thisIntent = getIntent();
 		ptType = thisIntent.getStringExtra("Type");
 		ptURL = "ftp://opensim:widdlyscuds@virtualdiscoverycenter.net/../../var/www/AVATAR/"
@@ -92,7 +87,7 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 				System.out.println(ptName);
 				if(i.getStringExtra("Filename") != null){
 				httpSender.execute(ptName, latlng.latitude + "",
-						latlng.longitude + "", "0", "http://" + Constants.SERVER_ADDRESS + "/media/" + i.getStringExtra("Filename"));
+						latlng.longitude + "", "0", "http://" + Constants.SERVER_FTP_ADDRESS + "/" + Constants.SERVER_SCRIPT_SUBFOLDER + "/media/" + i.getStringExtra("Filename"));
 				}else{
 				httpSender.execute(ptName, latlng.latitude + "",
 						latlng.longitude + "", "0", ((EditText) findViewById(R.id.pointDesc)).getText().toString());

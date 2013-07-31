@@ -177,6 +177,7 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 				break;
 			case R.id.avatar_login_settings:
 				dialog = new LoginDialogFragment();
+				((LoginDialogFragment) dialog).setMap(this);
 				dialog.show(fragMgr, "LOGIN_DIALOG");
 				break;
 		}
@@ -857,8 +858,9 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 					System.out.println(params[0]);
 					System.out.println("TRYING TO CONNECT");
 					HttpClient client = new DefaultHttpClient();
-					HttpPost post = new HttpPost(new URI("http://" + Constants.SERVER_ADDRESS + "/deleteUserPoint.php"));
+					HttpPost post = new HttpPost(new URI("http://" +  Constants.SERVER_FTP_ADDRESS + "/" + Constants.SERVER_SCRIPT_SUBFOLDER + "/deleteUserPoint.php"));
 					post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+					Thread.currentThread().sleep(10);
 					HttpResponse response = client.execute(post);
 					//Scanner reader = new Scanner(new InputStreamReader(response.getEntity().getContent()));
 					

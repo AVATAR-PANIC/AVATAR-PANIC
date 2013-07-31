@@ -212,11 +212,15 @@ public class UploadMedia extends Activity implements OnClickListener {
 			params[4] = params[4].replaceAll(" ", "%20");
 			try {
 				HttpClient client = new DefaultHttpClient();
+				System.out.println("http://" + Constants.SERVER_FTP_ADDRESS + "/" + Constants.SERVER_SCRIPT_SUBFOLDER + "/sqlAddRow.php?Name=" + params[0]
+								+ "&Lat=" + params[1] + "&Long=" + params[2]
+								+ "&Alt=" + params[3] + "&Link=" + params[4]);
 				HttpGet get = new HttpGet(new URI(
-						"http://" + Constants.SERVER_ADDRESS + "/sqlAddRow.php?Name=" + params[0]
+						"http://" + Constants.SERVER_FTP_ADDRESS + "/" + Constants.SERVER_SCRIPT_SUBFOLDER + "/sqlAddRow.php?Name=" + params[0]
 								+ "&Lat=" + params[1] + "&Long=" + params[2]
 								+ "&Alt=" + params[3] + "&Link=" + params[4]));
 				HttpResponse response = client.execute(get);
+				System.out.println(new Scanner(response.getEntity().getContent()).nextLine());
 			} catch (Exception e) {
 				System.out.println("SOMETHING WENT BOOM!");
 				e.printStackTrace();
