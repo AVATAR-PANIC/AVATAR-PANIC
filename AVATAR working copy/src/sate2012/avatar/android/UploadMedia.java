@@ -144,7 +144,7 @@ public class UploadMedia extends Activity implements OnClickListener {
 			Intent i = getIntent();
 
 			
-			UploadFTP ftp = new UploadFTP();
+			NewFTP ftp = new NewFTP();
 			ftp.execute(media_filepath, media_extension);
 			System.out.println("FTP RUN");
 			

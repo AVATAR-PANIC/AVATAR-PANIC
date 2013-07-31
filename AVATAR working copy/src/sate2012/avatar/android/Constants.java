@@ -15,7 +15,7 @@ public class Constants {
 	public static final int VIDEO_REQUEST = 2;
 	public static final int PHONE_REQUEST = 4;
 	//public static final String SERVER_ADDRESS = "10.0.1.189";
-	public static final String SERVER_ADDRESS = "www.virtualdiscoverycenter.net/AVATAR";
+	public static String SERVER_ADDRESS = "www.virtualdiscoverycenter.net/AVATAR";
 	public static String username ="";
 	public static String password ="";
  

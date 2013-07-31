@@ -58,7 +58,7 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 		ptType = thisIntent.getStringExtra("Type");
 		ptURL = "ftp://opensim:widdlyscuds@virtualdiscoverycenter.net/../../var/www/AVATAR/"
 				+ thisIntent.getStringExtra("Filename");
-		ptURL_noFTP = "virtualdiscoverycenter.net/AVATAR/"
+		ptURL_noFTP = "virtualdiscoverycenter.net/AVATAR/media/"
 				+ thisIntent.getStringExtra("Filename");
 		ptName = thisIntent.getStringExtra("Filename");
 		setContentView(R.layout.avatar_mail_prep_apv);
@@ -92,7 +92,7 @@ public class MailSenderActivity extends Activity implements OnClickListener {
 				System.out.println(ptName);
 				if(i.getStringExtra("Filename") != null){
 				httpSender.execute(ptName, latlng.latitude + "",
-						latlng.longitude + "", "0", "http://" + Constants.SERVER_ADDRESS + "/" + i.getStringExtra("Filename"));
+						latlng.longitude + "", "0", "http://" + Constants.SERVER_ADDRESS + "/media/" + i.getStringExtra("Filename"));
 				}else{
 				httpSender.execute(ptName, latlng.latitude + "",
 						latlng.longitude + "", "0", ((EditText) findViewById(R.id.pointDesc)).getText().toString());

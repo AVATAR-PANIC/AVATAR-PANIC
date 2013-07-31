@@ -68,6 +68,7 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 			while(tries < 3){
 				try {
 					System.out.println("TRYING TO CONNECT");
+					System.out.println(Constants.SERVER_ADDRESS);
 					HttpClient client = new DefaultHttpClient();
 					
 					HttpGet get= new HttpGet(new URI("http://" + Constants.SERVER_ADDRESS + "/jsonPoints.php"));;
