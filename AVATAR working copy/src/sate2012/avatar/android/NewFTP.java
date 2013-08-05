@@ -41,7 +41,7 @@ public class NewFTP extends AsyncTask<String, String, String>{
 			int ftpPort = 23;
 			String ftpUserName = Constants.username;
 			String ftpPassword = Constants.password;
-			String ftpRemoteDirectory = "/var/www/AVATAR/media";
+			String ftpRemoteDirectory = "/var/www/" + Constants.SERVER_SCRIPT_SUBFOLDER + "/media";
 			String fileToTransmit = params[0];
 			long time = (System.currentTimeMillis());
 			filename = "T" + time;
@@ -111,6 +111,8 @@ public class NewFTP extends AsyncTask<String, String, String>{
 			//
 			try {
 				c.quit();
+				session.disconnect();
+				
 			} catch (Exception exc) {
 				System.err.println("Unable to disconnect from FTP server. " + exc.toString());
 			}

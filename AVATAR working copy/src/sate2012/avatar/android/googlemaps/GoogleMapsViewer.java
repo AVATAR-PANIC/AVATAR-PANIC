@@ -851,17 +851,20 @@ OnInfoWindowClickListener, OnPreparedListener, OnConnectionFailedListener, Conne
 			// TODO Auto-generated method stub
 			System.out.println("DELETING");
 			int tries = 0;
+			
 			while(tries < 3){
 				try {
 					List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
 					nameValuePairs.add(new BasicNameValuePair("id", params[0]));
-					System.out.println(params[0]);
+					System.out.println(params[0] + "BLAH");
 					System.out.println("TRYING TO CONNECT");
 					HttpClient client = new DefaultHttpClient();
 					HttpPost post = new HttpPost(new URI("http://" +  Constants.SERVER_FTP_ADDRESS + "/" + Constants.SERVER_SCRIPT_SUBFOLDER + "/deleteUserPoint.php"));
 					post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-					Thread.currentThread().sleep(10);
+					System.out.println(" ");
+					Thread.currentThread().sleep(1000);
 					HttpResponse response = client.execute(post);
+					
 					//Scanner reader = new Scanner(new InputStreamReader(response.getEntity().getContent()));
 					
 				

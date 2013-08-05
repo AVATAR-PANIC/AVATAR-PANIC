@@ -3,54 +3,88 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-    <TextView 
-        android:id="@+id/server_header"
-        android:text="Username"
-        android:textSize="18sp"
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="5dp" />
-    
-    <EditText
-        android:id="@+id/server_field"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/server_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:text="Server name"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/server_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Server name"
+            android:paddingBottom="5dp" />
+
+        <TextView
+            android:id="@+id/subfolder_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:text="Script Subfolder"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/subfolder_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Script Subfolder"
+            android:paddingBottom="5dp" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Server name"
-        android:paddingBottom="5dp"/>
-    
-    <TextView 
-        android:id="@+id/username_header"
-        android:text="Username"
-        android:textSize="18sp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/username_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:text="FTP Username"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/username_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Username"
+            android:paddingBottom="5dp" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="5dp" />
-    
-    <EditText
-        android:id="@+id/username_field"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Username"
-        android:paddingBottom="5dp"/>
-    
-    <TextView
-        android:id="@+id/password_header"
-        android:text="Password"
-        android:textSize="18sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="5dp" />
-    
-    <EditText
-        android:id="@+id/password_field"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:password="true" />
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/password_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:text="FTP Password"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/password_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:password="true" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/avatar_login_save"
-        android:text="Login"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Login" />
+
 </LinearLayout>
