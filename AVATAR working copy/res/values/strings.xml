@@ -55,9 +55,8 @@
     <string name="title_activity_google_maps_viewer">GoogleMapsViewer</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    
 
-     <!-- Options Menu -->
+    <!-- Options Menu -->
     <string name="secure_connect">Connect a device - Secure</string>
     <string name="insecure_connect">Connect a device - Insecure</string>
     <string name="discoverable">Make discoverable</string>
@@ -141,8 +140,7 @@
         <item>Temperature (BP Sensor)</item>
         <item>Stop</item>
     </string-array>
-    
-     <string-array name="time_list">
+    <string-array name="time_list">
         <item>(Default) 1 Second</item>
         <item>5 Seconds</item>
         <item>30 Seconds</item>
@@ -154,9 +152,8 @@
         <item>0.5 Seconds</item>
     </string-array>
 
-    
-     <!--  GUARDIAN ANGEL STRINGS -->
-     
+    <!-- GUARDIAN ANGEL STRINGS -->
+
     <string name="cardinal_north">N</string>
     <string name="cardinal_east">E</string>
     <string name="cardinal_south">S</string>
@@ -167,6 +164,10 @@
     <string name="volume">Volume:</string>
     <string name="size">Size:</string>
     <string name="hint">Type answer here</string>
+
     <color name="navy">#000080</color>
-     
-    </resources>
+
+    <string name="title_activity_elevation_dialog_fragment">ElevationDialogFragment</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

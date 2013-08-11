@@ -3,11 +3,15 @@ package sate2012.avatar.android;
 import gupta.ashutosh.avatar.R;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -229,5 +233,41 @@ public class UploadMedia extends Activity implements OnClickListener {
 		}
 
 	}
+	public static class ElevationFinder extends AsyncTask<Double, Double, Double>{
 
+		@Override
+		protected Double doInBackground(Double... arg0) {
+			double result = Double.NaN;
+	        HttpClient httpClient = new DefaultHttpClient();
+	        String url = "http://maps.googleapis.com/maps/api/elevation/"
+	                + "xml?locations=" + String.valueOf(arg0[0])
+	                + "," + String.valueOf(arg0[1])
+	                + "&sensor=true";
+	        HttpGet httpGet = new HttpGet(url);
+	        try {
+	            HttpResponse response = httpClient.execute(httpGet);
+	            HttpEntity entity = response.getEntity();
+	            if (entity != null) {
+	                InputStream instream = entity.getContent();
+	                int r = -1;
+	                StringBuffer respStr = new StringBuffer();
+	                while ((r = instream.read()) != -1)
+	                    respStr.append((char) r);
+	                String tagOpen = "<elevation>";
+	                String tagClose = "</elevation>";
+	                if (respStr.indexOf(tagOpen) != -1) {
+	                    int start = respStr.indexOf(tagOpen) + tagOpen.length();
+	                    int end = respStr.indexOf(tagClose);
+	                    String value = respStr.substring(start, end);
+	                    result = (double)(Double.parseDouble(value)*3.2808399); // convert from meters to feet
+	                }
+	                instream.close();
+	            }
+	        } catch (ClientProtocolException e) {} 
+	        catch (IOException e) {}
+
+	        return result;
+		}
+		
+	}
 }

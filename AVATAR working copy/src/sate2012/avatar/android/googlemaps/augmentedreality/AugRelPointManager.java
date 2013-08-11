@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import sate2012.avatar.android.Constants;
 import sate2012.avatar.android.googlemaps.MarkerPlus;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -155,12 +156,18 @@ public class AugRelPointManager implements Serializable {
 			pointIcon = BitmapFactory.decodeResource(outer.getResources(), R.drawable.ic_launcher);
 		}
 
-		//This sets up all of the values to be used in determining the drawing plaement.
+		//This sets up all of the values to be used in determining the drawing placement.
 		double myAlt = outer.myLocation.getAltitude();
+		if(outer.myLocation.hasAltitude()){
+			myAlt = outer.myLocation.getAltitude();
+		}else{
+			myAlt = Constants.defaultElevation;
+		}
 		Location gpLocation = new Location(LocationManager.NETWORK_PROVIDER);
 		gpLocation.setLatitude(marker.getLatitude());
 		gpLocation.setLongitude(marker.getLongitude());
 		gpLocation.setAltitude(marker.getAltitude());
+		
 		String name = marker.getName();
 		double gpBearing = outer.myLocation.bearingTo(gpLocation) * Math.PI / 180.0;
 		double gpAlt = gpLocation.getAltitude();//The altitude of the Point
@@ -202,36 +209,10 @@ public class AugRelPointManager implements Serializable {
 			canvas.drawText(name + ": ", x, y, paint);
 			canvas.drawText("" + dist, x, y + pointIcon.getScaledHeight(canvas) + 10, paint);
 		}
-		// This checks where the point is in relation to the tablets
-		// location and only draws it in the correct place.
-		// As long as the tablet is pointing at the point, it will draw, not if it is pointing 180 degrees away.
-//		if((myBearing < Math.PI/6 || myBearing > 5 * Math.PI / 6) && gpBearing <= 0 && (float) (Math.tan(gpBearing - myBearing) * (outer.mSurfaceView.getWidth() / 2.0) / Math.tan(Math.PI / 6.0) + (outer.mSurfaceView.getWidth() / 2.0)) > outer.fragWidth){
-//				bitmapRects.put(new Rect(x, y, x + pointIcon.getWidth(), y + pointIcon.getHeight()), marker);
-//				canvas.drawBitmap(pointIcon, x, y, null);
-//				canvas.drawText(
-//						name + ": " + dist,
-//						x, y, paint);
-//				canvas.drawText("" + dist, x, y + pointIcon.getScaledHeight(canvas) + 10, paint);			
-//		}else if((myBearing > -Math.PI/6 || myBearing < -5 * Math.PI / 6) && gpBearing > 0 && (float) (Math.tan(gpBearing - myBearing) * (outer.mSurfaceView.getWidth() / 2.0) / Math.tan(Math.PI / 6.0) + (outer.mSurfaceView.getWidth() / 2.0)) > outer.fragWidth){
-//				bitmapRects.put(new Rect(x, y, x + pointIcon.getWidth(), y + pointIcon.getHeight()), marker);
-//				canvas.drawBitmap(pointIcon, x, y, null);
-//				canvas.drawText(
-//						name + ": " + dist,
-//						x, y, paint);
-//				canvas.drawText("" + dist, x, y + pointIcon.getScaledHeight(canvas) + 10, paint);
-//		}
 	}
 
 	public MarkerPlus drawInfo(int x, int y) {
 		View view = outer.getActivity().findViewById(R.id.aug_rel_info);
-		//Bitmap markerInfo = Bitmap.createBitmap(100, 50, Config.ARGB_8888);
-		//Canvas canvas = new Canvas(markerInfo);
-		//Paint tempPaint = new Paint();
-		//tempPaint.setColor(Color.BLACK);
-		//tempPaint.setAntiAlias(true);
-		//tempPaint.setTextSize(8);
-		//tempPaint.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-		//ImageView image = (ImageView) outer.getActivity().findViewById(R.id.augmented_reality_point_info);
 		MarkerPlus marker = new MarkerPlus();
 		for (Rect rect : bitmapRects.keySet()) {
 			if (x > rect.left && x < rect.right && y < rect.bottom && y > rect.top) {

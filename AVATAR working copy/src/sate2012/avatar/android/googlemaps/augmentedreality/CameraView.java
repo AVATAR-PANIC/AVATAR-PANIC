@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import org.mapsforge.android.maps.GeoPoint;
 
+import sate2012.avatar.android.Constants;
 import sate2012.avatar.android.googlemaps.HttpThread;
 import sate2012.avatar.android.googlemaps.MarkerPlus;
 import DialogFragments.ActivePointDialogFragment;
@@ -97,8 +98,6 @@ public class CameraView extends Fragment implements OnPreparedListener, Callback
 
 	private LocationClient myLocationClient;
 	Location myLocation = new Location(LocationManager.NETWORK_PROVIDER);
-
-	GeoPoint testPoint = new GeoPoint(myLocation.getLatitude() - 1, myLocation.getLongitude() - 1);
 	// GeoPoint testPoint2 = new GeoPoint(testLocation.getLatitude() - 2,
 	// testLocation.getLongitude() - 1);
 	// GeoPoint[] pointArray = {testPoint, testPoint2};
@@ -250,98 +249,13 @@ public class CameraView extends Fragment implements OnPreparedListener, Callback
 					// currentValues);
 					SensorManager.getRotationMatrixFromVector(rot, event.values);
 
-					// Added code
-					// SensorManager
-					// .remapCoordinateSystem(rot,
-					// SensorManager.AXIS_Y, SensorManager.AXIS_MINUS_X,
-					// rot);
-
-					// ///////////////////////
 					SensorManager.getOrientation(rot, values);
 
-					/*
-					 * System.out.println(" ");
-					 * System.out.println(Math.atan2(R[7], R[8]));
-					 * System.out.println(Math.atan2(R[6], Math.sqrt(R[7] * R[7]
-					 * + R[8] * R[8]))); System.out.println(Math.atan2(R[3],
-					 * R[0])); System.out.println(" ");
-					 */
-					// This is an output to check the data.
-					// System.out.println(event.values[0] + " " +
-					// event.values[1] +
-					// " " + event.values[2]);
-					// TODO: For whoever works with this app next, Use the above
-					// print statements to see exactly how the values of the
-					// Rotation vector change and see if you can figure out how
-					// to
-					// better use them to solve the problem.
-
-					// Update the bearing and pitch of the pointer view to keep
-					// the
-					// points in the right place.
-					// pointerView
-					// .updateBearing((float) -(Math.atan2(rot[3], rot[0])));
-					// pointerView
-					// .updatePitch((float) -(Math.atan2(rot[7], rot[8]) -
-					// (Math.PI / 2)));
-					// Redraw the screen
-					// pointerView.postInvalidate();
-					//
-					// Log.d("Bearing", ""+pointerView.myBearing);
-					// Log.d("Pitch", ""+pointerView.myPitch);
-					// Log.d("Angle", ""+(Math.asin(event.values[2])*2));
-					//
-					// Log.d("X", ""+ values[0]);
-					// Log.d("Y", ""+ values[1]);
-					// Log.d("Z", ""+ values[2]);
-					//
-					// Log.d("Bearing", ""+Math.acos(-rot[8]/ Math.sqrt((1 -
-					// rot[2]*rot[2]))));
-					// for(int i = 0; i < 9; i++){
-					// Log.d(""+i, ""+rot[i]);
-					// }
-					// Log.d("ArcSin", ""+Math.asin(rot[2]));
 					float yaw = (float) Math.atan2(rot[6], rot[7]);
 					float roll = (float) Math.atan2(rot[2], rot[5]);
-
-					// if(true){//roll > 1 && roll < 3){
-					//
-					// //Log.d("AUG", "IM AT THE SENSORS");
-					//
-					// if(event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
-					// mGravity = event.values;
-					// //Log.d("AUG", "HERE 1");
-					// }
-					// if(event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD){
-					// mGeoMagnetic = event.values;
-					// //Log.d("AUG", "HERE 2");
-					// }
-					// if(mGravity != null && mGeoMagnetic != null){
-					// float R[] = new float[9];
-					// float I[] = new float[9];
-					// //Log.d("AUG", "HERE 3");
-					//
-					// boolean success = SensorManager.getRotationMatrix(R, I,
-					// mGravity, mGeoMagnetic);
-					// if(success){
-					// float orientation[] = new float[3];
-					// SensorManager.getOrientation(R, orientation);
-					// float azimuth = orientation[0];
-					// //if(Math.abs(pointerView.myBearing-azimuth) < .05)
-					// azimuth = pointerView.myBearing;
-					// TextView temp = (TextView)
-					// getActivity().findViewById(gupta.ashutosh.avatar.R.id.azimuth_display);
-					// temp.setText("Bearing: " +
-					// Math.toDegrees(pointerView.myBearing));
-					// //Log.d("Bearing", ""+azimuth);
-					// pointerView.updateBearing(azimuth);
-					// }else{
-					// //System.err.println("ERROR");
-					// }
-					// }
-
+					System.out.println("Bearing Values: " + rot[2] +", " + rot[5]);
 					float tmpPitch = (float) -(Math.acos(rot[8]) - (Math.PI / 2));
-					// System.out.println("PITCH IS:::::::::::" + tmpPitch);
+					
 					if (Float.isNaN(tmpPitch))
 						tmpPitch = pointerView.myPitch;
 					if (Math.abs(tmpPitch - pointerView.myPitch) < .01)
@@ -355,26 +269,19 @@ public class CameraView extends Fragment implements OnPreparedListener, Callback
 						temp = (TextView) getActivity().findViewById(gupta.ashutosh.avatar.R.id.roll_display);
 						temp.setText("Roll: " + roll);
 						temp = (TextView) getActivity().findViewById(gupta.ashutosh.avatar.R.id.azimuth_display);
-						// temp.setText(""+myLocation.getBearing());
 						z = 0;
 					}
 					z++;
 
 					pointerView.updatePitch(tmpPitch);
 					pointerView.updateBearing(roll);
+					System.out.println(roll);
 					pointerView.postInvalidate();
-
-					// Log.d("AUG Bearing", pointerView.myBearing + "");
-					// Log.d("AUG Pitch", pointerView.myPitch + "");
 				}
 			}
 		};
 		SENSORMANAGER.registerListener(listener, ROTATION, SensorManager.SENSOR_DELAY_FASTEST);
 		getActivity().findViewById(R.id.aug_rel_info).setOnClickListener(this);
-		// SENSORMANAGER.registerListener(listener, ACCELEROMETER,
-		// SensorManager.SENSOR_DELAY_FASTEST);
-		// SENSORMANAGER.registerListener(listener, MAGNETIC,
-		// SensorManager.SENSOR_DELAY_FASTEST);
 	}
 
 	// This controls what the view will do when the screen is changed
@@ -559,20 +466,14 @@ public class CameraView extends Fragment implements OnPreparedListener, Callback
 				white.setColor(Color.WHITE);
 				Paint red = new Paint();
 				red.setColor(Color.RED);
-				canvas.drawText("Latitude: " + myLocation.getLatitude(), 1, 10, white); // TODO-
-																						// Change
-																						// all
-																						// of
-																						// these
-																						// to
-																						// be
-																						// relative
-																						// to
-																						// the
-																						// screen
-																						// size.
+				canvas.drawText("Latitude: " + myLocation.getLatitude(), 1, 10, white); 
 				canvas.drawText("Longitude: " + myLocation.getLongitude(), 1, 20, white);
-				canvas.drawText("Altitude: " + myLocation.getAltitude(), 1, 30, white);
+				double myAlt = myLocation.getAltitude();
+				if(!myLocation.hasAltitude()){
+					myAlt = Constants.defaultElevation;
+				}
+				canvas.drawText("Altitude: " + myAlt, 1, 30, white);
+				
 				if (mWifi.isConnected()) {
 					canvas.drawText("Internet Status: Connected", 1, 40, white);
 				} else {

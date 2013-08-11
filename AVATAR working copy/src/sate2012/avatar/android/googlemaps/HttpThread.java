@@ -24,7 +24,7 @@ import android.util.JsonReader;
  * the points, as to not make those applications wait on them.
  *
  */
-public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
+public class HttpThread extends AsyncTask<String, MarkerPlus, ArrayList<MarkerPlus>>{
 
 		private GoogleMapsViewer maps;
 		private CameraView cameraView;
@@ -124,7 +124,6 @@ public class HttpThread extends AsyncTask<String, Void, ArrayList<MarkerPlus>>{
 						markerArray.add(marker);
 						reader.endObject();	
 					}
-					//HELP!!!
 					reader.endArray();
 					reader.close();
 					break connect;

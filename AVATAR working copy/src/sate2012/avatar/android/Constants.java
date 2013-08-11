@@ -22,4 +22,6 @@ public class Constants {
  
 	public static String lat = "39.7";
 	public static String lng = "-84.2";
+	
+	public static double defaultElevation = 0;
 }

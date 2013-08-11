@@ -170,7 +170,6 @@ OnCameraChangeListener, OnMapClickListener, OnMarkerClickListener, OnInfoWindowC
 		this.markers = markers;
 		drawMarkers(true);
 	}
-
 	@Override
 	public void onInfoWindowClick(Marker marker) {
 		// TODO Auto-generated method stub
